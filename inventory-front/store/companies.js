@@ -1,25 +1,38 @@
 import moment from '~/plugins/moment'
 
 export const state = () => ({
-  companies: []
+  companies: [],
+  alertMessage: null,
+  alertStatus: null,
+  errors: [],
 });
 
 export const getters = {
-  companies: state => state.companies.map(company => Object.assign({ locations: [] }, company))
+  companies: state => state.companies.map(company => Object.assign({ locations: [] }, company)),
+  alertMessage: state => state.alertMessage,
+  alertStatus: state => state.alertStatus,
+  errors: state => state.errors,
 };
 
 export const mutations = {
   add(state, { company }) {
-    state.companies.push(company)
+    state.companies.push(company);
   },
   update(state, { company }) {
-    state.companies = state.companies.map(c => (c.id === company.id ? company : c))
+    state.companies = state.companies.map(c => (c.id === company.id ? company : c));
   },
   delete(state, { company }) {
     state.companies.splice(state.companies.indexOf(company), 1);
   },
   clear(state) {
     state.companies = [];
+  },
+  showAlert(state, { alertMessage, alertStatus }) {
+    state.alertMessage = alertMessage;
+    state.alertStatus = alertStatus;
+  },
+  showErrors(state, { errors }) {
+    state.errors = errors;
   },
 };
 
@@ -39,28 +52,48 @@ export const actions = {
       )
   },
   async createCompany({ commit }, { company }) {
-    const result = await this.$axios.$post(`http://localhost:8000/companies/`, company);
+    const result = await this.$axios.$post(`http://localhost:8000/companies/`, company).catch(err => {
+      return {
+        'errors' : err.response.data,
+        'status' : false
+      };
+    });
     if (result.status === 'OK') {
-      commit('create', { company: company });
-      this.$router.push('/companies')
+      commit('add', { company: company });
+      commit('showAlert', { alertMessage: '会社を作成しました。', alertStatus: 'success' });
+    } else if (result['errors']) {
+      commit('showAlert', { alertMessage: '入力内容をご確認ください。', alertStatus: 'danger' });
+      commit('showErrors', { errors: result['errors'] });
     } else {
-      // TODO: エラー処理
+      commit('showAlert', { alertMessage: '会社を作成できませんでした。', alertStatus: 'danger' });
     }
+    return result;
   },
   async updateCompany({ commit }, { company }) {
-    const result = await this.$axios.$put(`http://localhost:8000/companies/${company.id}`, company);
+    const result = await this.$axios.$put(`http://localhost:8000/companies/${company.id}`, company).catch(err => {
+      return {
+        'errors' : err.response.data,
+        'status' : false
+      };
+    });
     if (result.status === 'OK') {
       commit('update', { company: company });
+      commit('showAlert', { alertMessage: '会社を更新しました。', alertStatus: 'success' });
+    } else if (result['errors']) {
+      commit('showAlert', { alertMessage: '入力内容をご確認ください。', alertStatus: 'danger' });
+      commit('showErrors', { errors: result['errors'] });
     } else {
-      // TODO: エラー処理
+      commit('showAlert', { alertMessage: '会社を更新できませんでした。', alertStatus: 'danger' });
     }
+    return result;
   },
   async deleteCompany({ commit }, { company }) {
     const result = await this.$axios.$delete(`http://localhost:8000/companies/${company.id}`);
     if (result.status === 'OK') {
       commit('delete', { company: company });
+      commit('showAlert', { alertMessage: '会社を削除しました。', alertStatus: 'success' });
     } else {
-      // TODO: エラー処理
+      commit('showAlert', { alertMessage: '会社を削除できませんでした。', alertStatus: 'danger' });
     }
   },
 };

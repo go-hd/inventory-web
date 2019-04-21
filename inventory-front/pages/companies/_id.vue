@@ -17,7 +17,10 @@
               <b-col sm="12">
                 <b-form-group>
                   <label for="name">会社名</label>
-                  <b-form-input type="text" id="name" placeholder="会社名" v-model="company.name"></b-form-input>
+                  <b-form-input type="text" id="name" placeholder="会社名" v-model="company.name" v-bind:class="{ 'is-invalid': errors.name }" class="form-control"></b-form-input>
+                  <div v-for="(error, index) in errors.name" v-bind:key="index" v-bind:value="error" class="invalid-feedback">
+                    {{ error }}
+                  </div>
                 </b-form-group>
               </b-col>
             </b-row>
@@ -57,7 +60,7 @@
       company() {
         return this.companies.find(c => c.id == this.$route.params.id)
       },
-      ...mapGetters('companies', ['companies'])
+      ...mapGetters('companies', ['companies', 'alertMessage', 'alertStatus', 'errors'])
     },
     data () {
       return {
@@ -77,8 +80,11 @@
        */
       async onClickUpdate() {
         const data = { company: this.company };
-        await this.updateCompany(cloneDeep(data));
-        this.$router.push('/companies');
+        const response = await this.updateCompany(cloneDeep(data));
+
+        if (response.status) {
+          this.$router.push('/companies');
+        }
       },
       ...mapActions('companies', ['updateCompany'])
     },

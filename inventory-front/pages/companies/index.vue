@@ -10,6 +10,9 @@
               <b-button variant="primary" class="float-right" href="/companies/new"><i class="fa fa-plus"></i> 新規追加</b-button>
             </div>
             <!-- /ヘッダー -->
+            <div>
+              <b-alert v-if="alertMessage" show :variant="alertStatus">{{ alertMessage }}</b-alert>
+            </div>
             <!-- 一覧 -->
             <b-table responsive="sm" :items="showCompanies" :fields="fields" :current-page="currentPage" :per-page="perPage">
               <template slot="controls" slot-scope="data">
@@ -53,7 +56,7 @@
           return company
         })
       },
-      ...mapGetters('companies', ['companies'])
+      ...mapGetters('companies', ['companies', 'alertMessage', 'alertStatus']),
     },
     data () {
       return {

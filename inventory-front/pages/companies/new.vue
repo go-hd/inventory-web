@@ -12,12 +12,18 @@
             <!-- パン屑 -->
             <b-breadcrumb :items="breadcrumbs"/>
             <!-- /パン屑 -->
+            <div>
+              <b-alert v-if="alertMessage" show :variant="alertStatus">{{ alertMessage }}</b-alert>
+            </div>
             <!-- フォーム -->
             <b-row>
               <b-col sm="12">
                 <b-form-group>
                   <label for="name">会社名</label>
-                  <b-form-input type="text" id="name" placeholder="会社名" v-model="formData.name"></b-form-input>
+                  <b-form-input type="text" id="name" placeholder="会社名" v-model="formData.name" v-bind:class="{ 'is-invalid': errors.name }" class="form-control"></b-form-input>
+                  <div v-for="(error, index) in errors.name" v-bind:key="index" v-bind:value="error" class="invalid-feedback">
+                    {{ error }}
+                  </div>
                 </b-form-group>
               </b-col>
             </b-row>
@@ -34,17 +40,19 @@
 </template>
 
 <script>
-  import { mapActions } from 'Vuex'
+  import { mapGetters, mapActions } from 'Vuex'
   import cloneDeep from 'lodash.clonedeep'
 
   export default {
     name: 'Companies',
-    asyncData({ redirect, store }) {
-      return {
-        formData: {
-          name: '',
-        }
-      }
+    /**
+     * データ取得
+     */
+    async asyncData({ store }) {
+      await store.dispatch('companies/fetchCompanies');
+    },
+    computed: {
+      ...mapGetters('companies', ['companies', 'alertMessage', 'alertStatus', 'errors']),
     },
     data () {
       return {
@@ -56,13 +64,18 @@
           href: '#',
           active: true
         }],
+        formData: {
+          name: '',
+        }
       }
     },
     methods: {
       async onClickCreateCompany() {
         const data = { company: this.formData };
-        await this.createCompany(cloneDeep(data));
-        this.$router.push('/companies');
+        const response = await this.createCompany(cloneDeep(data));
+        if (response.status) {
+          this.$router.push('/companies');
+        }
       },
       ...mapActions('companies', ['createCompany'])
     }
