@@ -6,15 +6,15 @@
           <b-card header-tag="header" footer-tag="footer">
             <!-- ヘッダー -->
             <div slot="header">
-              <i class="fa fa-align-justify"></i> <strong>会社管理</strong>
-              <b-button variant="primary" class="float-right" href="/companies/new"><i class="fa fa-plus"></i> 新規登録</b-button>
+              <i class="fa fa-align-justify"></i> <strong>ユーザー管理</strong>
+              <b-button variant="primary" class="float-right" href="/users/new"><i class="fa fa-plus"></i> 新規追加</b-button>
             </div>
             <!-- /ヘッダー -->
             <div>
               <b-alert v-if="alertMessage" show :variant="alertStatus">{{ alertMessage }}</b-alert>
             </div>
             <!-- 一覧 -->
-            <b-table responsive="sm" :items="showCompanies" :fields="fields" :current-page="currentPage" :per-page="perPage">
+            <b-table responsive="sm" :items="showUsers" :fields="fields" :current-page="currentPage" :per-page="perPage">
               <template slot="controls" slot-scope="data">
                 <b-button variant="success" @click="onClickEdit(data.item)"><i class="fa fa-pencil"></i> 編集</b-button>
                 <b-button variant="danger" @click="onClickDestroy(data.item)"><i class="fa fa-trash"></i> 削除</b-button>
@@ -38,33 +38,35 @@
   import cloneDeep from 'lodash.clonedeep'
 
   export default {
-    name: 'Companies',
+    name: 'Users',
     /**
      * データ取得
      */
     async asyncData({ store }) {
-      await store.dispatch('companies/fetchCompanies');
+      await store.dispatch('users/fetchUsers');
     },
     computed: {
       /**
-       * テーブル用の会社一覧を取得
+       * テーブル用のユーザー一覧を取得
        *
        * @returns {[]}
        */
-      showCompanies() {
-        return this.companies.map(company => {
+      showUsers() {
+        return this.users.map(user => {
           return {
-            'id': company.id,
-            '名称': company.name,
-            '更新日': company.updated_at
+            'id': user.id,
+            '名称': user.name,
+            '拠点名': user.location.name,
+            'メールアドレス': user.email,
+            '更新日': user.updated_at
           };
         })
       },
-      ...mapGetters('companies', ['companies', 'alertMessage', 'alertStatus']),
+      ...mapGetters('users', ['users', 'alertMessage', 'alertStatus']),
     },
     data () {
       return {
-        fields: ['id', '名称', '更新日', 'controls'],
+        fields: ['id', '名称', '拠点名', 'メールアドレス', '更新日', 'controls'],
         currentPage: 1,
         perPage: 5,
         totalRows: 0,
@@ -76,30 +78,30 @@
        * @returns {number}
        */
       getRowCount() {
-        return this.companies.length
+        return this.users.length
       },
       /**
        * 編集ボタン押下時
        *
-       * @param company
+       * @param user
        */
-      onClickEdit(company) {
+      onClickEdit(user) {
         // 編集画面へ遷移する
-        this.$router.push(`/companies/${company.id}`)
+        this.$router.push(`/users/${user.id}`)
       },
       /**
        * 削除ボタン押下時
        *
-       * @param company
+       * @param user
        */
-      onClickDestroy(company) {
+      onClickDestroy(user) {
         if (confirm('本当に削除してもよろしいでしょうか。')) {
-          const data = { company: company };
+          const data = { user: user };
           // 削除処理
-          this.deleteCompany(cloneDeep(data));
+          this.deleteUser(cloneDeep(data));
         }
       },
-      ...mapActions('companies', ['deleteCompany'])
+      ...mapActions('users', ['deleteUser'])
     }
   }
 </script>

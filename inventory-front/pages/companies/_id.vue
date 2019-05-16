@@ -46,19 +46,19 @@
      * データ取得
      */
     async asyncData({ store, route }) {
-      if (store.getters['companies/companies'].find(c => c.id === route.params.id)) {
+      if (store.getters['companies/companies'].find(data => data.id === route.params.id)) {
         return
       }
       await store.dispatch('companies/fetchCompanies')
     },
     computed: {
       /**
-       * IDにひもづくcompanyを取得
+       * IDにひもづく会社を取得
        *
        * @returns {[]}
        */
       company() {
-        return this.companies.find(c => c.id == this.$route.params.id)
+        return cloneDeep(this.companies.find(data => data.id == this.$route.params.id));
       },
       ...mapGetters('companies', ['companies', 'alertMessage', 'alertStatus', 'errors'])
     },
@@ -80,8 +80,9 @@
        */
       async onClickUpdate() {
         const data = { company: this.company };
+        // 更新処理
         const response = await this.updateCompany(cloneDeep(data));
-
+        // OKであれば会社一覧へ遷移する
         if (response.status) {
           this.$router.push('/companies');
         }

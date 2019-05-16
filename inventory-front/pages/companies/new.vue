@@ -6,15 +6,12 @@
           <b-card header-tag="header" footer-tag="footer">
             <!-- ヘッダー -->
             <div slot="header">
-              <i class="fa fa-align-justify"></i> <strong>会社管理 | 編集</strong>
+              <i class="fa fa-align-justify"></i> <strong>会社管理 | 新規登録</strong>
             </div>
             <!-- /ヘッダー -->
             <!-- パン屑 -->
             <b-breadcrumb :items="breadcrumbs"/>
             <!-- /パン屑 -->
-            <div>
-              <b-alert v-if="alertMessage" show :variant="alertStatus">{{ alertMessage }}</b-alert>
-            </div>
             <!-- フォーム -->
             <b-row>
               <b-col sm="12">
@@ -45,14 +42,8 @@
 
   export default {
     name: 'Companies',
-    /**
-     * データ取得
-     */
-    async asyncData({ store }) {
-      await store.dispatch('companies/fetchCompanies');
-    },
     computed: {
-      ...mapGetters('companies', ['companies', 'alertMessage', 'alertStatus', 'errors']),
+      ...mapGetters('companies', ['errors']),
     },
     data () {
       return {
@@ -60,7 +51,7 @@
           text: '一覧',
           href: '/companies',
         },{
-          text: '新規',
+          text: '新規登録',
           href: '#',
           active: true
         }],
@@ -70,9 +61,16 @@
       }
     },
     methods: {
+      /**
+       * 登録ボタン押下時
+       *
+       * @returns {Promise<void>}
+       */
       async onClickCreateCompany() {
         const data = { company: this.formData };
+        // 登録処理
         const response = await this.createCompany(cloneDeep(data));
+        // OKであれば会社一覧へ遷移する
         if (response.status) {
           this.$router.push('/companies');
         }

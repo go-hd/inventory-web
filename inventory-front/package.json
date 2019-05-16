@@ -20,11 +20,13 @@
     "express": "^4.16.3",
     "flag-icon-css": "^2.9.0",
     "font-awesome": "^4.7.0",
-    "moment": "^2.22.2",
+    "moment": "^2.24.0",
     "node-sass": "^4.11.0",
     "nuxt": "^2.0.0",
     "simple-line-icons": "^2.4.1",
-    "vue-chartjs": "^3.1.1"
+    "vue-chartjs": "^3.1.1",
+    "vue2-datepicker": "^2.11.2",
+    "vuejs-datepicker": "^1.5.4"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",

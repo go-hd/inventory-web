@@ -8,7 +8,7 @@ export const state = () => ({
 });
 
 export const getters = {
-  companies: state => state.companies.map(company => Object.assign({ locations: [] }, company)),
+  companies: state => state.companies,
   alertMessage: state => state.alertMessage,
   alertStatus: state => state.alertStatus,
   errors: state => state.errors,
@@ -19,13 +19,20 @@ export const mutations = {
     state.companies.push(company);
   },
   update(state, { company }) {
-    state.companies = state.companies.map(c => (c.id === company.id ? company : c));
+    state.companies = state.companies.map(data => (data.id === company.id ? company : data));
   },
   delete(state, { company }) {
-    state.companies.splice(state.companies.indexOf(company), 1);
+    for(let i = 0; i < state.companies.length; i++) {
+      const c = state.companies[i];
+      if(c.id === company.id) {
+        state.companies.splice(i, 1);
+        return;
+      }
+    }
   },
   clear(state) {
     state.companies = [];
+    state.errors = [];
   },
   showAlert(state, { alertMessage, alertStatus }) {
     state.alertMessage = alertMessage;
