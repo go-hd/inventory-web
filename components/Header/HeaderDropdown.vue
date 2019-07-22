@@ -11,10 +11,6 @@
         <b-dropdown-header tag="div" class="text-center"><strong>Settings</strong></b-dropdown-header>
         <b-dropdown-item><i class="fa fa-user"></i> Profile</b-dropdown-item>
         <b-dropdown-item><i class="fa fa-wrench"></i> Settings</b-dropdown-item>
-        <b-dropdown-item><i class="fa fa-usd"></i> Payments<b-badge variant="secondary">{{itemsCount}}</b-badge></b-dropdown-item>
-        <b-dropdown-item><i class="fa fa-file"></i> Projects<b-badge variant="primary">{{itemsCount}}</b-badge></b-dropdown-item>
-        <b-dropdown-divider></b-dropdown-divider>
-        <b-dropdown-item><i class="fa fa-shield"></i> Lock Account</b-dropdown-item>
         <b-dropdown-item @click="logout"><i class="fa fa-lock"></i> Logout</b-dropdown-item>
       </b-nav-item-dropdown>
 </template>
@@ -27,14 +23,12 @@
     },
     methods: {
       async logout() {
-        try {
-          this.$store.dispatch('logout').then(() => {
-            this.$router.push('/login')
-          })
-        } catch (e) {
-          this.formError = e.message
+        const response = await this.$store.dispatch('logout');
+        // OKであればユーザー一覧へ遷移する
+        if (response.status) {
+          this.$router.push('/login');
         }
-      }
+      },
     }
   }
 </script>

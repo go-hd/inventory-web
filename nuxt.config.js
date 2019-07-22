@@ -8,7 +8,8 @@ const changeLoaderOptions = loaders => {
       }
     }
   }
-}
+};
+require('dotenv').config();
 
 module.exports = {
   /*
@@ -60,6 +61,8 @@ module.exports = {
   modules: [
     // Doc: https://github.com/nuxt-community/axios-module#usage
     '@nuxtjs/axios',
+    '@nuxtjs/auth',
+    '@nuxtjs/dotenv',
     // Doc: https://github.com/bootstrap-vue/bootstrap-vue
     'bootstrap-vue/nuxt'
   ],
@@ -71,6 +74,7 @@ module.exports = {
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
+    baseURL: process.env.LARAVEL_ENDPOINT
   },
 
   /*
@@ -109,5 +113,33 @@ module.exports = {
         config.module.rules.forEach(rule => changeLoaderOptions(rule.use))
       }
     }
-  }
+  },
+
+  auth: {
+    redirect: {
+      login: '/login',
+      logout: '/logout',
+      callback: '/login',
+      home: '/'
+    },
+    strategies: {
+      local: false,
+      password_grant: {
+        _scheme: 'local',
+        endpoints: {
+          login: {
+            url: '/oauth/token',
+            method: 'post',
+            propertyName: 'access_token'
+          },
+          logout: false,
+          user: {
+            url: 'api/auth/user',
+            method: 'get',
+            propertyName: 'user'
+          }
+        }
+      }
+    }
+  },
 }
