@@ -23,10 +23,9 @@
     },
     methods: {
       async logout() {
-        const response = await this.$store.dispatch('logout');
-        // OKであればユーザー一覧へ遷移する
+        const response = await this.$store.dispatch('auth/logout');
         if (response.status) {
-          this.$router.push('/login');
+          this.$router.push('/');
         }
       },
     }
