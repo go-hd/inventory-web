@@ -63,7 +63,8 @@ export default {
             username: this.user.email,
             password: this.user.password
           }
-        });
+        })
+        .then(() => this.$router.push('/'));
       } catch (e) {
         this.alertMessage = '認証に失敗しました。';
       }

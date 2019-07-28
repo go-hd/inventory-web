@@ -20,6 +20,7 @@ import { Header as AppHeader, Sidebar, Aside as AppAside, Footer as AppFooter, B
 
 export default {
   name: 'full',
+  middleware: 'auth',
   components: {
     AppHeader,
     Sidebar,

@@ -18,7 +18,6 @@ export const actions = {
         'status' : false
       };
     });
-
     return result;
   },
 };
