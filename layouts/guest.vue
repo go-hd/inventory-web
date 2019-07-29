@@ -15,7 +15,7 @@
 import { Footer as AppFooter } from '~/components/'
 
 export default {
-  name: 'full',
+  name: 'guest',
   components: {
     AppFooter,
   },

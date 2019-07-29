@@ -3,41 +3,25 @@
     <div>
       <b-alert v-if="alertMessage" show variant="danger">{{ alertMessage }}</b-alert>
     </div>
-    <div class="row justify-content-center mt-5">
-      <div class="col-md-5">
-        <form>
-          <div class="form-group">
-            <input
-                    v-model="user.email"
-                    class="form-control"
-                    placeholder="email"
-            >
-          </div>
-          <div class="form-group">
-            <input
-                    v-model="user.password"
-                    type="password"
-                    class="form-control"
-                    placeholder="Password"
-            >
-          </div>
-          <button
-                  type="submit"
-                  class="btn btn-primary btn-block"
-                  @click.prevent="passwordGrantLogin"
-          >Login</button>
-        </form>
-      </div>
-    </div>
+    <b-row class="justify-content-center mt-5">
+      <b-col md="5">
+        <b-form-group>
+          <b-form-input type="text" id="email" placeholder="email" v-model="user.email" class="form-control"></b-form-input>
+        </b-form-group>
+        <b-form-group>
+          <b-form-input type="text" id="password" placeholder="password" v-model="user.password" class="form-control"></b-form-input>
+        </b-form-group>
+        <b-button type="submit" variant="primary" @click="passwordGrantLogin()" class="btn-block">Login</b-button>
+        <a class="pull-right" href="/register/search">新規登録</a>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
   middleware: 'guest',
-  layout: 'login',
+  layout: 'guest',
   data() {
     return {
       user: {
@@ -46,10 +30,6 @@ export default {
       },
       alertMessage: ''
     }
-  },
-  mounted() {
-    // console.log(this.$auth.loggedIn);
-    // console.log(process.env.PASSPORT_PASSWORD_GRANT_SECRET);
   },
   methods: {
     async passwordGrantLogin() {
@@ -68,7 +48,6 @@ export default {
       } catch (e) {
         this.alertMessage = '認証に失敗しました。';
       }
-
     }
   }
 }
