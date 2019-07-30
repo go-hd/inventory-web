@@ -16,8 +16,10 @@
         </b-form-group>
 
         <!-- 一覧 -->
-        <b-table responsive="sm" :items="showCompanies" :fields="fields" v-if="this.companies.length !== 0">
-          <template slot="controls" slot-scope="data"></template>
+        <b-table responsive="sm" :items="showCompanies" v-if="this.companies.length !== 0">
+          <template slot="controls" slot-scope="data">
+            <b-button variant="info" @click="onClickSelect(data.item)">選択</b-button>
+          </template>
         </b-table>
         <!-- /一覧 -->
       </b-col>
@@ -29,11 +31,10 @@
   import { mapGetters } from 'Vuex'
 
   export default {
-    middleware: 'guest',
     layout: 'guest',
     data() {
       return {
-        fields: ['名称'],
+        fields: ['id', 'name', 'controls'],
         company: {
           name: ''
         },
@@ -48,19 +49,37 @@
       showCompanies() {
         return this.companies.map(company => {
           return {
-            '名称': company.name,
+            'id': company.id,
+            'name': company.name,
+            'controls': true,
           };
         })
       },
       ...mapGetters('companies', ['companies', 'alertMessage', 'alertStatus']),
     },
     methods: {
+      /**
+       * 検索ボタン押下時
+       *
+       * @param company
+       */
       async searchCompany() {
-        const condition = {
-          name: this.company.name
+        const params = {
+          search: {
+            name: this.company.name
+          }
         };
-        await this.$store.dispatch('companies/fetchCompanies', condition);
-      }
+        await this.$store.dispatch('companies/fetchCompanies', params);
+      },
+      /**
+       * 選択ボタン押下時
+       *
+       * @param company
+       */
+      onClickSelect(company) {
+        // ユーザー登録画面へ遷移する
+        this.$router.push(`/register/${company.id}`)
+      },
     }
   }
 </script>

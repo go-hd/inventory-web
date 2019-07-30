@@ -25,6 +25,7 @@
     "moment": "^2.24.0",
     "node-sass": "^4.11.0",
     "nuxt": "^2.8.1",
+    "qs": "^6.7.0",
     "simple-line-icons": "^2.4.1",
     "vue-chartjs": "^3.1.1",
     "vue2-datepicker": "^2.11.2",

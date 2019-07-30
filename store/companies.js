@@ -1,4 +1,5 @@
 import moment from '~/plugins/moment'
+import qs from 'qs';
 
 export const state = () => ({
   companies: [],
@@ -44,8 +45,10 @@ export const mutations = {
 };
 
 export const actions = {
-  async fetchCompanies({ commit }, condition = null) {
-    const companies = await this.$axios.$get('http://localhost:8000/companies', { params: { condition }});
+  async fetchCompanies({ commit }, params = null) {
+    // objectのネスト対応
+    const paramsSerializer = (params) => qs.stringify(params);
+    const companies = await this.$axios.$get('http://localhost:8000/companies', { params, paramsSerializer });
     commit('clear');
     Object.entries(companies || [])
       .reverse()

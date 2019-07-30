@@ -20,7 +20,6 @@
 
 <script>
 export default {
-  middleware: 'guest',
   layout: 'guest',
   data() {
     return {
