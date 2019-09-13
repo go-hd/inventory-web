@@ -1,18 +1,45 @@
 <template>
   <div class="wrapper">
     <div class="animated fadeIn">
+      <div>
+        <b-alert v-if="alertMessage" show :variant="alertStatus">{{ alertMessage }}</b-alert>
+      </div>
+      <b-row>
+        <b-col sm="8">
+          <b-card header-tag="header" footer-tag="footer">
+            <!-- ヘッダー -->
+            <div slot="header">
+              <i class="fa fa-plus"></i> <strong>招待する</strong>
+            </div>
+            <!-- /ヘッダー -->
+            <!-- フォーム -->
+            <b-form-group>
+              <b-input-group>
+                <b-form-input type="email" placeholder="メールアドレス" v-model="formData.email"
+                              v-bind:class="{ 'is-invalid': errors.email }" class="form-control"></b-form-input>
+                <!-- Attach Right button -->
+                <b-input-group-append>
+                  <b-button variant="primary" @click="onClickInviteUser()">招待</b-button>
+                </b-input-group-append>
+                <div v-for="(error, index) in errors.email" v-bind:key="index" v-bind:value="error"
+                     class="invalid-feedback">
+                  {{ error }}
+                </div>
+              </b-input-group>
+            </b-form-group>
+            <!-- /フォーム -->
+          </b-card>
+        </b-col>
+      </b-row>
       <b-row>
         <b-col cols="12">
           <b-card header-tag="header" footer-tag="footer">
             <!-- ヘッダー -->
             <div slot="header">
               <i class="fa fa-align-justify"></i> <strong>ユーザー管理</strong>
-              <b-button variant="primary" class="float-right" href="/users/new"><i class="fa fa-plus"></i> 新規追加</b-button>
+<!--              <b-button variant="primary" class="float-right" href="/users/new"><i class="fa fa-plus"></i> 新規追加</b-button>-->
             </div>
             <!-- /ヘッダー -->
-            <div>
-              <b-alert v-if="alertMessage" show :variant="alertStatus">{{ alertMessage }}</b-alert>
-            </div>
             <!-- 一覧 -->
             <b-table responsive="sm" :items="showUsers" :fields="fields" :current-page="currentPage" :per-page="perPage">
               <template slot="controls" slot-scope="data">
@@ -34,7 +61,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'Vuex'
+  import { mapGetters, mapActions, mapState } from 'Vuex'
   import cloneDeep from 'lodash.clonedeep'
 
   export default {
@@ -43,7 +70,7 @@
      * データ取得
      */
     async asyncData({ store }) {
-      await store.dispatch('users/fetchUsers');
+      await store.dispatch('users/fetchUsers', {company_id: store.state.auth.user.id});
     },
     computed: {
       /**
@@ -62,7 +89,7 @@
           };
         })
       },
-      ...mapGetters('users', ['users', 'alertMessage', 'alertStatus']),
+      ...mapGetters('users', ['users', 'errors', 'alertMessage', 'alertStatus']),
     },
     data () {
       return {
@@ -70,6 +97,10 @@
         currentPage: 1,
         perPage: 5,
         totalRows: 0,
+        formData: {
+          email: '',
+          company_id: this.$store.$auth.user.company.id,
+        }
       }
     },
     methods: {
@@ -101,7 +132,22 @@
           this.deleteUser(cloneDeep(data));
         }
       },
-      ...mapActions('users', ['deleteUser'])
+      ...mapActions('users', ['deleteUser']),
+      /**
+       * 招待ボタン押下時
+       *
+       * @returns {Promise<void>}
+       */
+      async onClickInviteUser() {
+        const data = { user: this.formData };
+        // 登録処理
+        const response = await this.inviteUser(cloneDeep(data));
+        // OKであればユーザー一覧へ遷移する
+        if (response.status) {
+          // this.$router.push('/users');
+        }
+      },
+      ...mapActions('users', ['inviteUser'])
     }
   }
 </script>

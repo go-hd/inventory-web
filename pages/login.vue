@@ -12,7 +12,7 @@
           <b-form-input type="text" id="password" placeholder="password" v-model="user.password" class="form-control"></b-form-input>
         </b-form-group>
         <b-button type="submit" variant="primary" @click="passwordGrantLogin()" class="btn-block">Login</b-button>
-        <a class="pull-right" href="/register/search">新規登録</a>
+        <a class="pull-right" href="/register">新規登録</a>
       </b-col>
     </b-row>
   </div>

@@ -42,6 +42,9 @@ export const mutations = {
   showErrors(state, { errors }) {
     state.errors = errors;
   },
+  clearErrors(state) {
+    state.errors = [];
+  },
 };
 
 export const actions = {
@@ -60,6 +63,22 @@ export const actions = {
           }
         })
       )
+  },
+  async validateCompany({ commit }, { company }) {
+    const result = await this.$axios.$post(`http://localhost:8000/companies/validate`, company).catch(err => {
+      return {
+        'errors' : err.response.data,
+        'status' : false
+      };
+    });
+    if (result.status === 'OK') {
+      commit('clearErrors');
+    } else if (result['errors']) {
+      commit('showErrors', { errors: result['errors'] });
+    } else {
+      commit('showAlert', { alertMessage: 'エラーが発生しました。', alertStatus: 'danger' });
+    }
+    return result;
   },
   async createCompany({ commit }, { company }) {
     const result = await this.$axios.$post(`http://localhost:8000/companies/`, company).catch(err => {

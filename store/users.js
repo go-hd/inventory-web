@@ -41,11 +41,16 @@ export const mutations = {
   showErrors(state, { errors }) {
     state.errors = errors;
   },
+  clearErrors(state) {
+    state.errors = [];
+    state.alertMessage = null;
+    state.alertStatus = null;
+  },
 };
 
 export const actions = {
-  async fetchUsers({ commit }) {
-    const users = await this.$axios.$get('http://localhost:8000/users');
+  async fetchUsers({ commit }, params) {
+    const users = await this.$axios.$get('http://localhost:8000/users?company_id=' + params.company_id);
     commit('clear');
     Object.entries(users || [])
       .reverse()
@@ -57,6 +62,58 @@ export const actions = {
           }
         })
       )
+  },
+  async validateUser({ commit }, { user }) {
+    const result = await this.$axios.$post(`http://localhost:8000/users/validate`, user).catch(err => {
+      return {
+        'errors' : err.response.data,
+        'status' : false
+      };
+    });
+    if (result.status === 'OK') {
+      commit('clearErrors');
+    } else if (result['errors']) {
+      commit('showErrors', { errors: result['errors'] });
+    } else {
+      commit('showAlert', { alertMessage: 'エラーが発生しました。', alertStatus: 'danger' });
+    }
+    return result;
+  },
+  async inviteUser({ commit }, { user }) {
+    commit('clearErrors');
+    const result = await this.$axios.$post(`http://localhost:8000/users/invite`, user).catch(err => {
+      return {
+        'errors' : err.response.data,
+        'status' : false
+      };
+    });
+    if (result.status === 'OK') {
+      commit('showAlert', { alertMessage: 'ユーザーを招待しました。', alertStatus: 'success' });
+    } else if (result['errors']) {
+      commit('showAlert', { alertMessage: '入力内容をご確認ください。', alertStatus: 'danger' });
+      commit('showErrors', { errors: result['errors'] });
+    } else {
+      commit('showAlert', { alertMessage: 'ユーザーを招待できませんでした。', alertStatus: 'danger' });
+    }
+    return result;
+  },
+  async registerUser({ commit }, { data }) {
+    commit('clearErrors');
+    const result = await this.$axios.$post(`http://localhost:8000/register/invited`, data).catch(err => {
+      return {
+        'errors' : err.response.data,
+        'status' : false
+      };
+    });
+    if (result['errors']) {
+      if (result['errors']['status'] === 'NG') {
+        commit('showAlert', { alertMessage: '処理に失敗しました。', alertStatus: 'danger' });
+      } else {
+        commit('showAlert', { alertMessage: '入力内容をご確認ください。', alertStatus: 'danger' });
+        commit('showErrors', { errors: result['errors'] });
+      }
+    }
+    return result;
   },
   async createUser({ commit }, { user }) {
     const result = await this.$axios.$post(`http://localhost:8000/users/`, user).catch(err => {
