@@ -85,20 +85,20 @@ export default {
     //   url: '/palettes/new',
     //   icon: 'icon-plus'
     // },
-    {
-      title: true,
-      name: 'ユーザー',
-      class: '',
-      wrapper: {
-        element: '',
-        attributes: {}
-      }
-    },
-    {
-      name: '一覧 | 招待',
-      url: '/users',
-      icon: 'icon-list'
-    },
+    // {
+    //   title: true,
+    //   name: 'ユーザー',
+    //   class: '',
+    //   wrapper: {
+    //     element: '',
+    //     attributes: {}
+    //   }
+    // },
+    // {
+    //   name: '一覧 | 招待',
+    //   url: '/users',
+    //   icon: 'icon-list'
+    // },
     // {
     //   name: '新規作成',
     //   url: '/users/new',

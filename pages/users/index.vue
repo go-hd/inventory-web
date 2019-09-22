@@ -70,7 +70,7 @@
      * データ取得
      */
     async asyncData({ store }) {
-      await store.dispatch('users/fetchUsers', {company_id: store.state.auth.user.id});
+      await store.dispatch('users/fetchUsers', {company_id: store.state.auth.user.company.id});
     },
     computed: {
       /**

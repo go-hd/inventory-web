@@ -33,6 +33,8 @@ export const mutations = {
   clear(state) {
     state.users = [];
     state.errors = [];
+    state.alertMessage = null;
+    state.alertStatus = null;
   },
   showAlert(state, { alertMessage, alertStatus }) {
     state.alertMessage = alertMessage;
@@ -88,7 +90,7 @@ export const actions = {
       };
     });
     if (result.status === 'OK') {
-      commit('showAlert', { alertMessage: 'ユーザーを招待しました。', alertStatus: 'success' });
+      commit('showAlert', { alertMessage: user.email + 'に招待メールを送信しました！', alertStatus: 'success' });
     } else if (result['errors']) {
       commit('showAlert', { alertMessage: '入力内容をご確認ください。', alertStatus: 'danger' });
       commit('showErrors', { errors: result['errors'] });
@@ -160,4 +162,7 @@ export const actions = {
       commit('showAlert', { alertMessage: 'ユーザーを削除できませんでした。', alertStatus: 'danger' });
     }
   },
+  reset({ commit }) {
+    commit('clear');
+  }
 };
