@@ -143,7 +143,6 @@
         const response = await this.validateUser(cloneDeep(data));
         // OKであれば登録処理
         if (response.status) {
-          debugger;
           const register = { data: this.formData };
           const result = await this.$axios.$post(`http://localhost:8000/register`, register).catch(err => {
             return {
