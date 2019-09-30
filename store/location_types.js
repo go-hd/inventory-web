@@ -103,4 +103,7 @@ export const actions = {
       commit('showAlert', { alertMessage: '拠点種別を削除できませんでした。', alertStatus: 'danger' });
     }
   },
+  reset({ commit }) {
+    commit('clear');
+  },
 };

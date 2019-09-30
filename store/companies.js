@@ -125,4 +125,7 @@ export const actions = {
       commit('showAlert', { alertMessage: '会社を削除できませんでした。', alertStatus: 'danger' });
     }
   },
+  reset({ commit }) {
+    commit('clear');
+  },
 };
