@@ -45,8 +45,6 @@ export const mutations = {
   },
   clearErrors(state) {
     state.errors = [];
-    state.alertMessage = null;
-    state.alertStatus = null;
   },
 };
 
@@ -161,6 +159,9 @@ export const actions = {
     } else {
       commit('showAlert', { alertMessage: 'ユーザーを削除できませんでした。', alertStatus: 'danger' });
     }
+  },
+  resetErrors({ commit }) {
+    commit('clearErrors');
   },
   reset({ commit }) {
     commit('clear');

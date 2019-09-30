@@ -151,11 +151,12 @@
        * @returns {Promise<void>}
        */
       async onClickUpdateBase() {
+        this.resetCompany();
         const data = { company: this.formData.base };
         // 更新処理
         const response = await this.updateCompany(cloneDeep(data));
         if (response.status) {
-          this.resetCompany();
+          this.resetCompanyErrors();
         }
       },
       /**
@@ -164,11 +165,12 @@
        * @returns {Promise<void>}
        */
       async onClickUpdateLocationType() {
+        this.resetLocationType();
         const data = { locationType: this.formData.locationType };
         // 更新処理
         const response = await this.updateLocationType(cloneDeep(data));
         if (response.status) {
-          this.resetLocationType();
+          this.resetLocationTypeErrors();
         }
       },
       /**
@@ -184,6 +186,8 @@
       ...mapActions({
         resetCompany: 'companies/reset',
         resetLocationType: 'location_types/reset',
+        resetCompanyErrors: 'companies/resetErrors',
+        resetLocationTypeErrors: 'location_types/resetErrors',
       }),
     }
   }

@@ -33,6 +33,8 @@ export const mutations = {
   clear(state) {
     state.locationTypes = [];
     state.errors = [];
+    state.alertMessage = null;
+    state.alertStatus = null;
   },
   showAlert(state, { alertMessage, alertStatus }) {
     state.alertMessage = alertMessage;
@@ -40,6 +42,9 @@ export const mutations = {
   },
   showErrors(state, { errors }) {
     state.errors = errors;
+  },
+  clearErrors(state) {
+    state.errors = [];
   },
 };
 
@@ -102,6 +107,9 @@ export const actions = {
     } else {
       commit('showAlert', { alertMessage: '拠点種別を削除できませんでした。', alertStatus: 'danger' });
     }
+  },
+  resetErrors({ commit }) {
+    commit('clearErrors');
   },
   reset({ commit }) {
     commit('clear');

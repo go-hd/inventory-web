@@ -34,6 +34,8 @@ export const mutations = {
   clear(state) {
     state.companies = [];
     state.errors = [];
+    state.alertMessage = null;
+    state.alertStatus = null;
   },
   showAlert(state, { alertMessage, alertStatus }) {
     state.alertMessage = alertMessage;
@@ -124,6 +126,9 @@ export const actions = {
     } else {
       commit('showAlert', { alertMessage: '会社を削除できませんでした。', alertStatus: 'danger' });
     }
+  },
+  resetErrors({ commit }) {
+    commit('clearErrors');
   },
   reset({ commit }) {
     commit('clear');
