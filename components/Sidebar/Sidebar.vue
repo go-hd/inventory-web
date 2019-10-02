@@ -45,6 +45,12 @@
             </template>
           </template>
         </template>
+        <template v-if="$route.path === '/'">
+          <SidebarProduct />
+        </template>
+        <template v-if="$route.path === '/stock'">
+          <SidebarStock />
+        </template>
       </ul>
       <slot></slot>
     </nav>
@@ -63,6 +69,8 @@ import SidebarNavLink from './SidebarNavLink'
 import SidebarNavTitle from './SidebarNavTitle'
 import SidebarNavItem from './SidebarNavItem'
 import SidebarNavLabel from './SidebarNavLabel'
+import SidebarProduct from './SidebarProduct'
+import SidebarStock from './SidebarStock'
 export default {
   name: 'sidebar',
   props: {
@@ -82,7 +90,8 @@ export default {
     SidebarNavLink,
     SidebarNavTitle,
     SidebarNavItem,
-    SidebarNavLabel
+    SidebarNavLabel,
+    SidebarProduct
   },
   methods: {
     handleClick (e) {
