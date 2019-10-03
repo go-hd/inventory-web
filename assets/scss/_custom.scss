@@ -1,5 +1,9 @@
 // Here you can add other styles
 
+.header-setting-icon {
+  font-size: 30px;
+}
+
 /*
  * modal
  */
@@ -81,4 +85,16 @@
       }
     }
   }
+}
+
+/*
+ * sidebar
+ */
+.sidebar .nav {
+  min-height: auto;
+}
+
+.sidebar-product {
+  margin-top: 20px;
+
 }

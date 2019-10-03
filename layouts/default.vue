@@ -2,7 +2,13 @@
   <div class="app">
     <AppHeader/>
     <div class="app-body">
-      <Sidebar :navItems="nav"/>
+      <div class="sidebar">
+        <nav class="sidebar-nav">
+          <div slot="header"></div>
+          <SidebarProduct :brands="brands" :products="products" v-if="name === 'index'" />
+          <SidebarStock v-if="$route.path === '/stock'" />
+        </nav>
+      </div>
       <main class="main">
         <breadcrumb :list="list"/>
         <div class="container-fluid">
@@ -17,6 +23,9 @@
 <script>
 import nav from './menu'
 import { Header as AppHeader, Sidebar, Aside as AppAside, Footer as AppFooter, Breadcrumb } from '~/components/'
+import SidebarProduct from '~/components/Sidebar/SidebarProduct'
+import SidebarStock from '~/components/Sidebar/SidebarStock'
+
 
 export default {
   name: 'full',
@@ -26,11 +35,15 @@ export default {
     Sidebar,
     AppAside,
     AppFooter,
-    Breadcrumb
+    Breadcrumb,
+    SidebarProduct,
+    SidebarStock,
   },
   data () {
     return {
-      nav: nav.items
+      nav: nav.items,
+      brands: [],
+      products: []
     }
   },
   computed: {
@@ -39,6 +52,18 @@ export default {
     },
     list () {
       return this.$route.matched
+    },
+  },
+  created() {
+    this.setListener()
+  },
+  methods: {
+    setListener() {
+      this.$nuxt.$on('updateSidebar', this.updateSidebar)
+    },
+    updateSidebar(brands, products) {
+      this.brands = brands || '';
+      this.products = products || ''
     }
   }
 }

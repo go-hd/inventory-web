@@ -2,7 +2,7 @@
     <div>
       <b-nav-item-dropdown right no-caret>
         <template slot="button-content">
-          <img src="~static/img/setting.png" class="img-avatar" alt="admin@bootstrapmaster.com">
+          <i class="icon-settings header-setting-icon"></i>
         </template>
         <b-dropdown-header tag="div" class="text-center"><strong>Member</strong></b-dropdown-header>
         <b-dropdown-item @click="showModal('invite')"><i class="fa fa-user"></i> メンバー招待</b-dropdown-item>

@@ -33,6 +33,8 @@ export const mutations = {
   clear(state) {
     state.brands = [];
     state.errors = [];
+    state.alertMessage = null;
+    state.alertStatus = null;
   },
   showAlert(state, { alertMessage, alertStatus }) {
     state.alertMessage = alertMessage;
@@ -41,11 +43,14 @@ export const mutations = {
   showErrors(state, { errors }) {
     state.errors = errors;
   },
+  clearErrors(state) {
+    state.errors = [];
+  },
 };
 
 export const actions = {
-  async fetchBrands({ commit }) {
-    const brands = await this.$axios.$get('http://localhost:8000/brands');
+  async fetchBrands({ commit }, params) {
+    const brands = await this.$axios.$get('http://localhost:8000/brands?company_id=' + params.company_id);
     commit('clear');
     Object.entries(brands || [])
       .reverse()
@@ -102,5 +107,11 @@ export const actions = {
     } else {
       commit('showAlert', { alertMessage: 'ブランドを削除できませんでした。', alertStatus: 'danger' });
     }
+  },
+  resetErrors({ commit }) {
+    commit('clearErrors');
+  },
+  reset({ commit }) {
+    commit('clear');
   },
 };
