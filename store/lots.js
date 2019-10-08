@@ -44,8 +44,9 @@ export const mutations = {
 };
 
 export const actions = {
-  async fetchLots({ commit }) {
-    const lots = await this.$axios.$get('http://localhost:8000/lots');
+  async fetchLots({ commit }, params) {
+    const lots = await this.$axios.$get('http://localhost:8000/lots?company_id=' + params.company_id);
+
     commit('clear');
     Object.entries(lots || [])
       .reverse()

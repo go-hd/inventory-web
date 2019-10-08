@@ -15,7 +15,7 @@
      */
     async asyncData({ store }) {
       await store.dispatch('brands/fetchBrands', {company_id: store.state.auth.user.company.id});
-      await store.dispatch('products/fetchProducts', {company_id: store.state.auth.user.company.id});
+      await store.dispatch('lots/fetchLots', {company_id: store.state.auth.user.company.id});
     },
     computed: {
       /**
@@ -23,26 +23,26 @@
        *
        * @returns {[]}
        */
-      productsByBrand() {
+      lotsByBrand() {
         let res = [];
-        for (let i = 0; i < this.products.length; i += 1) {
-          const item = this.products[i];
-          if (res[item.brand_id] === undefined) {
-            res[item.brand_id] = [];
+        for (let i = 0; i < this.lots.length; i += 1) {
+          const item = this.lots[i];
+          if (res[item.product.brand_id] === undefined) {
+            res[item.product.brand_id] = [];
           }
-          res[item.brand_id].push(item);
+          res[item.product.brand_id].push(item);
         }
         return res;
       },
       ...mapGetters('brands', ['brands']),
-      ...mapGetters('products', ['products']),
+      ...mapGetters('lots', ['lots']),
     },
     mounted() {
       this.updateSidebar()
     },
     methods: {
       updateSidebar() {
-        this.$nuxt.$emit('updateSidebar', this.brands, this.productsByBrand)
+        this.$nuxt.$emit('updateSidebar', this.brands, this.lotsByBrand)
       }
     }
   }

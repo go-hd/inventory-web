@@ -92,9 +92,22 @@
  */
 .sidebar .nav {
   min-height: auto;
+
+  .nav-control {
+    text-align: right;
+    padding: 10px;
+    
+    a {
+      color: #20a8d8;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  }
 }
 
 .sidebar-product {
   margin-top: 20px;
-
 }
+
+

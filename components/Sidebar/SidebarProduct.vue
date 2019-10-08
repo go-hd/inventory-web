@@ -1,18 +1,27 @@
 <template>
+  <div>
   <ul class="nav sidebar-product">
     <li class="nav-title">ブランド</li>
 
     <template v-for="(item) in brands">
       <SidebarNavDropdown :name="item.name" icon="icon-tag" v-bind:key="item.id">
-        <template v-for="(product, index) in products[item.id]">
+        <template v-for="(lot, index) in lots[item.id]">
           <li class="nav-item" v-bind:key="index">
             <a class="nav-link">
-              <i class="nav-icon icon-puzzle"></i> {{ product.jan_code}}</a>
+              <i class="nav-icon icon-puzzle"></i> {{ lot.name}}</a>
           </li>
         </template>
       </SidebarNavDropdown>
     </template>
+
+    <li class="nav-control">
+      <a @click="showModal('brand')">
+        新規登録
+      </a>
+    </li>
   </ul>
+  <BrandModal v-if="showModalBrand" @close="closeModal('brand')" />
+  </div>
 </template>
 
 <script>
@@ -32,6 +41,7 @@
         formData: {
           id: this.$store.$auth.user.id,
         },
+        showModalBrand: false,
       }
     },
     props: {
@@ -39,12 +49,30 @@
         type: Array,
         default: () => []
       },
-      products: {
+      lots: {
         type: Array,
         default: () => []
       },
     },
     methods: {
+      showModal(type) {
+        switch (type) {
+          case 'brand':
+            this.showModalBrand = true;
+            break;
+          default:
+            break;
+        }
+      },
+      closeModal(type) {
+        switch (type) {
+          case 'brand':
+            this.showModalBrand = false;
+            break;
+          default:
+            break;
+        }
+      }
     }
   }
 </script>
