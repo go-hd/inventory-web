@@ -108,6 +108,19 @@
 
 .sidebar-product {
   margin-top: 20px;
+  
+  .jan-code {
+    color: lightgray;
+    font-size: 11px;
+  }
+  
+  .name {
+    margin-top: 5px;
+  }
+}
+
+.nav-dropdown-items {
+  padding-left: 15px !important;
 }
 
 

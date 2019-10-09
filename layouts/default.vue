@@ -5,7 +5,7 @@
       <div class="sidebar">
         <nav class="sidebar-nav">
           <div slot="header"></div>
-          <SidebarProduct :brands="brands" :lots="lots" v-if="name === 'index'" />
+          <SidebarProduct :brands="brands" :products="products" v-if="name === 'index'" />
           <SidebarStock v-if="$route.path === '/stock'" />
         </nav>
       </div>
@@ -43,7 +43,7 @@ export default {
     return {
       nav: nav.items,
       brands: [],
-      lots: []
+      products: []
     }
   },
   computed: {
@@ -61,9 +61,9 @@ export default {
     setListener() {
       this.$nuxt.$on('updateSidebar', this.updateSidebar)
     },
-    updateSidebar(brands, lots) {
+    updateSidebar(brands, products) {
       this.brands = brands || '';
-      this.lots = lots || ''
+      this.products = products || ''
     }
   }
 }

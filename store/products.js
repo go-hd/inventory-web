@@ -71,7 +71,7 @@ export const actions = {
       };
     });
     if (result.status === 'OK') {
-      commit('add', { product: product });
+      commit('add', { product: result.product });
       commit('showAlert', { alertMessage: '商品を作成しました。', alertStatus: 'success' });
     } else if (result['errors']) {
       commit('showAlert', { alertMessage: '入力内容をご確認ください。', alertStatus: 'danger' });
