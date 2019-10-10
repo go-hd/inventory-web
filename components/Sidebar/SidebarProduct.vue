@@ -11,7 +11,7 @@
               <span class="jan-code">JAN : {{ product.jan_code}}</span>
               <div class="name">
                 <i class="nav-icon icon-puzzle"></i>
-                <span>{{ product.current_lot !== null ? product.current_lot.name : ''}}</span>
+                <span>{{ product.jan_code }}</span>
               </div>
             </a>
           </li>
@@ -49,8 +49,6 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'Vuex'
-  import cloneDeep from 'lodash.clonedeep'
   import BrandModal from '../Modal/BrandModal'
   import ProductModal from '../Modal/ProductModal'
   import SidebarNavDropdown from './SidebarNavDropdown'

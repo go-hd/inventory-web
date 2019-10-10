@@ -25,7 +25,7 @@ import nav from './menu'
 import { Header as AppHeader, Sidebar, Aside as AppAside, Footer as AppFooter, Breadcrumb } from '~/components/'
 import SidebarProduct from '~/components/Sidebar/SidebarProduct'
 import SidebarStock from '~/components/Sidebar/SidebarStock'
-
+import { mapGetters } from 'Vuex'
 
 export default {
   name: 'full',
@@ -42,8 +42,6 @@ export default {
   data () {
     return {
       nav: nav.items,
-      brands: [],
-      products: []
     }
   },
   computed: {
@@ -53,6 +51,8 @@ export default {
     list () {
       return this.$route.matched
     },
+    ...mapGetters('products', {products: 'productsByBrand'}),
+    ...mapGetters('brands', ['brands']),
   },
   created() {
     this.setListener()
@@ -60,10 +60,6 @@ export default {
   methods: {
     setListener() {
       this.$nuxt.$on('updateSidebar', this.updateSidebar)
-    },
-    updateSidebar(brands, products) {
-      this.brands = brands || '';
-      this.products = products || ''
     }
   }
 }

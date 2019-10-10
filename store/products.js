@@ -1,5 +1,3 @@
-import moment from '~/plugins/moment'
-
 export const state = () => ({
   products: [],
   alertMessage: null,
@@ -12,6 +10,15 @@ export const getters = {
   alertMessage: state => state.alertMessage,
   alertStatus: state => state.alertStatus,
   errors: state => state.errors,
+  productsByBrand: state => {
+    return state.products.reduce((sub, product) => {
+      if (!sub.hasOwnProperty(product.brand_id)) {
+        sub[product.brand_id] = []
+      }
+      sub[product.brand_id].push(product)
+      return sub
+    }, {})
+  }
 };
 
 export const mutations = {
@@ -71,7 +78,7 @@ export const actions = {
       };
     });
     if (result.status === 'OK') {
-      commit('add', { product: result.product });
+      commit('add', { product });
       commit('showAlert', { alertMessage: '商品を作成しました。', alertStatus: 'success' });
     } else if (result['errors']) {
       commit('showAlert', { alertMessage: '入力内容をご確認ください。', alertStatus: 'danger' });
