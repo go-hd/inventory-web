@@ -38,7 +38,7 @@ export const mutations = {
     }
   },
   clear(state) {
-    state.products = [];
+    // state.products = [];
     state.errors = [];
     state.alertMessage = null;
     state.alertStatus = null;

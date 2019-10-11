@@ -96,7 +96,7 @@
   .nav-control {
     text-align: right;
     padding: 10px;
-    
+
     a {
       color: #20a8d8;
       font-size: 12px;
@@ -108,12 +108,12 @@
 
 .sidebar-product {
   margin-top: 20px;
-  
+
   .jan-code {
     color: lightgray;
     font-size: 11px;
   }
-  
+
   .name {
     margin-top: 5px;
   }
@@ -121,6 +121,30 @@
 
 .nav-dropdown-items {
   padding-left: 15px !important;
+}
+
+/*
+ * page
+ */
+.page {
+  color: #536c79;
+  .main-title {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  &.product {
+    .card-deck {
+      .card {
+        max-width: 15rem;
+
+        .info {
+          text-align: right;
+          font-size: 13px;
+        }
+      }
+    }
+  }
 }
 
 

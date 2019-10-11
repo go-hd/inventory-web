@@ -5,7 +5,9 @@
       <div class="sidebar">
         <nav class="sidebar-nav">
           <div slot="header"></div>
-          <SidebarProduct :brands="brands" :products="products" v-if="name === 'index'" />
+          <SidebarProduct :brands="brands"
+                          :products="products"
+                          v-if="name === 'index' || name === 'product-id-lots'" />
           <SidebarStock v-if="$route.path === '/stock'" />
         </nav>
       </div>
@@ -54,13 +56,5 @@ export default {
     ...mapGetters('products', {products: 'productsByBrand'}),
     ...mapGetters('brands', ['brands']),
   },
-  created() {
-    this.setListener()
-  },
-  methods: {
-    setListener() {
-      this.$nuxt.$on('updateSidebar', this.updateSidebar)
-    }
-  }
 }
 </script>

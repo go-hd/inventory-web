@@ -7,13 +7,13 @@
       <SidebarNavDropdown :name="item.name" icon="icon-tag" v-bind:key="item.id">
         <template v-for="(product, index) in products[item.id]">
           <li class="nav-item" v-bind:key="index">
-            <a class="nav-link">
+            <nuxt-link class="nav-link" v-bind:to="{name:'product-id-lots',params: {id: product.id}}">
               <span class="jan-code">JAN : {{ product.jan_code}}</span>
               <div class="name">
                 <i class="nav-icon icon-puzzle"></i>
-                <span>{{ product.jan_code }}</span>
+                <span>{{ product.current_lot ? product.current_lot.name : 'lotがありません'}}</span>
               </div>
-            </a>
+            </nuxt-link>
           </li>
           <li class="nav-item nav-control" v-bind:key="'button-' + index"
               v-if="products[item.id].length === index + 1">
@@ -105,7 +105,7 @@
           default:
             break;
         }
-      }
+      },
     }
   }
 </script>

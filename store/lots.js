@@ -31,8 +31,9 @@ export const mutations = {
     }
   },
   clear(state) {
-    state.lots = [];
     state.errors = [];
+    state.alertMessage = null;
+    state.alertStatus = null;
   },
   showAlert(state, { alertMessage, alertStatus }) {
     state.alertMessage = alertMessage;
@@ -41,13 +42,24 @@ export const mutations = {
   showErrors(state, { errors }) {
     state.errors = errors;
   },
+  clearErrors(state) {
+    state.errors = [];
+  },
+  clearLots(state) {
+    state.lots = [];
+  }
 };
 
 export const actions = {
   async fetchLots({ commit }, params) {
-    const lots = await this.$axios.$get('http://localhost:8000/lots?company_id=' + params.company_id);
+    let lots = [];
+    if (params.company_id) {
+      lots = await this.$axios.$get('http://localhost:8000/lots?company_id=' + params.company_id);
+    } else if (params.product_id) {
+      lots = await this.$axios.$get('http://localhost:8000/lots?product_id=' + params.product_id);
+    }
 
-    commit('clear');
+    commit('clearLots');
     Object.entries(lots || [])
       .reverse()
       .forEach(([id, content]) =>
@@ -103,5 +115,11 @@ export const actions = {
     } else {
       commit('showAlert', { alertMessage: 'ロットを削除できませんでした。', alertStatus: 'danger' });
     }
+  },
+  resetErrors({ commit }) {
+    commit('clearErrors');
+  },
+  reset({ commit }) {
+    commit('clear');
   },
 };
