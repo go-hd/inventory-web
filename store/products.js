@@ -38,7 +38,6 @@ export const mutations = {
     }
   },
   clear(state) {
-    // state.products = [];
     state.errors = [];
     state.alertMessage = null;
     state.alertStatus = null;
@@ -78,7 +77,7 @@ export const actions = {
       };
     });
     if (result.status === 'OK') {
-      commit('add', { product });
+      commit('add', { product: result.product });
       commit('showAlert', { alertMessage: '商品を作成しました。', alertStatus: 'success' });
     } else if (result['errors']) {
       commit('showAlert', { alertMessage: '入力内容をご確認ください。', alertStatus: 'danger' });
@@ -96,7 +95,7 @@ export const actions = {
       };
     });
     if (result.status === 'OK') {
-      commit('update', { product: product });
+      commit('update', { product: result.product });
       commit('showAlert', { alertMessage: '商品を更新しました。', alertStatus: 'success' });
     } else if (result['errors']) {
       commit('showAlert', { alertMessage: '入力内容をご確認ください。', alertStatus: 'danger' });

@@ -33,6 +33,8 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
   transition: all .3s ease;
   font-family: Helvetica, Arial, sans-serif;
+  max-height: 700px;
+  overflow-y: auto;
 }
 
 .modal-header h3 {
@@ -134,9 +136,14 @@
   }
 
   &.product {
-    .card-deck {
+    .edit-icon {
+      color: #20a8d8;
+      cursor: pointer;
+    }
+    .card-columns {
       .card {
         max-width: 15rem;
+        cursor: pointer;
 
         .info {
           text-align: right;

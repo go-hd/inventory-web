@@ -6,7 +6,10 @@
           <b-card header-tag="header" footer-tag="footer">
             <!-- ヘッダー -->
             <div slot="header">
-              <span class="sub-title">brand: {{ product.brand.name }} / jan_code: {{ product.jan_code }}</span><br>
+              <span class="sub-title">
+                brand: {{ brand.name }} <i class="icon-pencil edit-icon" @click="showModal('brand', brand.id)"></i>
+                / jan_code: {{ product.jan_code }} <i class="icon-pencil edit-icon" @click="showModal('product', product.id)"></i>
+              </span><br />
               <span class="main-title">ロット一覧</span>
               <b-button variant="primary" class="float-right w-25" @click="showModal('lot')"><i class="fa fa-plus"></i></b-button>
             </div>
@@ -14,7 +17,7 @@
             <div>
               <div class="card-columns">
                 <template v-for="(lot, index) in lots">
-                  <div class="card text-white bg-secondary mb-3" v-bind:key="index">
+                  <div class="card text-white bg-secondary mb-3" v-bind:key="index" @click="showModal('lot', lot.id)">
                     <div class="card-body">
                       <h4 class="card-title">{{ lot.name }}</h4>
                       <div class="info">
@@ -29,7 +32,9 @@
             </div>
           </b-card>
         </b-col>
-        <LotModal v-if="showModalLot" @close="closeModal('lot')" />
+        <BrandModal v-if="showModalBrand" @close="closeModal('brand')" v-bind:id="showModalId" />
+        <ProductModal v-if="showModalProduct" @close="closeModal('product')" v-bind:id="showModalId" />
+        <LotModal v-if="showModalLot" @close="closeModal('lot')" v-bind:id="showModalId" />
       </b-row>
     </div>
   </div>
@@ -38,25 +43,29 @@
 <script>
   import { mapGetters, mapActions } from 'Vuex'
   import cloneDeep from 'lodash.clonedeep'
+  import BrandModal from '~/components/Modal/BrandModal'
+  import ProductModal from '~/components/Modal/ProductModal'
   import LotModal from '~/components/Modal/LotModal'
 
   export default {
     name: 'Lots',
     components: {
+      BrandModal,
+      ProductModal,
       LotModal,
     },
     data () {
       return {
+        showModalBrand: false,
+        showModalProduct: false,
         showModalLot: false,
+        showModalId: null,
       }
     },
     /**
      * データ取得
      */
     async asyncData({ store, params }) {
-      // if (store.getters['products/products'].find(data => data.id === route.params.id)) {
-      //   return
-      // }
       await store.dispatch('brands/fetchBrands', {company_id: store.state.auth.user.company.id});
       await store.dispatch('products/fetchProducts', {company_id: store.state.auth.user.company.id});
       await store.dispatch('lots/fetchLots', {product_id: params.id});
@@ -70,14 +79,32 @@
       product() {
         return cloneDeep(this.products.find(data => data.id == this.$route.params.id));
       },
+      /**
+       * IDにひもづくブランドを取得
+       *
+       * @returns {[]}
+       */
+      brand() {
+        return cloneDeep(this.brands.find(data => data.id == this.product.brand_id));
+      },
       ...mapGetters('products', ['products']),
       ...mapGetters('lots', ['lots', 'alertMessage', 'alertStatus']),
+      ...mapGetters('brands', ['brands']),
     },
     methods: {
-      showModal(type, brand_id = null) {
+      showModal(type, id = null) {
         switch (type) {
+          case 'brand':
+            this.showModalBrand = true;
+            this.showModalId = id;
+            break;
+          case 'product':
+            this.showModalProduct = true;
+            this.showModalId = id;
+            break;
           case 'lot':
             this.showModalLot = true;
+            this.showModalId = id;
             break;
           default:
             break;
@@ -85,8 +112,17 @@
       },
       closeModal(type) {
         switch (type) {
+          case 'brand':
+            this.showModalBrand = false;
+            this.showModalId = null;
+            break;
+          case 'product':
+            this.showModalProduct = false;
+            this.showModalId = null;
+            break;
           case 'lot':
             this.showModalLot = false;
+            this.showModalId = null;
             break;
           default:
             break;

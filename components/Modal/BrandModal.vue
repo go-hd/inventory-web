@@ -50,10 +50,10 @@
                 </b-col>
               </b-row>
               <div class="form-actions float-right">
-                <b-button type="submit" variant="primary" @click="onClickCreat()" v-if="brand_id === 0">
+                <b-button type="submit" variant="primary" @click="onClickCreat()" v-if="id === null">
                   登録する
                 </b-button>
-                <b-button type="submit" variant="primary" @click="onClickUpdate()" v-if="brand_id !== 0">
+                <b-button type="submit" variant="primary" @click="onClickUpdate()" v-if="id !== null">
                   更新する
                 </b-button>
               </div>
@@ -84,18 +84,18 @@
       if (store.getters['brands/brands'].find(data => data.id === route.params.id)) {
         return
       }
-      await store.dispatch('brands/fetchBrands');
+      await store.dispatch('brands/fetchBrands', {company_id: store.state.auth.user.company.id});
     },
     props: {
-      brand_id: {
+      id: {
         type: Number,
-        default: 0
+        default: null
       },
     },
     data () {
       return {
         formData: {
-          id: this.brand_id,
+          id: this.id,
           company_id: this.$store.$auth.user.company.id,
           name: '',
           code: '',
@@ -105,9 +105,16 @@
     },
     computed: {
       brand() {
-        return cloneDeep(this.brands.find(data => data.id == this.$route.params.id));
+        return cloneDeep(this.brands.find(data => data.id == this.id));
       },
       ...mapGetters('brands', ['brands', 'errors', 'alertMessage', 'alertStatus'])
+    },
+    mounted() {
+      if (this.brand !== undefined) {
+        this.formData.name = this.brand.name;
+        this.formData.code = this.brand.code;
+        this.formData.note = this.brand.note;
+      }
     },
     methods: {
       /**
@@ -121,10 +128,11 @@
         const response = await this.createBrand(cloneDeep(data));
         // OK
         if (response.status) {
-          this.resetErrors();
           this.formData.name = '';
           this.formData.code = '';
           this.formData.note = '';
+          this.reset();
+          this.$emit('close');
         }
       },
       /**
@@ -133,12 +141,13 @@
        * @returns {Promise<void>}
        */
       async onClickUpdate() {
-        const data = { brand: this.brand };
+        const data = { brand: this.formData };
         // 更新処理
         const response = await this.updateBrand(cloneDeep(data));
-        // OKであればブランド一覧へ遷移する
+        // OK
         if (response.status) {
-          this.resetErrors();
+          this.reset();
+          this.$emit('close');
         }
       },
       /**

@@ -26,10 +26,10 @@
                 </b-col>
               </b-row>
               <div class="form-actions float-right">
-                <b-button type="submit" variant="primary" @click="onClickCreat()" v-if="product_id === 0">
+                <b-button type="submit" variant="primary" @click="onClickCreat()" v-if="id === null">
                   登録する
                 </b-button>
-                <b-button type="submit" variant="primary" @click="onClickUpdate()" v-if="product_id !== 0">
+                <b-button type="submit" variant="primary" @click="onClickUpdate()" v-if="id !== null">
                   更新する
                 </b-button>
               </div>
@@ -57,25 +57,25 @@
      * データ取得
      */
     async asyncData({ store, route }) {
-      if (store.getters['products/products'].find(data => data.id === this.product_id)) {
+      if (store.getters['products/products'].find(data => data.id === this.id)) {
         return
       }
-      await store.dispatch('products/fetchProducts');
+      await store.dispatch('products/fetchProducts', {company_id: store.state.auth.user.company.id});
     },
     props: {
       brand_id: {
         type: Number,
-        default: 0
+        default: null
       },
-      product_id: {
+      id: {
         type: Number,
-        default: 0
+        default: null
       },
     },
     data () {
       return {
         formData: {
-          id: this.product_id,
+          id: this.id,
           brand_id: this.brand_id,
           jan_code: '',
         },
@@ -83,9 +83,15 @@
     },
     computed: {
       product() {
-        return cloneDeep(this.brands.find(data => data.id == this.product_id));
+        return cloneDeep(this.products.find(data => data.id == this.id));
       },
       ...mapGetters('products', ['products', 'errors', 'alertMessage', 'alertStatus'])
+    },
+    mounted() {
+      if (this.product !== undefined) {
+        this.formData.brand_id = this.product.brand_id;
+        this.formData.jan_code = this.product.jan_code;
+      }
     },
     methods: {
       /**
@@ -99,8 +105,9 @@
         const response = await this.createProduct(cloneDeep(data));
         // OK
         if (response.status) {
-          this.resetErrors();
           this.formData.jan_code = '';
+          this.reset();
+          this.$emit('close');
         }
       },
       /**
@@ -114,7 +121,8 @@
         const response = await this.updateProduct(cloneDeep(data));
         // OK
         if (response.status) {
-          this.resetErrors();
+          this.reset();
+          this.$emit('close');
         }
       },
       /**

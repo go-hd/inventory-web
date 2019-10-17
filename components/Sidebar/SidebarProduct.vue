@@ -76,7 +76,7 @@
         default: () => []
       },
       products: {
-        type: Array,
+        type: Array | Object,
         default: () => []
       },
     },

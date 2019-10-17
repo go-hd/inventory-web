@@ -36,10 +36,9 @@
                     <label for="expiration_date">賞味期限</label>
                     <datepicker id="expiration_date"
                                 placeholder="賞味期限"
-                                value="formData.expiration_date"
+                                :value="formData.expiration_date"
                                 :format="DatePickerFormat"
                                 :clear-button="true"
-                                :input-class="form-control"
                                 :bootstrap-styling="true"
                                 :typeable="true"
                                 v-on:selected="setExpirationDate"
@@ -55,10 +54,9 @@
                     <label for="ordered_at">発注日</label>
                     <datepicker id="ordered_at"
                                 placeholder="発注日"
-                                value="formData.ordered_at"
+                                :value="formData.ordered_at"
                                 :format="DatePickerFormat"
                                 :clear-button="true"
-                                :input-class="form-control"
                                 :bootstrap-styling="true"
                                 :typeable="true"
                                 v-on:selected="setOrderedAtDate"
@@ -88,10 +86,10 @@
                 </b-col>
               </b-row>
               <div class="form-actions float-right">
-                <b-button type="submit" variant="primary" @click="onClickCreat()" v-if="lot_id === 0">
+                <b-button type="submit" variant="primary" @click="onClickCreat()" v-if="id === null">
                   登録する
                 </b-button>
-                <b-button type="submit" variant="primary" @click="onClickUpdate()" v-if="lot_id !== 0">
+                <b-button type="submit" variant="primary" @click="onClickUpdate()" v-if="id !== null">
                   更新する
                 </b-button>
               </div>
@@ -125,21 +123,22 @@
      * データ取得
      */
     async asyncData({ store, route }) {
-      if (store.getters['lots/lots'].find(data => data.id === this.lot_id)) {
+      if (store.getters['lots/lots'].find(data => data.id === this.id)) {
         return
       }
-      await store.dispatch('products/fetchProducts');
+      await store.dispatch('lots/fetchLots');
+
     },
     props: {
-      lot_id: {
+      id: {
         type: Number,
-        default: 0
+        default: null
       },
     },
     data () {
       return {
         formData: {
-          id: this.lot_id,
+          id: this.id,
           product_id: this.$route.params.id,
           lot_number: '',
           name: '',
@@ -152,7 +151,7 @@
     },
     computed: {
       lot() {
-        return cloneDeep(this.brands.find(data => data.id == this.lot_id));
+        return cloneDeep(this.lots.find(data => data.id == this.id));
       },
       ...mapGetters({
         lots: 'lots/lots',
@@ -160,6 +159,15 @@
         lotAlertMessage: 'lots/alertMessage',
         lotAlertStatus: 'lots/alertStatus',
       }),
+    },
+    mounted() {
+      if (this.lot !== undefined) {
+        this.formData.lot_number = this.lot.lot_number;
+        this.formData.name = this.lot.name;
+        this.formData.expiration_date = this.lot.expiration_date;
+        this.formData.ordered_at = this.lot.ordered_at;
+        this.formData.is_ten_days_notation = this.lot.is_ten_days_notation;
+      }
     },
     methods: {
       /**

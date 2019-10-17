@@ -58,7 +58,6 @@
         const register = { data: this.formData };
         // 更新処理
         const response = await this.registerUser(cloneDeep(register));
-        debugger;
         if (response.status === 'OK') {
           // ログインさせる
           try {

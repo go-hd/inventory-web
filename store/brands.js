@@ -31,7 +31,6 @@ export const mutations = {
     }
   },
   clear(state) {
-    state.brands = [];
     state.errors = [];
     state.alertMessage = null;
     state.alertStatus = null;
