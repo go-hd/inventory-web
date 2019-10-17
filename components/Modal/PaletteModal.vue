@@ -4,7 +4,7 @@
       <div class="modal-wrapper">
         <div class="modal-container">
           <div class="modal-header">
-            <h3>ブランド情報更新</h3>
+            <h3>パレット情報更新</h3>
           </div>
           <div class="modal-body">
             <slot name="body">
@@ -15,34 +15,18 @@
               <b-row>
                 <b-col sm="12">
                   <b-form-group>
-                    <label for="name">ブランド名</label>
-                    <b-form-input type="text" id="name" placeholder="ブランド名" v-model="formData.name"
-                                  v-bind:class="{ 'is-invalid': errors.name }" class="form-control"></b-form-input>
-                    <div v-for="(error, index) in errors.name" v-bind:key="index" v-bind:value="error"
-                         class="invalid-feedback">
+                    <label for="type">種別</label>
+                    <b-form-input type="text" id="type" placeholder="種別" v-model="formData.type"
+                                  v-bind:class="{ 'is-invalid': errors.type }" class="form-control"></b-form-input>
+                    <div v-for="(error, index) in errors.type" v-bind:key="index" v-bind:value="error" class="invalid-feedback">
                       {{ error }}
                     </div>
                   </b-form-group>
                   <b-form-group>
-                    <label for="code">コード</label>
-                    <b-form-input type="text" id="code" placeholder="コード" v-model="formData.code"
-                                  v-bind:class="{ 'is-invalid': errors.code }" class="form-control"></b-form-input>
-                    <div v-for="(error, index) in errors.code" v-bind:key="index" v-bind:value="error"
-                         class="invalid-feedback">
-                      {{ error }}
-                    </div>
-                  </b-form-group>
-                  <b-form-group>
-                    <label for="note">備考</label>
-                    <b-form-textarea
-                            id="note"
-                            placeholder="備考"
-                            v-model="formData.note"
-                            rows="3"
-                            max-rows="6"
-                            v-bind:class="{ 'is-invalid': errors.note }"
-                    ></b-form-textarea>
-                    <div v-for="(error, index) in errors.note" v-bind:key="index" v-bind:value="error"
+                    <label for="location_id">拠点</label>
+                    <b-form-select id="location_id" :options="getLocationOptions" v-model="formData.location_id"
+                                   v-bind:class="{ 'is-invalid': errors.location_id }"></b-form-select>
+                    <div v-for="(error, index) in errors.location_id" v-bind:key="index" v-bind:value="error"
                          class="invalid-feedback">
                       {{ error }}
                     </div>
@@ -76,7 +60,9 @@
   import cloneDeep from 'lodash.clonedeep'
 
   export default {
-    name: 'brand-modal',
+    name: 'palette-modal',
+    components: {
+    },
     props: {
       id: {
         type: Number,
@@ -87,24 +73,35 @@
       return {
         formData: {
           id: this.id,
-          company_id: this.$store.$auth.user.company.id,
-          name: '',
-          code: '',
-          note: '',
+          type: '',
+          location_id: '',
         },
       }
     },
     computed: {
-      brand() {
-        return cloneDeep(this.brands.find(data => data.id == this.id));
+      /**
+       * セレクトボックス用の拠点一覧を取得
+       *
+       * @returns []
+       */
+      getLocationOptions() {
+        let options = [];
+        options.push([]);
+        this.locations.map(location => {
+          options.push({value: location.id, text: location.name});
+        });
+        return options;
       },
-      ...mapGetters('brands', ['brands', 'errors', 'alertMessage', 'alertStatus'])
+      ...mapGetters('locations', ['locations']),
+      lot() {
+        return cloneDeep(this.palettes.find(data => data.id == this.id));
+      },
+      ...mapGetters('palettes', ['palettes', 'errors', 'alertMessage', 'alertStatus']),
     },
     mounted() {
-      if (this.brand !== undefined) {
-        this.formData.name = this.brand.name;
-        this.formData.code = this.brand.code;
-        this.formData.note = this.brand.note;
+      if (this.palette !== undefined) {
+        this.formData.type = this.palette.type;
+        this.formData.location_id = this.palette.location_id;
       }
     },
     methods: {
@@ -114,14 +111,13 @@
        * @returns {Promise<void>}
        */
       async onClickCreat() {
-        const data = { brand: this.formData };
+        const data = { palette: this.formData };
         // 登録処理
-        const response = await this.createBrand(cloneDeep(data));
+        const response = await this.createPalette(cloneDeep(data));
         // OK
         if (response.status) {
-          this.formData.name = '';
-          this.formData.code = '';
-          this.formData.note = '';
+          this.formData.type = '';
+          this.formData.location_id = '';
           this.reset();
           this.$emit('close');
         }
@@ -132,9 +128,9 @@
        * @returns {Promise<void>}
        */
       async onClickUpdate() {
-        const data = { brand: this.formData };
+        const data = { palette: this.formData };
         // 更新処理
-        const response = await this.updateBrand(cloneDeep(data));
+        const response = await this.updatePalette(cloneDeep(data));
         // OK
         if (response.status) {
           this.reset();
@@ -148,7 +144,7 @@
         this.reset();
         this.$emit('close');
       },
-      ...mapActions('brands', ['createBrand', 'updateBrand', 'reset', 'resetErrors']),
+      ...mapActions('palettes', ['createPalette', 'updatePalette', 'reset']),
     },
   }
 </script>

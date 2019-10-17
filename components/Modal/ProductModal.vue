@@ -52,16 +52,7 @@
   import cloneDeep from 'lodash.clonedeep'
 
   export default {
-    name: 'brand-modal',
-    /**
-     * データ取得
-     */
-    async asyncData({ store, route }) {
-      if (store.getters['products/products'].find(data => data.id === this.id)) {
-        return
-      }
-      await store.dispatch('products/fetchProducts', {company_id: store.state.auth.user.company.id});
-    },
+    name: 'product-modal',
     props: {
       brand_id: {
         type: Number,

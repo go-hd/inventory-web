@@ -47,8 +47,8 @@ export const mutations = {
 };
 
 export const actions = {
-  async fetchLocations({ commit }) {
-    const locations = await this.$axios.$get('http://localhost:8000/locations');
+  async fetchLocations({ commit }, params) {
+    const locations = await this.$axios.$get('http://localhost:8000/locations?company_id=' + params.company_id);
     commit('clear');
     Object.entries(locations || [])
       .reverse()
@@ -85,7 +85,7 @@ export const actions = {
       };
     });
     if (result.status === 'OK') {
-      commit('add', { location: location });
+      commit('add', { location: result.location });
       commit('showAlert', { alertMessage: '拠点を作成しました。', alertStatus: 'success' });
     } else if (result['errors']) {
       commit('showAlert', { alertMessage: '入力内容をご確認ください。', alertStatus: 'danger' });

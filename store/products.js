@@ -42,6 +42,9 @@ export const mutations = {
     state.alertMessage = null;
     state.alertStatus = null;
   },
+  clearProducts(state) {
+    state.products = [];
+  },
   showAlert(state, { alertMessage, alertStatus }) {
     state.alertMessage = alertMessage;
     state.alertStatus = alertStatus;
@@ -57,7 +60,7 @@ export const mutations = {
 export const actions = {
   async fetchProducts({ commit }, params) {
     const products = await this.$axios.$get('http://localhost:8000/products?company_id=' + params.company_id);
-    commit('clear');
+    commit('clearProducts');
     Object.entries(products || [])
       .reverse()
       .forEach(([id, content]) =>

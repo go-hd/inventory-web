@@ -35,6 +35,9 @@ export const mutations = {
     state.alertMessage = null;
     state.alertStatus = null;
   },
+  clearBrands(state) {
+    state.brands = [];
+  },
   showAlert(state, { alertMessage, alertStatus }) {
     state.alertMessage = alertMessage;
     state.alertStatus = alertStatus;
@@ -50,7 +53,7 @@ export const mutations = {
 export const actions = {
   async fetchBrands({ commit }, params) {
     const brands = await this.$axios.$get('http://localhost:8000/brands?company_id=' + params.company_id);
-    commit('clear');
+    commit('clearBrands');
     Object.entries(brands || [])
       .reverse()
       .forEach(([id, content]) =>
@@ -70,7 +73,7 @@ export const actions = {
       };
     });
     if (result.status === 'OK') {
-      commit('add', { brand: brand });
+      commit('add', { brand: result.brand });
       commit('showAlert', { alertMessage: 'ブランドを作成しました。', alertStatus: 'success' });
     } else if (result['errors']) {
       commit('showAlert', { alertMessage: '入力内容をご確認ください。', alertStatus: 'danger' });

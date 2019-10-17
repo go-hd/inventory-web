@@ -8,8 +8,16 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <b-navbar-nav class="d-md-down-none">
-      <b-nav-item class="px-3 item" v-bind:class="{ 'active': $route.path === '/' }">商品管理</b-nav-item>
-      <b-nav-item class="px-3 item" v-bind:class="{ 'active': $route.path === '/stock' }">在庫管理</b-nav-item>
+      <b-nav-item class="px-3 item" v-bind:class="{ 'active': $route.path === '/' }">
+        <nuxt-link class="nav-link" v-bind:to="{name:'index'}">
+          商品管理
+        </nuxt-link>
+      </b-nav-item>
+      <b-nav-item class="px-3 item" v-bind:class="{ 'active': $route.path === '/stock' }">
+        <nuxt-link class="nav-link" v-bind:to="{name:'stock'}">
+          在庫管理
+        </nuxt-link>
+      </b-nav-item>
     </b-navbar-nav>
     <b-navbar-nav class="ml-auto">
       <HeaderDropdown/>

@@ -79,7 +79,7 @@ export const actions = {
       };
     });
     if (result.status === 'OK') {
-      commit('add', { lot: lot });
+      commit('add', { lot: result.lot });
       commit('showAlert', { alertMessage: 'ロットを作成しました。', alertStatus: 'success' });
     } else if (result['errors']) {
       commit('showAlert', { alertMessage: '入力内容をご確認ください。', alertStatus: 'danger' });

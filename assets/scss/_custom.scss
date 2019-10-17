@@ -121,6 +121,15 @@
   }
 }
 
+.sidebar-palette,
+.sidebar-lot {
+  margin-top: 20px;
+
+  .name {
+    margin-top: 5px;
+  }
+}
+
 .nav-dropdown-items {
   padding-left: 15px !important;
 }

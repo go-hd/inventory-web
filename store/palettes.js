@@ -31,8 +31,12 @@ export const mutations = {
     }
   },
   clear(state) {
-    state.palettes = [];
     state.errors = [];
+    state.alertMessage = null;
+    state.alertStatus = null;
+  },
+  clearPalettes(state) {
+    state.palettes = [];
   },
   showAlert(state, { alertMessage, alertStatus }) {
     state.alertMessage = alertMessage;
@@ -44,9 +48,9 @@ export const mutations = {
 };
 
 export const actions = {
-  async fetchPalettes({ commit }) {
-    const palettes = await this.$axios.$get('http://localhost:8000/palettes');
-    commit('clear');
+  async fetchPalettes({ commit }, params) {
+    const palettes = await this.$axios.$get('http://localhost:8000/palettes?company_id=' + params.company_id);
+    commit('clearPalettes');
     Object.entries(palettes || [])
       .reverse()
       .forEach(([id, content]) =>
@@ -66,7 +70,7 @@ export const actions = {
       };
     });
     if (result.status === 'OK') {
-      commit('add', { palette: palette });
+      commit('add', { palette: result.palette });
       commit('showAlert', { alertMessage: 'パレットを作成しました。', alertStatus: 'success' });
     } else if (result['errors']) {
       commit('showAlert', { alertMessage: '入力内容をご確認ください。', alertStatus: 'danger' });
@@ -102,5 +106,8 @@ export const actions = {
     } else {
       commit('showAlert', { alertMessage: 'パレットを削除できませんでした。', alertStatus: 'danger' });
     }
+  },
+  reset({ commit }) {
+    commit('clear');
   },
 };

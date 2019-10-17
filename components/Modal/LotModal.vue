@@ -119,16 +119,6 @@
       Datepicker,
       moment
     },
-    /**
-     * データ取得
-     */
-    async asyncData({ store, route }) {
-      if (store.getters['lots/lots'].find(data => data.id === this.id)) {
-        return
-      }
-      await store.dispatch('lots/fetchLots');
-
-    },
     props: {
       id: {
         type: Number,
