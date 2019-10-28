@@ -98,6 +98,24 @@ export const actions = {
     }
     return result;
   },
+  async updateLocationPalette({ commit }, { locationPalette }) {
+    const result = await this.$axios.$post('http://localhost:8000/location_palettes/move', locationPalette).catch(err => {
+      return {
+        'errors' : err.response.data,
+        'status' : false
+      };
+    });
+    if (result.status === 'OK') {
+      commit('update', { palette: palette });
+      commit('showAlert', { alertMessage: 'パレット個数を更新しました。', alertStatus: 'success' });
+    } else if (result['errors']) {
+      commit('showAlert', { alertMessage: '入力内容をご確認ください。', alertStatus: 'danger' });
+      commit('showErrors', { errors: result['errors'] });
+    } else {
+      commit('showAlert', { alertMessage: 'パレット個数を更新できませんでした。', alertStatus: 'danger' });
+    }
+    return result;
+  },
   async deletePalette({ commit }, { palette }) {
     const result = await this.$axios.$delete(`http://localhost:8000/palettes/${palette.id}`);
     if (result.status === 'OK') {

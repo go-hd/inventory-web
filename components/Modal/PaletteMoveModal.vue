@@ -4,7 +4,7 @@
       <div class="modal-wrapper">
         <div class="modal-container">
           <div class="modal-header">
-            <h3>パレット情報更新</h3>
+            <h3>{{ palette.type }} パレット個数更新</h3>
           </div>
           <div class="modal-body">
             <slot name="body">
@@ -15,29 +15,43 @@
               <b-row>
                 <b-col sm="12">
                   <b-form-group>
-                    <label for="type">種別</label>
-                    <b-form-input type="text" id="type" placeholder="種別" v-model="formData.type"
-                                  v-bind:class="{ 'is-invalid': errors.type }" class="form-control"></b-form-input>
-                    <div v-for="(error, index) in errors.type" v-bind:key="index" v-bind:value="error" class="invalid-feedback">
-                      {{ error }}
-                    </div>
-                  </b-form-group>
-                  <b-form-group>
-                    <label for="location_id">拠点</label>
-                    <b-form-select id="location_id" :options="getLocationOptions" v-model="formData.location_id"
-                                   v-bind:class="{ 'is-invalid': errors.location_id }"></b-form-select>
-                    <div v-for="(error, index) in errors.location_id" v-bind:key="index" v-bind:value="error"
+                    <label for="from_location_id">移動元拠点</label>
+                    <b-form-select id="from_location_id" :options="getLocationOptions" v-model="formData.from_location_id"
+                                   v-bind:class="{ 'is-invalid': errors.from_location_id }" v-bind:disabled="formData.from_location_id!==null"></b-form-select>
+                    <div v-for="(error, index) in errors.from_location_id" v-bind:key="index" v-bind:value="error"
                          class="invalid-feedback">
                       {{ error }}
                     </div>
                   </b-form-group>
                 </b-col>
               </b-row>
+              <b-row>
+                <b-col sm="12">
+                  <b-form-group>
+                    <label for="to_location_id">移動先拠点</label>
+                    <b-form-select id="to_location_id" :options="getLocationOptions" v-model="formData.to_location_id"
+                                   v-bind:class="{ 'is-invalid': errors.to_location_id }"></b-form-select>
+                    <div v-for="(error, index) in errors.to_location_id" v-bind:key="index" v-bind:value="error"
+                         class="invalid-feedback">
+                      {{ error }}
+                    </div>
+                  </b-form-group>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col sm="12">
+                  <b-form-group>
+                    <label for="quantity">個数</label>
+                    <b-form-input type="number" id="quantity" placeholder="個数" v-model="formData.quantity"
+                                  v-bind:class="{ 'is-invalid': errors.quantity }" class="form-control"></b-form-input>
+                    <div v-for="(error, index) in errors.quantity" v-bind:key="index" v-bind:value="error" class="invalid-feedback">
+                      {{ error }}
+                    </div>
+                  </b-form-group>
+                </b-col>
+              </b-row>
               <div class="form-actions float-right">
-                <b-button type="submit" variant="primary" @click="onClickCreat()" v-if="id === null">
-                  登録する
-                </b-button>
-                <b-button type="submit" variant="primary" @click="onClickUpdate()" v-if="id !== null">
+                <b-button type="submit" variant="primary" @click="onClickUpdate()">
                   更新する
                 </b-button>
               </div>
@@ -72,9 +86,10 @@
     data () {
       return {
         formData: {
-          id: this.id,
-          type: '',
-          location_id: '',
+          palette_id: '',
+          quantity: 0,
+          from_location_id: '',
+          to_location_id: '',
         },
       }
     },
@@ -94,43 +109,24 @@
       },
       ...mapGetters('locations', ['locations']),
       palette() {
-        return cloneDeep(this.palettes.find(data => data.id == this.id));
+        return cloneDeep(this.palettes.find(data => data.id == this.$route.params.id));
       },
       ...mapGetters('palettes', ['palettes', 'errors', 'alertMessage', 'alertStatus']),
     },
     mounted() {
-      if (this.palette !== undefined) {
-        this.formData.type = this.palette.type;
-        this.formData.location_id = this.palette.location_id;
-      }
+      this.formData.palette_id = this.$route.params.id;
+      this.formData.from_location_id = this.id;
     },
     methods: {
-      /**
-       * 登録ボタン押下時
-       *
-       * @returns {Promise<void>}
-       */
-      async onClickCreat() {
-        const data = { palette: this.formData };
-        // 登録処理
-        const response = await this.createPalette(cloneDeep(data));
-        // OK
-        if (response.status) {
-          this.formData.type = '';
-          this.formData.location_id = '';
-          this.reset();
-          this.$emit('close');
-        }
-      },
       /**
        * 更新ボタン押下時
        *
        * @returns {Promise<void>}
        */
       async onClickUpdate() {
-        const data = { palette: this.formData };
+        const data = { locationPalette: this.formData };
         // 更新処理
-        const response = await this.updatePalette(cloneDeep(data));
+        const response = await this.updateLocationPalette(cloneDeep(data));
         // OK
         if (response.status) {
           this.reset();
@@ -144,7 +140,7 @@
         this.reset();
         this.$emit('close');
       },
-      ...mapActions('palettes', ['createPalette', 'updatePalette', 'reset']),
+      ...mapActions('palettes', ['updateLocationPalette', 'reset']),
     },
   }
 </script>
