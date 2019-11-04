@@ -88,7 +88,7 @@ export const actions = {
       };
     });
     if (result.status === 'OK') {
-      commit('update', { palette: palette });
+      commit('update', { palette: result['palette'] });
       commit('showAlert', { alertMessage: 'パレットを更新しました。', alertStatus: 'success' });
     } else if (result['errors']) {
       commit('showAlert', { alertMessage: '入力内容をご確認ください。', alertStatus: 'danger' });
@@ -106,7 +106,7 @@ export const actions = {
       };
     });
     if (result.status === 'OK') {
-      commit('update', { palette: palette });
+      commit('update', { palette: result['palette'] });
       commit('showAlert', { alertMessage: 'パレット個数を更新しました。', alertStatus: 'success' });
     } else if (result['errors']) {
       commit('showAlert', { alertMessage: '入力内容をご確認ください。', alertStatus: 'danger' });

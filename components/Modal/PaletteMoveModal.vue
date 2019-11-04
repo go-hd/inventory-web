@@ -15,23 +15,10 @@
               <b-row>
                 <b-col sm="12">
                   <b-form-group>
-                    <label for="from_location_id">移動元拠点</label>
-                    <b-form-select id="from_location_id" :options="getLocationOptions" v-model="formData.from_location_id"
-                                   v-bind:class="{ 'is-invalid': errors.from_location_id }" v-bind:disabled="formData.from_location_id!==null"></b-form-select>
-                    <div v-for="(error, index) in errors.from_location_id" v-bind:key="index" v-bind:value="error"
-                         class="invalid-feedback">
-                      {{ error }}
-                    </div>
-                  </b-form-group>
-                </b-col>
-              </b-row>
-              <b-row>
-                <b-col sm="12">
-                  <b-form-group>
-                    <label for="to_location_id">移動先拠点</label>
-                    <b-form-select id="to_location_id" :options="getLocationOptions" v-model="formData.to_location_id"
-                                   v-bind:class="{ 'is-invalid': errors.to_location_id }"></b-form-select>
-                    <div v-for="(error, index) in errors.to_location_id" v-bind:key="index" v-bind:value="error"
+                    <label for="location_id">保管拠点</label>
+                    <b-form-select id="location_id" :options="getLocationOptions" v-model="formData.location_id"
+                                   v-bind:class="{ 'is-invalid': errors.location_id }"></b-form-select>
+                    <div v-for="(error, index) in errors.location_id" v-bind:key="index" v-bind:value="error"
                          class="invalid-feedback">
                       {{ error }}
                     </div>
@@ -88,8 +75,7 @@
         formData: {
           palette_id: '',
           quantity: 0,
-          from_location_id: '',
-          to_location_id: '',
+          location_id: '',
         },
       }
     },
@@ -114,8 +100,12 @@
       ...mapGetters('palettes', ['palettes', 'errors', 'alertMessage', 'alertStatus']),
     },
     mounted() {
+      if (this.id !== null) {
+        const shared_location = this.palette.shared_locations.find( (shared_location) => shared_location.id === this.id);
+        this.formData.location_id = shared_location.id;
+        this.formData.quantity = shared_location.quantity;
+      }
       this.formData.palette_id = this.$route.params.id;
-      this.formData.from_location_id = this.id;
     },
     methods: {
       /**
