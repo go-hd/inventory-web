@@ -5,96 +5,158 @@
         <div class="modal-container">
           <div class="modal-header">
             <h3>ロット情報更新</h3>
+            <nav v-if="id !== null" class="navbar navbar-expand-lg navbar-light bg-light">
+              <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                  <li class="nav-item" v-bind:class="{ 'active': isLot }">
+                    <a class="nav-link" @click="onClickLotEdit">ロット情報</a>
+                  </li>
+                  <li class="nav-item" v-bind:class="{ 'active': isMaterial }">
+                    <a class="nav-link" @click="onClickMaterialEdit">材料設定</a>
+                  </li>
+                </ul>
+              </div>
+            </nav>
           </div>
           <div class="modal-body">
             <slot name="body">
-              <div>
-                <b-alert v-if="lotAlertMessage" show :variant="lotAlertStatus">{{ lotAlertMessage }}
-                </b-alert>
+              <!-- ロット設定 -->
+              <div v-if="isLot">
+                <div>
+                  <b-alert v-if="lotAlertMessage" show :variant="lotAlertStatus">{{ lotAlertMessage }}
+                  </b-alert>
+                </div>
+                <b-row>
+                  <b-col sm="12">
+                    <b-form-group>
+                      <label for="lot_number">ロットナンバー</label>
+                      <b-form-input type="text" id="lot_number" placeholder="ロットナンバー" v-model="formData.lot_number"
+                                    v-bind:class="{ 'is-invalid': lotErrors.lot_number }" class="form-control"></b-form-input>
+                      <div v-for="(error, index) in lotErrors.lot_number" v-bind:key="index" v-bind:value="error"
+                           class="invalid-feedback">
+                        {{ error }}
+                      </div>
+                    </b-form-group>
+                    <b-form-group>
+                      <label for="name">ロット名</label>
+                      <b-form-input type="text" id="name" placeholder="ロット名" v-model="formData.name"
+                                    v-bind:class="{ 'is-invalid': lotErrors.name }" class="form-control"></b-form-input>
+                      <div v-for="(error, index) in lotErrors.name" v-bind:key="index" v-bind:value="error"
+                           class="invalid-feedback">
+                        {{ error }}
+                      </div>
+                    </b-form-group>
+                    <b-form-group>
+                      <label for="expiration_date">賞味期限</label>
+                      <datepicker id="expiration_date"
+                                  placeholder="賞味期限"
+                                  :value="formData.expiration_date"
+                                  :format="DatePickerFormat"
+                                  :clear-button="true"
+                                  :bootstrap-styling="true"
+                                  :typeable="true"
+                                  v-on:selected="setExpirationDate"
+                      >
+                      </datepicker>
+                      <div class="form-control" v-bind:class="{ 'is-invalid': lotErrors.expiration_date }" style="display: none;"></div>
+                      <div v-for="(error, index) in lotErrors.expiration_date" v-bind:key="index" v-bind:value="error"
+                           class="invalid-feedback">
+                        {{ error }}
+                      </div>
+                    </b-form-group>
+                    <b-form-group>
+                      <label for="ordered_at">発注日</label>
+                      <datepicker id="ordered_at"
+                                  placeholder="発注日"
+                                  :value="formData.ordered_at"
+                                  :format="DatePickerFormat"
+                                  :clear-button="true"
+                                  :bootstrap-styling="true"
+                                  :typeable="true"
+                                  v-on:selected="setOrderedAtDate"
+                      >
+                      </datepicker>
+                      <div class="form-control" v-bind:class="{ 'is-invalid': lotErrors.ordered_at }" style="display: none;"></div>
+                      <div v-for="(error, index) in lotErrors.ordered_at" v-bind:key="index" v-bind:value="error"
+                           class="invalid-feedback">
+                        {{ error }}
+                      </div>
+                    </b-form-group>
+                    <b-form-group>
+                      <label for="is_ten_days_notation">発注日時期表記フラグ</label>
+                      <b-form-checkbox
+                              id="is_ten_days_notation"
+                              v-model="formData.is_ten_days_notation"
+                              value="1"
+                              unchecked-value="0"
+                              v-bind:class="{ 'is-invalid': lotErrors.is_ten_days_notation }"
+                      >
+                      </b-form-checkbox>
+                      <div v-for="(error, index) in lotErrors.is_ten_days_notation" v-bind:key="index" v-bind:value="error"
+                           class="invalid-feedback">
+                        {{ error }}
+                      </div>
+                    </b-form-group>
+                  </b-col>
+                </b-row>
+                <div class="form-actions float-right">
+                  <b-button type="submit" variant="primary" @click="onClickCreat()" v-if="id === null">
+                    登録する
+                  </b-button>
+                  <b-button type="submit" variant="primary" @click="onClickUpdate()" v-if="id !== null">
+                    更新する
+                  </b-button>
+                </div>
               </div>
-              <b-row>
-                <b-col sm="12">
-                  <b-form-group>
-                    <label for="lot_number">ロットナンバー</label>
-                    <b-form-input type="text" id="lot_number" placeholder="ロットナンバー" v-model="formData.lot_number"
-                                  v-bind:class="{ 'is-invalid': lotErrors.lot_number }" class="form-control"></b-form-input>
-                    <div v-for="(error, index) in lotErrors.lot_number" v-bind:key="index" v-bind:value="error"
-                         class="invalid-feedback">
-                      {{ error }}
+              <!-- /ロット設定 -->
+              <!-- 材料設定 -->
+              <div v-if="isMaterial">
+                <div>
+                  <b-alert v-if="materialAlertMessage" show :variant="materialAlertStatus">{{ materialAlertMessage }}
+                  </b-alert>
+                </div>
+                <b-row>
+                  <b-col sm="12">
+                    <label for="lot_number" class="label-with-button font-xl mb-3">
+                      材料設定
+                      <b-button variant="primary" class="float-right ml-3" @click="onAddMaterial"><i class="fa fa-plus"></i></b-button>
+                    </label>
+                    <div v-if="materialErrors.message">
+                      <p class="error-text">{{materialErrors.message }}</p>
                     </div>
-                  </b-form-group>
-                  <b-form-group>
-                    <label for="name">ロット名</label>
-                    <b-form-input type="text" id="name" placeholder="ロット名" v-model="formData.name"
-                                  v-bind:class="{ 'is-invalid': lotErrors.name }" class="form-control"></b-form-input>
-                    <div v-for="(error, index) in lotErrors.name" v-bind:key="index" v-bind:value="error"
-                         class="invalid-feedback">
-                      {{ error }}
+                    <div v-else v-for="(errors, index) in materialErrors" :key="index">
+                      <div v-for="(error, i) in errors" :key="i">
+                        <p class="error-text">{{ error }}</p>
+                      </div>
                     </div>
-                  </b-form-group>
-                  <b-form-group>
-                    <label for="expiration_date">賞味期限</label>
-                    <datepicker id="expiration_date"
-                                placeholder="賞味期限"
-                                :value="formData.expiration_date"
-                                :format="DatePickerFormat"
-                                :clear-button="true"
-                                :bootstrap-styling="true"
-                                :typeable="true"
-                                v-on:selected="setExpirationDate"
-                    >
-                    </datepicker>
-                    <div class="form-control" v-bind:class="{ 'is-invalid': lotErrors.expiration_date }" style="display: none;"></div>
-                    <div v-for="(error, index) in lotErrors.expiration_date" v-bind:key="index" v-bind:value="error"
-                         class="invalid-feedback">
-                      {{ error }}
-                    </div>
-                  </b-form-group>
-                  <b-form-group>
-                    <label for="ordered_at">発注日</label>
-                    <datepicker id="ordered_at"
-                                placeholder="発注日"
-                                :value="formData.ordered_at"
-                                :format="DatePickerFormat"
-                                :clear-button="true"
-                                :bootstrap-styling="true"
-                                :typeable="true"
-                                v-on:selected="setOrderedAtDate"
-                    >
-                    </datepicker>
-                    <div class="form-control" v-bind:class="{ 'is-invalid': lotErrors.ordered_at }" style="display: none;"></div>
-                    <div v-for="(error, index) in lotErrors.ordered_at" v-bind:key="index" v-bind:value="error"
-                         class="invalid-feedback">
-                      {{ error }}
-                    </div>
-                  </b-form-group>
-                  <b-form-group>
-                    <label for="is_ten_days_notation">発注日時期表記フラグ</label>
-                    <b-form-checkbox
-                            id="is_ten_days_notation"
-                            v-model="formData.is_ten_days_notation"
-                            value="1"
-                            unchecked-value="0"
-                            v-bind:class="{ 'is-invalid': lotErrors.is_ten_days_notation }"
-                    >
-                    </b-form-checkbox>
-                    <div v-for="(error, index) in lotErrors.is_ten_days_notation" v-bind:key="index" v-bind:value="error"
-                         class="invalid-feedback">
-                      {{ error }}
-                    </div>
-                  </b-form-group>
-                </b-col>
-              </b-row>
-              <div class="form-actions float-right">
-                <b-button type="submit" variant="primary" @click="onClickCreat()" v-if="id === null">
-                  登録する
-                </b-button>
-                <b-button type="submit" variant="primary" @click="onClickUpdate()" v-if="id !== null">
-                  更新する
-                </b-button>
+                    <b-row v-for="(material, index) in formDataMaterials.materials" :key="index">
+                      <b-col sm="8">
+                        <b-form-group>
+                          <label for="child_lot_id">子ロット</label>
+                          <b-form-select id="child_lot_id" :options="getLotOptions"
+                                         v-model="formDataMaterials.materials[index].child_lot_id"></b-form-select>
+                        </b-form-group>
+                      </b-col>
+                      <b-col sm="4">
+                        <b-form-group>
+                          <label for="amount">個数</label>
+                          <b-form-input type="number" id="amount"
+                                        v-model="formDataMaterials.materials[index].amount"></b-form-input>
+                        </b-form-group>
+                      </b-col>
+                    </b-row>
+                  </b-col>
+                </b-row>
+                <div class="form-actions float-right">
+                  <b-button type="submit" variant="primary" @click="onClickUpdateMaterial()" v-if="id !== null">
+                    更新する
+                  </b-button>
+                </div>
               </div>
+              <!-- /材料設定 -->
             </slot>
           </div>
+
 
           <div class="modal-footer">
             <b-button variant="default" @click="onClickClose">
@@ -122,7 +184,10 @@
     props: {
       id: {
         type: Number,
-        default: null
+        default: null,
+      },
+      lots: {
+        default: [],
       },
     },
     data () {
@@ -136,18 +201,46 @@
           ordered_at: '',
           is_ten_days_notation: '',
         },
-        DatePickerFormat: 'yyyy-MM-dd'
+        formDataMaterials: {
+          materials: [
+            {
+              id: null,
+              parent_lot_id: this.id,
+              child_lot_id: null,
+              amount: 0,
+            }
+          ],
+        },
+        DatePickerFormat: 'yyyy-MM-dd',
+        isLot: true,
+        isMaterial: false,
       }
     },
     computed: {
       lot() {
         return cloneDeep(this.lots.find(data => data.id == this.id));
       },
+      /**
+       * セレクトボックス用のロット一覧を取得
+       *
+       * @returns []
+       */
+      getLotOptions() {
+        let options = [];
+        options.push([]);
+        this.lots.map(lot => {
+          options.push({value: lot.id, text: lot.name});
+        });
+        return options;
+      },
       ...mapGetters({
-        lots: 'lots/lots',
         lotErrors: 'lots/errors',
         lotAlertMessage: 'lots/alertMessage',
         lotAlertStatus: 'lots/alertStatus',
+        materials: 'materials/materials',
+        materialErrors: 'materials/errors',
+        materialAlertMessage: 'materials/alertMessage',
+        materialAlertStatus: 'materials/alertStatus',
       }),
     },
     mounted() {
@@ -158,10 +251,27 @@
         this.formData.ordered_at = this.lot.ordered_at;
         this.formData.is_ten_days_notation = this.lot.is_ten_days_notation;
       }
+      if (this.materials.length !== 0) {
+        this.formDataMaterials.materials = cloneDeep(this.materials);
+      }
     },
     methods: {
       /**
-       * 登録ボタン押下時
+       * ロット情報タブ押下時
+       */
+      async onClickLotEdit() {
+        this.isLot = true;
+        this.isMaterial = false;
+      },
+      /**
+       * 材料設定タブ押下時
+       */
+      async onClickMaterialEdit() {
+        this.isLot = false;
+        this.isMaterial = true;
+      },
+      /**
+       * [ロット情報] 登録ボタン押下時
        *
        * @returns {Promise<void>}
        */
@@ -171,12 +281,12 @@
         const response = await this.createLot(cloneDeep(data));
         // OK
         if (response.status) {
-          this.reset();
+          this.resetLots();
           this.$emit('close');
         }
       },
       /**
-       * 更新ボタン押下時
+       * [ロット情報] 更新ボタン押下時
        *
        * @returns {Promise<void>}
        */
@@ -186,15 +296,26 @@
         const response = await this.updateLot(cloneDeep(data));
         // OK
         if (response.status) {
-          this.reset();
+          this.resetLots();
           this.$emit('close');
         }
+      },
+      /**
+       * [材料設定] 更新ボタン押下時
+       *
+       * @returns {Promise<void>}
+       */
+      async onClickUpdateMaterial() {
+        const data = { materials: this.formDataMaterials };
+        // 登録処理
+        await this.updateMaterials(cloneDeep(data));
       },
       /**
        * 閉じるボタン押下時
        */
       onClickClose() {
-        this.reset();
+        this.resetLots();
+        this.resetMaterials();
         this.$emit('close');
       },
       async setOrderedAtDate(date) {
@@ -203,7 +324,23 @@
       async setExpirationDate(date) {
         this.formData.expiration_date = moment(date).format('YYYY-MM-DD');
       },
-      ...mapActions('lots', ['createLot', 'updateLot', 'reset', 'resetErrors']),
+      /**
+       * 材料を追加ボタン押下時
+       */
+      onAddMaterial() {
+        this.formDataMaterials.materials.push({
+          id: null,
+          parent_lot_id: this.id,
+          child_lot_id: null,
+          amount: 0,
+        })
+      },
+      ...mapActions('lots', ['createLot', 'updateLot']),
+      ...mapActions('materials', ['updateMaterials']),
+      ...mapActions({
+        resetLots: 'lots/reset',
+        resetMaterials: 'materials/reset',
+      }),
     },
   }
 </script>

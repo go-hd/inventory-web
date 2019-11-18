@@ -2,6 +2,7 @@ import moment from '~/plugins/moment'
 
 export const state = () => ({
   lots: [],
+  lotsByCompany: [],
   alertMessage: null,
   alertStatus: null,
   errors: [],
@@ -9,6 +10,7 @@ export const state = () => ({
 
 export const getters = {
   lots: state => state.lots,
+  lotsByCompany: state => state.lotsByCompany,
   alertMessage: state => state.alertMessage,
   alertStatus: state => state.alertStatus,
   errors: state => state.errors,
@@ -17,6 +19,9 @@ export const getters = {
 export const mutations = {
   add(state, { lot }) {
     state.lots.push(lot);
+  },
+  addByCompany(state, { lot }) {
+    state.lotsByCompany.push(lot);
   },
   update(state, { lot }) {
     state.lots = state.lots.map(data => (data.id === lot.id ? lot : data));
@@ -47,6 +52,9 @@ export const mutations = {
   },
   clearLots(state) {
     state.lots = [];
+  },
+  clearLotsByCompany(state) {
+    state.lotsByCompany = [];
   }
 };
 
@@ -64,6 +72,21 @@ export const actions = {
       .reverse()
       .forEach(([id, content]) =>
         commit('add', {
+          lot: {
+            id,
+            ...content
+          }
+        })
+      )
+  },
+  async fetchLotsByCompany({ commit }, params) {
+    let lots = [];
+    lots = await this.$axios.$get('http://localhost:8000/lots?company_id=' + params.company_id);
+    commit('clearLotsByCompany');
+    Object.entries(lots || [])
+      .reverse()
+      .forEach(([id, content]) =>
+        commit('addByCompany', {
           lot: {
             id,
             ...content

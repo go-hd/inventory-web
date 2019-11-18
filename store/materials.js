@@ -31,8 +31,12 @@ export const mutations = {
     }
   },
   clear(state) {
-    state.materials = [];
+    state.alertMessage = null;
+    state.alertStatus = null;
     state.errors = [];
+  },
+  clearMaterials(state) {
+    state.materials = [];
   },
   showAlert(state, { alertMessage, alertStatus }) {
     state.alertMessage = alertMessage;
@@ -44,9 +48,9 @@ export const mutations = {
 };
 
 export const actions = {
-  async fetchMaterials({ commit }) {
-    const materials = await this.$axios.$get('http://localhost:8000/materials');
-    commit('clear');
+  async fetchMaterials({ commit }, params) {
+    const materials = await this.$axios.$get('http://localhost:8000/materials?parent_lot_id=' + params.parent_lot_id);
+    commit('clearMaterials');
     Object.entries(materials || [])
       .reverse()
       .forEach(([id, content]) =>
@@ -67,6 +71,25 @@ export const actions = {
     });
     if (result.status === 'OK') {
       commit('add', { material: material });
+      commit('showAlert', { alertMessage: '材料を作成しました。', alertStatus: 'success' });
+    } else if (result['errors']) {
+      commit('showAlert', { alertMessage: '入力内容をご確認ください。', alertStatus: 'danger' });
+      commit('showErrors', { errors: result['errors'] });
+    } else {
+      commit('showAlert', { alertMessage: '材料を作成できませんでした。', alertStatus: 'danger' });
+    }
+    return result;
+  },
+  async updateMaterials({ commit }, { materials }) {
+    commit('clear');
+    const result = await this.$axios.$post(`http://localhost:8000/materials/update_multi`, materials).catch(err => {
+      return {
+        'errors' : err.response.data,
+        'status' : false
+      };
+    });
+
+    if (result.status === 'OK') {
       commit('showAlert', { alertMessage: '材料を作成しました。', alertStatus: 'success' });
     } else if (result['errors']) {
       commit('showAlert', { alertMessage: '入力内容をご確認ください。', alertStatus: 'danger' });
@@ -102,5 +125,8 @@ export const actions = {
     } else {
       commit('showAlert', { alertMessage: '材料を削除できませんでした。', alertStatus: 'danger' });
     }
+  },
+  reset({ commit }) {
+    commit('clear');
   },
 };

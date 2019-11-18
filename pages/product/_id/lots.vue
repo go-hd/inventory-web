@@ -34,7 +34,7 @@
         </b-col>
         <BrandModal v-if="showModalBrand" @close="closeModal('brand')" v-bind:id="showModalId" />
         <ProductModal v-if="showModalProduct" @close="closeModal('product')" v-bind:id="showModalId" />
-        <LotModal v-if="showModalLot" @close="closeModal('lot')" v-bind:id="showModalId" />
+        <LotModal v-if="showModalLot" @close="closeModal('lot')" v-bind:id="showModalId" :lots="lotsByCompany" />
       </b-row>
     </div>
   </div>
@@ -69,6 +69,7 @@
       await store.dispatch('brands/fetchBrands', {company_id: store.state.auth.user.company.id});
       await store.dispatch('products/fetchProducts', {company_id: store.state.auth.user.company.id});
       await store.dispatch('lots/fetchLots', {product_id: params.id});
+      await store.dispatch('lots/fetchLotsByCompany', {company_id: store.state.auth.user.company.id});
     },
     computed: {
       /**
@@ -88,11 +89,11 @@
         return cloneDeep(this.brands.find(data => data.id == this.product.brand_id));
       },
       ...mapGetters('products', ['products']),
-      ...mapGetters('lots', ['lots', 'alertMessage', 'alertStatus']),
+      ...mapGetters('lots', ['lots', 'lotsByCompany', 'alertMessage', 'alertStatus']),
       ...mapGetters('brands', ['brands']),
     },
     methods: {
-      showModal(type, id = null) {
+      async showModal(type, id = null) {
         switch (type) {
           case 'brand':
             this.showModalBrand = true;
@@ -103,6 +104,7 @@
             this.showModalId = id;
             break;
           case 'lot':
+            await this.$store.dispatch('materials/fetchMaterials', { parent_lot_id: id });
             this.showModalLot = true;
             this.showModalId = id;
             break;
