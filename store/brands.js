@@ -2,6 +2,7 @@ import moment from '~/plugins/moment'
 
 export const state = () => ({
   brands: [],
+  brandsHasLots: [],
   alertMessage: null,
   alertStatus: null,
   errors: [],
@@ -9,6 +10,7 @@ export const state = () => ({
 
 export const getters = {
   brands: state => state.brands,
+  brandsHasLots: state => state.brandsHasLots,
   alertMessage: state => state.alertMessage,
   alertStatus: state => state.alertStatus,
   errors: state => state.errors,
@@ -17,6 +19,9 @@ export const getters = {
 export const mutations = {
   add(state, { brand }) {
     state.brands.push(brand);
+  },
+  addBrandHasLots(state, { brand }) {
+    state.brandsHasLots.push(brand);
   },
   update(state, { brand }) {
     state.brands = state.brands.map(data => (data.id === brand.id ? brand : data));
@@ -37,6 +42,9 @@ export const mutations = {
   },
   clearBrands(state) {
     state.brands = [];
+  },
+  clearBrandsHasLots(state) {
+    state.brandsHasLots = [];
   },
   showAlert(state, { alertMessage, alertStatus }) {
     state.alertMessage = alertMessage;
@@ -64,6 +72,27 @@ export const actions = {
           }
         })
       )
+  },
+  /**
+   * 拠点にひもづくロットがあるブランドを取得する
+   *
+   * @param commit
+   * @param params
+   * @returns {Promise<void>}
+   */
+  async fetchBrandsHasLots({ commit }, params) {
+    const brandsHasLots = await this.$axios.$get('http://localhost:8000/brands/get_has_lots?company_id=' + params.company_id);
+    commit('clearBrandsHasLots');
+    Object.entries(brandsHasLots || [])
+        .reverse()
+        .forEach(([id, content]) =>
+            commit('addBrandHasLots', {
+              brand: {
+                id,
+                ...content
+              }
+            })
+        )
   },
   async createBrand({ commit }, { brand }) {
     const result = await this.$axios.$post(`http://localhost:8000/brands/`, brand).catch(err => {

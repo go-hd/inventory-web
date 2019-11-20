@@ -2,11 +2,34 @@
   <div>
     <ul class="nav sidebar-lot">
       <li class="nav-title">ロット在庫</li>
+      <SidebarNavDropdown
+        v-for="location in locations"
+              :name="location.name"
+              icon="icon-tag"
+              :key="'location-' + location.id">
+        <template>
+          <li
+            class="nav-item"
+            v-for="brand in brandsHasLots"
+            :key="'brand-' + brand.id">
+            <nuxt-link
+              class="nav-link"
+              v-bind:to="{name:'stock'}"
+            >
+              <div class="name">
+                <i class="nav-icon icon-puzzle"></i>
+                <span>
+                  {{ brand.name }}
+                </span>
+              </div>
+            </nuxt-link>
+          </li>
+        </template>
+      </SidebarNavDropdown>
     </ul>
 
     <ul class="nav sidebar-palette">
       <li class="nav-title">パレット</li>
-
       <template v-for="(item, index) in palettes">
         <SidebarNavItem v-bind:key="index">
           <nuxt-link class="nav-link" v-bind:to="{name:'palette-id',params: {id: item.id}}">
@@ -50,6 +73,14 @@
     },
     props: {
       palettes: {
+        type: Array,
+        default: () => []
+      },
+      brandsHasLots: {
+        type: Array,
+        default: () => []
+      },
+      locations: {
         type: Array,
         default: () => []
       },

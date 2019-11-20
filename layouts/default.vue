@@ -8,7 +8,12 @@
           <SidebarProduct :brands="brands"
                           :products="products"
                           v-if="name === 'index' || name === 'product-id-lots'" />
-          <SidebarStock :palettes="palettes" v-if="name === 'stock' || name === 'palette-id'" />
+          <SidebarStock
+                  :palettes="palettes"
+                  :locations="locations"
+                  :brandsHasLots="brandsHasLots"
+                  v-if="name === 'stock' || name === 'palette-id'"
+          />
         </nav>
       </div>
       <main class="main">
@@ -54,8 +59,9 @@ export default {
       return this.$route.matched
     },
     ...mapGetters('products', {products: 'productsByBrand'}),
-    ...mapGetters('brands', ['brands']),
+    ...mapGetters('brands', ['brands', 'brandsHasLots']),
     ...mapGetters('palettes', ['palettes']),
+    ...mapGetters('locations', ['locations']),
   },
 }
 </script>

@@ -58,8 +58,9 @@
       if (store.getters['palettes/palettes'].find(data => data.id === route.params.id)) {
         return
       }
-      await store.dispatch('palettes/fetchPalettes');
-      await store.dispatch('locations/fetchLocations');
+      await store.dispatch('palettes/fetchPalettes', {company_id: store.state.auth.user.company.id});
+      await store.dispatch('locations/fetchLocations', {company_id: store.state.auth.user.company.id});
+      await store.dispatch('brands/fetchBrandsHasLots', {company_id: store.state.auth.user.company.id});
     },
     computed: {
       /**
