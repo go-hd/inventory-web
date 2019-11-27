@@ -41,7 +41,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'Vuex'
+  import { mapGetters } from 'vuex'
   import cloneDeep from 'lodash.clonedeep'
   import BrandModal from '~/components/Modal/BrandModal'
   import ProductModal from '~/components/Modal/ProductModal'

@@ -32,7 +32,7 @@ import nav from './menu'
 import { Header as AppHeader, Sidebar, Aside as AppAside, Footer as AppFooter, Breadcrumb } from '~/components/'
 import SidebarProduct from '~/components/Sidebar/SidebarProduct'
 import SidebarStock from '~/components/Sidebar/SidebarStock'
-import { mapGetters } from 'Vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'full',

@@ -47,7 +47,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'Vuex'
+  import { mapGetters, mapActions } from 'vuex'
   import cloneDeep from 'lodash.clonedeep'
 
   export default {

@@ -43,7 +43,7 @@
 <script>
   import PaletteModal from '~/components/Modal/PaletteModal'
   import PaletteMoveModal from '~/components/Modal/PaletteMoveModal'
-  import { mapGetters } from 'Vuex'
+  import { mapGetters } from 'vuex'
   import cloneDeep from 'lodash.clonedeep'
 
   export default {
