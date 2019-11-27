@@ -59,7 +59,13 @@ export const mutations = {
 
 export const actions = {
   async fetchProducts({ commit }, params) {
-    const products = await this.$axios.$get('http://localhost:8000/products?company_id=' + params.company_id);
+    let products = [];
+    if (params.brand_id) {
+      products = await this.$axios.$get('http://localhost:8000/products?brand_id=' + params.brand_id);
+    } else if (params.company_id) {
+      products = await this.$axios.$get('http://localhost:8000/products?company_id=' + params.company_id);
+    }
+
     commit('clearProducts');
     Object.entries(products || [])
       .reverse()

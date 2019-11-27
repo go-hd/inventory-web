@@ -14,7 +14,7 @@
             :key="'brand-' + brand.id">
             <nuxt-link
               class="nav-link"
-              v-bind:to="{name:'stock'}"
+              v-bind:to="{name:'stock-brandId-lots', params: { brandId: brand.id }}"
             >
               <div class="name">
                 <i class="nav-icon icon-puzzle"></i>

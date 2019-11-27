@@ -11,7 +11,7 @@
                 保管分布
               </span><br />
               <p>所有者：{{ palette.location.name }}</p>
-              <span class="main-title">ロット一覧</span>
+              <span class="main-title">パレット一覧</span>
               <b-button variant="primary" class="float-right w-25" @click="showModal('palette-move')"><i class="fa fa-plus"></i></b-button>
             </div>
             <!-- /ヘッダー -->
@@ -63,10 +63,9 @@
      * データ取得
      */
     async asyncData({ store }) {
-      await store.dispatch('brands/fetchBrands', {company_id: store.state.auth.user.company.id});
-      await store.dispatch('products/fetchProducts', {company_id: store.state.auth.user.company.id});
       await store.dispatch('palettes/fetchPalettes', {company_id: store.state.auth.user.company.id});
       await store.dispatch('locations/fetchLocations', {company_id: store.state.auth.user.company.id});
+      await store.dispatch('brands/fetchBrandsHasLots', {company_id: store.state.auth.user.company.id});
     },
     computed: {
       /**
