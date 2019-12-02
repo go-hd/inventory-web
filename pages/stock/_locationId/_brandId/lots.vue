@@ -14,7 +14,7 @@
             <!-- /ヘッダー -->
             <div class="d-flex align-items-stretch">
               <template v-for="(product, index) in products">
-                <div class="p-2" v-bind:key="index">
+                <div class="p-2 w-30" v-bind:key="index">
                   <div>{{ product.jan_code }}</div>
                   <div class="d-flex flex-column">
                     <template v-for="(lot) in product.lots">
