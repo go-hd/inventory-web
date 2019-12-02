@@ -12,7 +12,7 @@
                   :palettes="palettes"
                   :locations="locations"
                   :brandsHasLots="brandsHasLots"
-                  v-if="name === 'stock' || name === 'palette-id' || name === 'stock-brandId-lots'"
+                  v-if="name === 'stock' || name === 'palette-id' || name === 'stock-locationId-brandId-lots'"
           />
         </nav>
       </div>
