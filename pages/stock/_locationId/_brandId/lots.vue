@@ -8,8 +8,7 @@
             <div slot="header">
               <span class="sub-title">
               </span><br />
-              <span class="main-title">ロット一覧</span>
-              <b-button variant="primary" class="float-right w-25" @click="showModal('lot')"><i class="fa fa-plus"></i></b-button>
+              <span class="main-title">ロット在庫一覧</span>
             </div>
             <!-- /ヘッダー -->
             <div class="d-flex align-items-stretch">
@@ -19,7 +18,7 @@
                   <div class="d-flex flex-column">
                     <template v-for="(lot) in product.lots">
                       <div class="card text-white bg-secondary mb-3 p-2" v-bind:key="lot.name"
-                           @click="showModal('lot', lot.id)">
+                           @click="showModal('stock', lot.id, lot.name)">
                         <div class="card-body">
                           <h4 class="card-title">{{ lot.name }}</h4>
                         </div>
@@ -31,9 +30,15 @@
             </div>
           </b-card>
         </b-col>
-        <BrandModal v-if="showModalBrand" @close="closeModal('brand')" v-bind:id="showModalId" />
-        <ProductModal v-if="showModalProduct" @close="closeModal('product')" v-bind:id="showModalId" />
-        <LotModal v-if="showModalLot" @close="closeModal('lot')" v-bind:id="showModalId" :lots="lotsByCompany" />
+        <StockModal
+          v-if="showModalStock"
+          @close="closeModal('stock')"
+          :locationId="$route.params.locationId"
+          :locationName="location.name"
+          :lotId="showModalLotId"
+          :lotName="showModalLotName"
+          :stockHistoryTypes="stockHistoryTypes"
+        />
       </b-row>
     </div>
   </div>
@@ -42,62 +47,50 @@
 <script>
   import { mapGetters } from 'vuex'
   import cloneDeep from 'lodash.clonedeep'
-  import BrandModal from '~/components/Modal/BrandModal'
-  import ProductModal from '~/components/Modal/ProductModal'
-  import LotModal from '~/components/Modal/LotModal'
+  import StockModal from '~/components/Modal/StockModal'
 
   export default {
     name: 'Lots',
     components: {
-      BrandModal,
-      ProductModal,
-      LotModal,
+      StockModal,
     },
     data () {
       return {
-        showModalBrand: false,
-        showModalProduct: false,
-        showModalLot: false,
-        showModalId: null,
+        showModalStock: false,
+        showModalLotId: null,
+        showModalLocationName: null,
       }
     },
     /**
      * データ取得
      */
     async asyncData({ store, params }) {
-      await store.dispatch('brands/fetchBrands', {company_id: store.state.auth.user.company.id});
       await store.dispatch('products/fetchProducts', {brand_id: params.brandId});
       await store.dispatch('palettes/fetchPalettes', {company_id: store.state.auth.user.company.id});
       await store.dispatch('locations/fetchLocations', {company_id: store.state.auth.user.company.id});
       await store.dispatch('brands/fetchBrandsHasLots', {company_id: store.state.auth.user.company.id});
+      await store.dispatch('stock_history_types/fetchStockHistoryTypes', {company_id: store.state.auth.user.company.id});
     },
     computed: {
       /**
-       * IDにひもづくブランドを取得
+       * IDにひもづく拠点を取得
        *
        * @returns {[]}
        */
-      brand() {
-        return cloneDeep(this.brands.find(data => data.id == this.$route.params.brandId));
+      location() {
+        return cloneDeep(this.locations.find(data => data.id == this.$route.params.locationId));
       },
       ...mapGetters('products', ['products']),
-      ...mapGetters('brands', ['brands']),
+      ...mapGetters('locations', ['locations']),
+      ...mapGetters('stock_history_types', ['stockHistoryTypes']),
     },
     methods: {
-      async showModal(type, id = null) {
+      async showModal(type, lot_id = null, lot_name = null) {
         switch (type) {
-          case 'brand':
-            this.showModalBrand = true;
-            this.showModalId = id;
-            break;
-          case 'product':
-            this.showModalProduct = true;
-            this.showModalId = id;
-            break;
-          case 'lot':
-            await this.$store.dispatch('materials/fetchMaterials', { parent_lot_id: id });
-            this.showModalLot = true;
-            this.showModalId = id;
+          case 'stock':
+            this.showModalStock = true;
+            this.showModalLotId = lot_id;
+            this.showModalLotName = lot_name;
             break;
           default:
             break;
@@ -105,17 +98,9 @@
       },
       closeModal(type) {
         switch (type) {
-          case 'brand':
-            this.showModalBrand = false;
-            this.showModalId = null;
-            break;
-          case 'product':
-            this.showModalProduct = false;
-            this.showModalId = null;
-            break;
-          case 'lot':
-            this.showModalLot = false;
-            this.showModalId = null;
+          case 'stock':
+            this.showModalStock = false;
+            this.showModalLotId = null;
             break;
           default:
             break;
