@@ -78,6 +78,24 @@ export const actions = {
         })
       )
   },
+  async fetchProductsWithStock({ commit }, params) {
+    let products = [];
+    products = await this.$axios.$get(
+      'http://localhost:8000/products?with_stock=1&brand_id=' + params.brand_id
+      + '&location_id=' + params.location_id);
+
+    commit('clearProducts');
+    Object.entries(products || [])
+      .reverse()
+      .forEach(([id, content]) =>
+        commit('add', {
+          product: {
+            id,
+            ...content
+          }
+        })
+      )
+  },
   async createProduct({ commit }, { product }) {
     const result = await this.$axios.$post(`http://localhost:8000/products/`, product).catch(err => {
       return {

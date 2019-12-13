@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper page product">
+  <div class="wrapper page stock">
     <div class="animated fadeIn">
       <b-row>
         <b-col cols="12">
@@ -15,12 +15,21 @@
               <template v-for="(product, index) in products">
                 <div class="p-2 w-30" v-bind:key="index">
                   <div>{{ product.jan_code }}</div>
-                  <div class="d-flex flex-column">
+                  <div class="d-flex flex-column card-columns">
                     <template v-for="(lot) in product.lots">
-                      <div class="card text-white bg-secondary mb-3 p-2" v-bind:key="lot.name"
-                           @click="showModal('stock', lot.id, lot.name)">
-                        <div class="card-body">
+                      <div class="card text-white bg-secondary mb-3 p-2" v-bind:key="lot.name">
+                        <div class="card-body" @click.self="showModal('stock', lot)">
                           <h4 class="card-title">{{ lot.name }}</h4>
+                          <div class="status">
+                            <div v-if="lot.shipping_tasks.length !== 0" class="label bg-danger text-white"
+                                 @click="showModal('shipping', lot)">
+                              出庫待ち<br>確認
+                            </div>
+                            <div v-if="lot.recieving_tasks.length !== 0" class="label bg-info text-white"
+                                 @click="showModal('recieving', lot)">
+                              入庫確認待ち<br>確認
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </template>
@@ -35,9 +44,24 @@
           @close="closeModal('stock')"
           :locationId="$route.params.locationId"
           :locationName="location.name"
-          :lotId="showModalLotId"
-          :lotName="showModalLotName"
+          :lotId="showModalLot.id"
+          :lotName="showModalLot.name"
           :stockHistoryTypes="stockHistoryTypes"
+          :locations="locations"
+        />
+        <ShippingModal
+          v-if="showModalShipping"
+          @close="closeModal('shipping')"
+          :locationId="$route.params.locationId"
+          :lot="showModalShippingLot"
+          @update="updateStock"
+        />
+        <RecievingModal
+          v-if="showModalRecieving"
+          @close="closeModal('recieving')"
+          :locationId="$route.params.locationId"
+          :lot="showModalRecievingLot"
+          @update="updateStock"
         />
       </b-row>
     </div>
@@ -48,24 +72,31 @@
   import { mapGetters } from 'vuex'
   import cloneDeep from 'lodash.clonedeep'
   import StockModal from '~/components/Modal/StockModal'
+  import ShippingModal from '~/components/Modal/ShippingModal'
+  import RecievingModal from '~/components/Modal/RecievingModal'
 
   export default {
     name: 'Lots',
     components: {
       StockModal,
+      ShippingModal,
+      RecievingModal,
     },
     data () {
       return {
         showModalStock: false,
-        showModalLotId: null,
-        showModalLocationName: null,
+        showModalLot: null,
+        showModalShipping: false,
+        showModalShippingLot: null,
+        showModalRecieving: false,
+        showModalRecievingLot: null,
       }
     },
     /**
      * データ取得
      */
     async asyncData({ store, params }) {
-      await store.dispatch('products/fetchProducts', {brand_id: params.brandId});
+      await store.dispatch('products/fetchProductsWithStock', {brand_id: params.brandId, location_id: params.locationId});
       await store.dispatch('palettes/fetchPalettes', {company_id: store.state.auth.user.company.id});
       await store.dispatch('locations/fetchLocations', {company_id: store.state.auth.user.company.id});
       await store.dispatch('brands/fetchBrandsHasLots', {company_id: store.state.auth.user.company.id});
@@ -85,22 +116,41 @@
       ...mapGetters('stock_history_types', ['stockHistoryTypes']),
     },
     methods: {
-      async showModal(type, lot_id = null, lot_name = null) {
+      async showModal(type, lot = null) {
         switch (type) {
           case 'stock':
             this.showModalStock = true;
-            this.showModalLotId = lot_id;
-            this.showModalLotName = lot_name;
+            this.showModalLot = lot;
+            break;
+          case 'shipping':
+            this.showModalShipping = true;
+            this.showModalShippingLot = lot;
+            break;
+          case 'recieving':
+            this.showModalRecieving = true;
+            this.showModalRecievingLot = lot;
             break;
           default:
             break;
         }
       },
+      async updateStock() {
+        await this.$store.dispatch('products/fetchProductsWithStock',
+          {brand_id: this.$route.params.brandId, location_id: this.$route.params.locationId});
+      },
       closeModal(type) {
         switch (type) {
           case 'stock':
             this.showModalStock = false;
-            this.showModalLotId = null;
+            this.showModalLot = null;
+            break;
+          case 'shipping':
+            this.showModalShipping = false;
+            this.showModalShippingLot = null;
+            break;
+          case 'recieving':
+            this.showModalRecieving = false;
+            this.showModalRecievingLot = null;
             break;
           default:
             break;

@@ -144,6 +144,12 @@
     font-weight: bold;
   }
 
+  .card-columns {
+    .card {
+      max-width: 15rem;
+      cursor: pointer;
+    }
+  }
   &.product {
     .edit-icon {
       color: #20a8d8;
@@ -151,12 +157,23 @@
     }
     .card-columns {
       .card {
-        max-width: 15rem;
-        cursor: pointer;
-
         .info {
           text-align: right;
           font-size: 13px;
+        }
+      }
+    }
+  }
+
+  &.stock {
+    .card-columns {
+      .card {
+        .status {
+          .label {
+            width: 50%;
+            text-align: center;
+            float: right;
+          }
         }
       }
     }
