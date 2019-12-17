@@ -18,8 +18,12 @@
             <div>
               <div class="card-columns">
                 <template v-for="(shared_location, index) in palette.shared_locations">
-                  <div :class="(shared_location.id === palette.location.id) ? 'bg-danger' : 'bg-secondary'"
-                       class="card text-white mb-3" v-bind:key="index" @click="showModal('palette-move', shared_location.id)">
+                  <div
+                    :class="(shared_location.id === palette.location.id) ? 'bg-danger' : 'bg-secondary'"
+                    class="card text-white mb-3"
+                    :key="index"
+                    @click="showModal('palette-move', shared_location.id)"
+                  >
                     <div class="card-body">
                       <h4 class="card-title">{{ shared_location.name }}</h4>
                       <div class="info">
@@ -33,8 +37,16 @@
             </div>
           </b-card>
         </b-col>
-        <PaletteModal v-if="showModalPalette" @close="closeModal('palette')" v-bind:id="showModalId" />
-        <PaletteMoveModal v-if="showModalPaletteMove" @close="closeModal('palette-move')" v-bind:id="showModalId" />
+        <PaletteModal
+          v-if="showModalPalette"
+          @close="closeModal('palette')"
+          :id="showModalId"
+        />
+        <PaletteMoveModal
+          v-if="showModalPaletteMove"
+          @close="closeModal('palette-move')"
+          :id="showModalId"
+        />
       </b-row>
     </div>
   </div>

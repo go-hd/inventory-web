@@ -17,13 +17,17 @@
                   <!-- フォーム -->
                   <b-form-group>
                     <b-input-group>
-                      <b-form-input type="email" placeholder="メールアドレス" v-model="formData.email"
-                                    v-bind:class="{ 'is-invalid': errors.email }" class="form-control"></b-form-input>
+                      <b-form-input
+                        type="email"
+                        placeholder="メールアドレス"
+                        v-model="formData.email"
+                        :class="{ 'is-invalid': errors.email }"
+                        class="form-control" />
                       <!-- Attach Right button -->
                       <b-input-group-append>
                         <b-button variant="primary" @click="onClickInviteUser()">招待</b-button>
                       </b-input-group-append>
-                      <div v-for="(error, index) in errors.email" v-bind:key="index" v-bind:value="error"
+                      <div v-for="(error, index) in errors.email" :key="index" :value="error"
                            class="invalid-feedback">
                         {{ error }}
                       </div>

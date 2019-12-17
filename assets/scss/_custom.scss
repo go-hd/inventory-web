@@ -168,6 +168,9 @@
   &.stock {
     .card-columns {
       .card {
+        .quantity {
+          font-size: 16px;
+        }
         .status {
           .label {
             width: 50%;

@@ -9,16 +9,20 @@
           <div class="modal-body">
             <slot name="body">
               <div>
-                <b-alert v-if="alertMessage" show :variant="alertStatus">{{ alertMessage }}
+                <b-alert v-if="alertMessage" show :variant="alertStatus">
+                  {{ alertMessage }}
                 </b-alert>
               </div>
               <b-row>
                 <b-col sm="12">
                   <b-form-group>
                     <label for="location_id">保管拠点</label>
-                    <b-form-select id="location_id" :options="getLocationOptions" v-model="formData.location_id"
-                                   v-bind:class="{ 'is-invalid': errors.location_id }"></b-form-select>
-                    <div v-for="(error, index) in errors.location_id" v-bind:key="index" v-bind:value="error"
+                    <b-form-select
+                      id="location_id"
+                      :options="getLocationOptions"
+                      v-model="formData.location_id"
+                      :class="{ 'is-invalid': errors.location_id }" />
+                    <div v-for="(error, index) in errors.location_id" :key="index" :value="error"
                          class="invalid-feedback">
                       {{ error }}
                     </div>
@@ -29,9 +33,14 @@
                 <b-col sm="12">
                   <b-form-group>
                     <label for="quantity">個数</label>
-                    <b-form-input type="number" id="quantity" placeholder="個数" v-model="formData.quantity"
-                                  v-bind:class="{ 'is-invalid': errors.quantity }" class="form-control"></b-form-input>
-                    <div v-for="(error, index) in errors.quantity" v-bind:key="index" v-bind:value="error" class="invalid-feedback">
+                    <b-form-input
+                      type="number"
+                      id="quantity"
+                      placeholder="個数"
+                      v-model="formData.quantity"
+                      :class="{ 'is-invalid': errors.quantity }"
+                      class="form-control" />
+                    <div v-for="(error, index) in errors.quantity" :key="index" :value="error" class="invalid-feedback">
                       {{ error }}
                     </div>
                   </b-form-group>

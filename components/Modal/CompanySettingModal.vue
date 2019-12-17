@@ -8,10 +8,10 @@
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
               <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                  <li class="nav-item" v-bind:class="{ 'active': isBase }">
+                  <li class="nav-item" :class="{ 'active': isBase }">
                     <a class="nav-link" @click="onClickBaseEdit">基本情報</a>
                   </li>
-                  <li class="nav-item" v-bind:class="{ 'active': isLocationType }">
+                  <li class="nav-item" :class="{ 'active': isLocationType }">
                     <a class="nav-link" @click="onClickLocationTypeEdit">拠点種別</a>
                   </li>
                 </ul>
@@ -28,15 +28,27 @@
                   <b-col sm="12">
                     <b-form-group>
                       <label for="name">会社名</label>
-                      <b-form-input type="text" id="name" placeholder="会社名" v-model="formData.base.name" v-bind:class="{ 'is-invalid': companyErrors.name }" class="form-control"></b-form-input>
-                      <div v-for="(error, index) in companyErrors.name" v-bind:key="index" v-bind:value="error" class="invalid-feedback">
+                      <b-form-input
+                        type="text"
+                        id="name"
+                        placeholder="会社名"
+                        v-model="formData.base.name"
+                        :class="{ 'is-invalid': companyErrors.name }"
+                        class="form-control" />
+                      <div v-for="(error, index) in companyErrors.name" :key="index" :value="error" class="invalid-feedback">
                         {{ error }}
                       </div>
                     </b-form-group>
                     <b-form-group>
                       <label for="name">会社コード</label>
-                      <b-form-input type="text" id="company_code" placeholder="会社コード" v-model="formData.base.company_code" v-bind:class="{ 'is-invalid': companyErrors.company_code }" class="form-control"></b-form-input>
-                      <div v-for="(error, index) in companyErrors.company_code" v-bind:key="index" v-bind:value="error" class="invalid-feedback">
+                      <b-form-input
+                        type="text"
+                        id="company_code"
+                        placeholder="会社コード"
+                        v-model="formData.base.company_code"
+                        :class="{ 'is-invalid': companyErrors.company_code }"
+                        class="form-control" />
+                      <div v-for="(error, index) in companyErrors.company_code" :key="index" :value="error" class="invalid-feedback">
                         {{ error }}
                       </div>
                     </b-form-group>
@@ -55,21 +67,26 @@
                   <b-col sm="12">
                     <b-form-group>
                       <label for="name">拠点種別名</label>
-                      <b-form-input type="text" placeholder="拠点種別名" v-model="formData.locationType.name" v-bind:class="{ 'is-invalid': locationTypeErrors.name }" class="form-control"></b-form-input>
-                      <div v-for="(error, index) in locationTypeErrors.name" v-bind:key="index" v-bind:value="error" class="invalid-feedback">
+                      <b-form-input
+                        type="text"
+                        placeholder="拠点種別名"
+                        v-model="formData.locationType.name"
+                        :class="{ 'is-invalid': locationTypeErrors.name }"
+                        class="form-control" />
+                      <div v-for="(error, index) in locationTypeErrors.name" :key="index" :value="error" class="invalid-feedback">
                         {{ error }}
                       </div>
                     </b-form-group>
                     <b-form-group>
                       <label for="note">備考</label>
                       <b-form-textarea
-                              id="note"
-                              v-model="formData.locationType.note"
-                              rows="3"
-                              max-rows="6"
-                              v-bind:class="{ 'is-invalid': locationTypeErrors.note }"
-                      ></b-form-textarea>
-                      <div v-for="(error, index) in locationTypeErrors.note" v-bind:key="index" v-bind:value="error" class="invalid-feedback">
+                        id="note"
+                        v-model="formData.locationType.note"
+                        rows="3"
+                        max-rows="6"
+                        :class="{ 'is-invalid': locationTypeErrors.note }"
+                       />
+                      <div v-for="(error, index) in locationTypeErrors.note" :key="index" :value="error" class="invalid-feedback">
                         {{ error }}
                       </div>
                     </b-form-group>

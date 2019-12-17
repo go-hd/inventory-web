@@ -9,21 +9,27 @@
         <div>{{ formData.company_code }}へ参加する</div>
 
         <b-form-group>
-          <b-form-input type="text" placeholder="名前を入力" v-model="formData.name" v-bind:class="{ 'is-invalid': errors.name }" class="form-control"></b-form-input>
-          <div v-for="(error, index) in errors.name" v-bind:key="index" v-bind:value="error" class="invalid-feedback">
+          <b-form-input type="text" placeholder="名前を入力" v-model="formData.name" :class="{ 'is-invalid': errors.name }" class="form-control"></b-form-input>
+          <div v-for="(error, index) in errors.name" :key="index" :value="error" class="invalid-feedback">
             {{ error }}
           </div>
         </b-form-group>
 
         <b-form-group>
-          <b-form-input type="text" placeholder="パスワードを入力" v-model="formData.password" v-bind:class="{ 'is-invalid': errors.password }" class="form-control"></b-form-input>
-          <div v-for="(error, index) in errors.password" v-bind:key="index" v-bind:value="error" class="invalid-feedback">
+          <b-form-input type="text" placeholder="パスワードを入力" v-model="formData.password" :class="{ 'is-invalid': errors.password }" class="form-control"></b-form-input>
+          <div v-for="(error, index) in errors.password" :key="index" :value="error" class="invalid-feedback">
             {{ error }}
           </div>
         </b-form-group>
 
         <div class="form-actions float-right">
-          <b-button type="submit" variant="primary" @click="onClickRegister()">登録する</b-button>
+          <b-button
+            type="submit"
+            variant="primary"
+            @click="onClickRegister()"
+          >
+            登録する
+          </b-button>
         </div>
       </b-col>
     </b-row>

@@ -18,37 +18,50 @@
           <div class="modal-body">
             <slot name="body">
               <div>
-                <b-alert v-if="alertMessage" show :variant="alertStatus">{{ alertMessage }}
+                <b-alert v-if="alertMessage" show :variant="alertStatus">
+                  {{ alertMessage }}
                 </b-alert>
               </div>
               <b-row>
                 <b-col sm="12">
                   <b-form-group>
                     <label for="name">ユーザー名</label>
-                    <b-form-input type="text" id="name" placeholder="ユーザー名" v-model="formData.name"
-                                  v-bind:class="{ 'is-invalid': errors.name }"
-                                  class="form-control"></b-form-input>
-                    <div v-for="(error, index) in errors.name" v-bind:key="index" v-bind:value="error"
+                    <b-form-input
+                      type="text"
+                      id="name"
+                      placeholder="ユーザー名"
+                      v-model="formData.name"
+                      :class="{ 'is-invalid': errors.name }"
+                      class="form-control" />
+                    <div v-for="(error, index) in errors.name" :key="index" :value="error"
                          class="invalid-feedback">
                       {{ error }}
                     </div>
                   </b-form-group>
                   <b-form-group>
                     <label for="name">メールアドレス</label>
-                    <b-form-input type="text" id="company_code" placeholder="メールアドレス" v-model="formData.email"
-                                  v-bind:class="{ 'is-invalid': errors.email }"
-                                  class="form-control"></b-form-input>
-                    <div v-for="(error, index) in errors.email" v-bind:key="index" v-bind:value="error"
+                    <b-form-input
+                      type="text"
+                      id="company_code"
+                      placeholder="メールアドレス"
+                      v-model="formData.email"
+                      :class="{ 'is-invalid': errors.email }"
+                      class="form-control" />
+                    <div v-for="(error, index) in errors.email" :key="index" :value="error"
                          class="invalid-feedback">
                       {{ error }}
                     </div>
                   </b-form-group>
                   <b-form-group>
                     <label for="name">パスワード</label>
-                    <b-form-input type="password" id="password" placeholder="パスワード" v-model="formData.password"
-                                  v-bind:class="{ 'is-invalid': errors.password }"
-                                  class="form-control"></b-form-input>
-                    <div v-for="(error, index) in errors.password" v-bind:key="index" v-bind:value="error"
+                    <b-form-input
+                      type="password"
+                      id="password"
+                      placeholder="パスワード"
+                      v-model="formData.password"
+                      :class="{ 'is-invalid': errors.password }"
+                      class="form-control" />
+                    <div v-for="(error, index) in errors.password" :key="index" :value="error"
                          class="invalid-feedback">
                       {{ error }}
                     </div>

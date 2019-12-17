@@ -6,15 +6,15 @@
     <b-row class="justify-content-center mt-5" v-if="dispCompanyForm">
       <b-col md="5">
         <b-form-group>
-          <b-form-input type="text" placeholder="会社名を入力" v-model="formData.company.name" v-bind:class="{ 'is-invalid': companyErrors.name }" class="form-control"></b-form-input>
-          <div v-for="(error, index) in companyErrors.name" v-bind:key="index" v-bind:value="error" class="invalid-feedback">
+          <b-form-input type="text" placeholder="会社名を入力" v-model="formData.company.name" :class="{ 'is-invalid': companyErrors.name }" class="form-control"></b-form-input>
+          <div v-for="(error, index) in companyErrors.name" :key="index" :value="error" class="invalid-feedback">
             {{ error }}
           </div>
         </b-form-group>
 
         <b-form-group>
-          <b-form-input type="text" placeholder="会社コードを入力" v-model="formData.company.company_code" v-bind:class="{ 'is-invalid': companyErrors.company_code }" class="form-control"></b-form-input>
-          <div v-for="(error, index) in companyErrors.company_code" v-bind:key="index" v-bind:value="error" class="invalid-feedback">
+          <b-form-input type="text" placeholder="会社コードを入力" v-model="formData.company.company_code" :class="{ 'is-invalid': companyErrors.company_code }" class="form-control"></b-form-input>
+          <div v-for="(error, index) in companyErrors.company_code" :key="index" :value="error" class="invalid-feedback">
             {{ error }}
           </div>
         </b-form-group>
@@ -28,8 +28,8 @@
     <b-row class="justify-content-center mt-5" v-if="dispLocationForm">
       <b-col md="5">
         <b-form-group>
-          <b-form-input type="text" placeholder="本拠点名を入力" v-model="formData.location.name" v-bind:class="{ 'is-invalid': locationErrors.name }" class="form-control"></b-form-input>
-          <div v-for="(error, index) in locationErrors.name" v-bind:key="index" v-bind:value="error" class="invalid-feedback">
+          <b-form-input type="text" placeholder="本拠点名を入力" v-model="formData.location.name" :class="{ 'is-invalid': locationErrors.name }" class="form-control"></b-form-input>
+          <div v-for="(error, index) in locationErrors.name" :key="index" :value="error" class="invalid-feedback">
             {{ error }}
           </div>
         </b-form-group>
@@ -43,20 +43,20 @@
     <b-row class="justify-content-center mt-5" v-if="dispUserForm">
       <b-col md="5">
         <b-form-group>
-          <b-form-input type="text" placeholder="ユーザー名" v-model="formData.user.name" v-bind:class="{ 'is-invalid': userErrors.name }" class="form-control"></b-form-input>
-          <div v-for="(error, index) in userErrors.name" v-bind:key="index" v-bind:value="error" class="invalid-feedback">
+          <b-form-input type="text" placeholder="ユーザー名" v-model="formData.user.name" :class="{ 'is-invalid': userErrors.name }" class="form-control"></b-form-input>
+          <div v-for="(error, index) in userErrors.name" :key="index" :value="error" class="invalid-feedback">
             {{ error }}
           </div>
         </b-form-group>
         <b-form-group>
-          <b-form-input type="text" placeholder="メールアドレス" v-model="formData.user.email" v-bind:class="{ 'is-invalid': userErrors.email }" class="form-control"></b-form-input>
-          <div v-for="(error, index) in userErrors.email" v-bind:key="index" v-bind:value="error" class="invalid-feedback">
+          <b-form-input type="text" placeholder="メールアドレス" v-model="formData.user.email" :class="{ 'is-invalid': userErrors.email }" class="form-control"></b-form-input>
+          <div v-for="(error, index) in userErrors.email" :key="index" :value="error" class="invalid-feedback">
             {{ error }}
           </div>
         </b-form-group>
         <b-form-group>
-          <b-form-input type="text" placeholder="パスワード" v-model="formData.user.password" v-bind:class="{ 'is-invalid': userErrors.password }" class="form-control"></b-form-input>
-          <div v-for="(error, index) in userErrors.password" v-bind:key="index" v-bind:value="error" class="invalid-feedback">
+          <b-form-input type="text" placeholder="パスワード" v-model="formData.user.password" :class="{ 'is-invalid': userErrors.password }" class="form-control"></b-form-input>
+          <div v-for="(error, index) in userErrors.password" :key="index" :value="error" class="invalid-feedback">
             {{ error }}
           </div>
         </b-form-group>

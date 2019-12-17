@@ -17,7 +17,7 @@
             <div>
               <div class="card-columns">
                 <template v-for="(lot, index) in lots">
-                  <div class="card text-white bg-secondary mb-3" v-bind:key="index" @click="showModal('lot', lot.id)">
+                  <div class="card text-white bg-secondary mb-3" :key="index" @click="showModal('lot', lot.id)">
                     <div class="card-body">
                       <h4 class="card-title">{{ lot.name }}</h4>
                       <div class="info">
@@ -32,9 +32,23 @@
             </div>
           </b-card>
         </b-col>
-        <BrandModal v-if="showModalBrand" @close="closeModal('brand')" v-bind:id="showModalId" />
-        <ProductModal v-if="showModalProduct" @close="closeModal('product')" v-bind:id="showModalId" />
-        <LotModal v-if="showModalLot" @close="closeModal('lot')" v-bind:id="showModalId" :lots="lotsByCompany" />
+        <BrandModal
+          v-if="showModalBrand"
+          @close="closeModal('brand')"
+          :id="showModalId"
+        />
+        <ProductModal
+          v-if="showModalProduct"
+          @close="closeModal('product')"
+          :id="showModalId"
+        />
+        <LotModal
+          v-if="showModalLot"
+          @close="closeModal('lot')"
+          :id="showModalId"
+          :lots="lotsByCompany"
+          @update="update"
+        />
       </b-row>
     </div>
   </div>
@@ -111,6 +125,9 @@
           default:
             break;
         }
+      },
+      async update() {
+        await this.$store.dispatch('lots/fetchLotsByCompany', {company_id: this.$store.state.auth.user.company.id});
       },
       closeModal(type) {
         switch (type) {

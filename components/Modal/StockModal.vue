@@ -8,10 +8,10 @@
             <nav v-if="id !== null" class="navbar navbar-expand-lg navbar-light bg-light">
               <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                  <li class="nav-item" v-bind:class="{ 'active': isStockEdit }">
+                  <li class="nav-item" :class="{ 'active': isStockEdit }">
                     <a class="nav-link" @click="onClickStockEdit">ロット在庫情報</a>
                   </li>
-                  <li class="nav-item" v-bind:class="{ 'active': isRequest }">
+                  <li class="nav-item" :class="{ 'active': isRequest }">
                     <a class="nav-link" @click="onClickRequest">発注依頼</a>
                   </li>
                 </ul>
@@ -23,7 +23,8 @@
               <!-- ロット在庫情報 -->
               <div v-if="isStockEdit">
                 <div>
-                  <b-alert v-if="stockAlertMessage" show :variant="stockAlertStatus">{{ stockAlertMessage }}
+                  <b-alert v-if="stockAlertMessage" show :variant="stockAlertStatus">
+                    {{ stockAlertMessage }}
                   </b-alert>
                 </div>
                 <b-row>
@@ -31,37 +32,43 @@
                     <b-form-group>
                       <label>拠点</label>
                       <div>
-                        {{ locationName }}
+                        {{ location.name }}
                       </div>
                     </b-form-group>
                     <b-form-group>
                       <label>ロット</label>
                       <div>
-                        {{ lotName }}
+                        {{ lot.name }}
                       </div>
                     </b-form-group>
                     <b-form-group>
                       <label>在庫数</label>
                       <div>
-                        {{ totalQuantity }}個
+                        {{ lot.stock_quantity }}個
                       </div>
                     </b-form-group>
                     <b-form-group>
                       <label for="child_lot_id">種別</label>
-                      <b-form-select id="child_lot_id" :options="getStockHistoryTypeOptions"
-                                     v-model="formData.stock_history_type_id"></b-form-select>
-                      <div v-for="(error, index) in stockErrors.stock_history_type_id" v-bind:key="index"
-                           v-bind:value="error"
+                      <b-form-select
+                        id="child_lot_id"
+                        :options="getStockHistoryTypeOptions"
+                        v-model="formData.stock_history_type_id" />
+                      <div v-for="(error, index) in stockErrors.stock_history_type_id" :key="index"
+                           :value="error"
                            class="invalid-feedback">
                         {{ error }}
                       </div>
                     </b-form-group>
                     <b-form-group>
-                      <label for="quantity">個数</label>
-                      <b-form-input type="number" id="quantity" placeholder="個数" v-model="formData.quantity"
-                                    v-bind:class="{ 'is-invalid': stockErrors.quantity }"
-                                    class="form-control"></b-form-input>
-                      <div v-for="(error, index) in stockErrors.quantity" v-bind:key="index" v-bind:value="error"
+                      <label for="lot-quantity">個数</label>
+                      <b-form-input
+                        type="number"
+                        id="lot-quantity"
+                        placeholder="個数"
+                        v-model="formData.quantity"
+                        :class="{ 'is-invalid': stockErrors.quantity }"
+                        class="form-control" />
+                      <div v-for="(error, index) in stockErrors.quantity" :key="index" :value="error"
                            class="invalid-feedback">
                         {{ error }}
                       </div>
@@ -69,14 +76,14 @@
                     <b-form-group>
                       <label for="note">備考</label>
                       <b-form-textarea
-                              id="note"
-                              placeholder="備考"
-                              v-model="formData.note"
-                              rows="3"
-                              max-rows="6"
-                              v-bind:class="{ 'is-invalid': stockErrors.note }"
-                      ></b-form-textarea>
-                      <div v-for="(error, index) in stockErrors.note" v-bind:key="index" v-bind:value="error"
+                        id="note"
+                        placeholder="備考"
+                        v-model="formData.note"
+                        rows="3"
+                        max-rows="6"
+                        :class="{ 'is-invalid': stockErrors.note }"
+                       />
+                      <div v-for="(error, index) in stockErrors.note" :key="index" :value="error"
                            class="invalid-feedback">
                         {{ error }}
                       </div>
@@ -99,21 +106,27 @@
                   <b-col sm="12">
                     <b-form-group>
                       <label for="child_lot_id">依頼拠点</label>
-                      <b-form-select id="location_id" :options="getLocationOptions"
-                                     v-model="formDataRequest.shipping_location_id"
-                                     v-bind:class="{ 'is-invalid': requestErrors.shipping_location_id }"></b-form-select>
-                      <div v-for="(error, index) in requestErrors.shipping_location_id" v-bind:key="index"
-                           v-bind:value="error"
+                      <b-form-select
+                        id="location_id"
+                        :options="getLocationOptions"
+                        v-model="formDataRequest.shipping_location_id"
+                        :class="{ 'is-invalid': requestErrors.shipping_location_id }" />
+                      <div v-for="(error, index) in requestErrors.shipping_location_id" :key="index"
+                           :value="error"
                            class="invalid-feedback">
                         {{ error }}
                       </div>
                     </b-form-group>
                     <b-form-group>
-                      <label for="quantity">個数</label>
-                      <b-form-input type="number" id="quantity" placeholder="個数" v-model="formDataRequest.quantity"
-                                    v-bind:class="{ 'is-invalid': requestErrors.quantity }"
-                                    class="form-control"></b-form-input>
-                      <div v-for="(error, index) in requestErrors.quantity" v-bind:key="index" v-bind:value="error"
+                      <label for="request-quantity">個数</label>
+                      <b-form-input
+                        type="number"
+                        id="request-quantity"
+                        placeholder="個数"
+                        v-model="formDataRequest.quantity"
+                        :class="{ 'is-invalid': requestErrors.quantity }"
+                        class="form-control" />
+                      <div v-for="(error, index) in requestErrors.quantity" :key="index" :value="error"
                            class="invalid-feedback">
                         {{ error }}
                       </div>
@@ -147,21 +160,11 @@
   export default {
     name: 'stock-modal',
     props: {
-      locationId: {
-        type: Number,
-        default: null
+      location: {
+        default: [],
       },
-      locationName: {
-        type: String,
-        default: null
-      },
-      lotId: {
-        type: Number,
-        default: null
-      },
-      lotName: {
-        type: String,
-        default: null
+      lot: {
+        default: [],
       },
       stockHistoryTypes: {
         default: [],
@@ -174,19 +177,18 @@
       return {
         formData: {
           company_id: this.$store.$auth.user.company.id,
-          location_id: this.locationId,
-          lot_id: this.lotId,
+          location_id: this.location.id,
+          lot_id: this.lot.id,
           stock_history_type_id: '',
           quantity: 0,
           note: '',
         },
         formDataRequest: {
           shipping_location_id: '',
-          recieving_location_id: this.locationId,
-          lot_id: this.lotId,
+          recieving_location_id: this.location.id,
+          lot_id: this.lot.id,
           quantity: 0,
         },
-        totalQuantity: 0,
         isStockEdit: true,
         isRequest: false,
       }
@@ -214,7 +216,7 @@
         let options = [];
         options.push([]);
         this.locations.map(location => {
-          if (location.id != this.locationId) {
+          if (location.id != this.location.id) {
             options.push({value: location.id, text: location.name});
           }
         });
@@ -235,14 +237,6 @@
         this.formData.code = this.brand.code;
         this.formData.note = this.brand.note;
       }
-      // 在庫数を取得する
-      this.$axios
-        .get("/stock_histories/get_quantity/" + this.locationId + "/" + this.lotId)
-        .then(({data}) => {
-          this.totalQuantity = data.totalQuantity;
-        }).catch(err => {
-        console.log(err.response);
-      });
     },
     methods: {
       /**
@@ -271,6 +265,7 @@
         // OK
         if (response.status) {
           this.resetStock();
+          this.$emit('update');
           this.$emit('close');
         }
       },

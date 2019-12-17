@@ -13,20 +13,27 @@
             <!-- /ヘッダー -->
             <div class="d-flex align-items-stretch">
               <template v-for="(product, index) in products">
-                <div class="p-2 w-30" v-bind:key="index">
+                <div class="p-2 w-30" :key="`product-${index}`">
                   <div>{{ product.jan_code }}</div>
                   <div class="d-flex flex-column card-columns">
-                    <template v-for="(lot) in product.lots">
-                      <div class="card text-white bg-secondary mb-3 p-2" v-bind:key="lot.name">
+                    <template v-for="(lot, lot_index) in product.lots">
+                      <div class="card text-white bg-secondary mb-3 p-2" :key="`lot-${lot_index}`">
                         <div class="card-body" @click.self="showModal('stock', lot)">
                           <h4 class="card-title">{{ lot.name }}</h4>
+                          <span class="quantity">{{ lot.stock_quantity }}</span>個
                           <div class="status">
-                            <div v-if="lot.shipping_tasks.length !== 0" class="label bg-danger text-white"
-                                 @click="showModal('shipping', lot)">
+                            <div
+                              v-if="lot.shipping_tasks && lot.shipping_tasks.length !== 0"
+                              class="label bg-danger text-white"
+                              @click="showModal('shipping', lot)"
+                            >
                               出庫待ち<br>確認
                             </div>
-                            <div v-if="lot.recieving_tasks.length !== 0" class="label bg-info text-white"
-                                 @click="showModal('recieving', lot)">
+                            <div
+                              v-if="lot.recieving_tasks && lot.recieving_tasks.length !== 0"
+                              class="label bg-info text-white"
+                              @click="showModal('recieving', lot)"
+                            >
                               入庫確認待ち<br>確認
                             </div>
                           </div>
@@ -42,12 +49,11 @@
         <StockModal
           v-if="showModalStock"
           @close="closeModal('stock')"
-          :locationId="$route.params.locationId"
-          :locationName="location.name"
-          :lotId="showModalLot.id"
-          :lotName="showModalLot.name"
+          :location="location"
+          :lot="showModalLot"
           :stockHistoryTypes="stockHistoryTypes"
           :locations="locations"
+          @update="updateStock"
         />
         <ShippingModal
           v-if="showModalShipping"

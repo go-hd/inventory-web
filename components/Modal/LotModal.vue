@@ -8,10 +8,10 @@
             <nav v-if="id !== null" class="navbar navbar-expand-lg navbar-light bg-light">
               <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                  <li class="nav-item" v-bind:class="{ 'active': isLot }">
+                  <li class="nav-item" :class="{ 'active': isLot }">
                     <a class="nav-link" @click="onClickLotEdit">ロット情報</a>
                   </li>
-                  <li class="nav-item" v-bind:class="{ 'active': isMaterial }">
+                  <li class="nav-item" :class="{ 'active': isMaterial }">
                     <a class="nav-link" @click="onClickMaterialEdit">材料設定</a>
                   </li>
                 </ul>
@@ -30,54 +30,63 @@
                   <b-col sm="12">
                     <b-form-group>
                       <label for="lot_number">ロットナンバー</label>
-                      <b-form-input type="text" id="lot_number" placeholder="ロットナンバー" v-model="formData.lot_number"
-                                    v-bind:class="{ 'is-invalid': lotErrors.lot_number }" class="form-control"></b-form-input>
-                      <div v-for="(error, index) in lotErrors.lot_number" v-bind:key="index" v-bind:value="error"
+                      <b-form-input
+                        type="text"
+                        id="lot_number"
+                        placeholder="ロットナンバー"
+                        v-model="formData.lot_number"
+                        :class="{ 'is-invalid': lotErrors.lot_number }"
+                        class="form-control" />
+                      <div v-for="(error, index) in lotErrors.lot_number" :key="index" :value="error"
                            class="invalid-feedback">
                         {{ error }}
                       </div>
                     </b-form-group>
                     <b-form-group>
                       <label for="name">ロット名</label>
-                      <b-form-input type="text" id="name" placeholder="ロット名" v-model="formData.name"
-                                    v-bind:class="{ 'is-invalid': lotErrors.name }" class="form-control"></b-form-input>
-                      <div v-for="(error, index) in lotErrors.name" v-bind:key="index" v-bind:value="error"
+                      <b-form-input
+                        type="text"
+                        id="name"
+                        placeholder="ロット名"
+                        v-model="formData.name"
+                        :class="{ 'is-invalid': lotErrors.name }"
+                        class="form-control" />
+                      <div v-for="(error, index) in lotErrors.name" :key="index" :value="error"
                            class="invalid-feedback">
                         {{ error }}
                       </div>
                     </b-form-group>
                     <b-form-group>
-                      <label for="expiration_date">賞味期限</label>
-                      <datepicker id="expiration_date"
-                                  placeholder="賞味期限"
-                                  :value="formData.expiration_date"
-                                  :format="DatePickerFormat"
-                                  :clear-button="true"
-                                  :bootstrap-styling="true"
-                                  :typeable="true"
-                                  v-on:selected="setExpirationDate"
-                      >
-                      </datepicker>
-                      <div class="form-control" v-bind:class="{ 'is-invalid': lotErrors.expiration_date }" style="display: none;"></div>
-                      <div v-for="(error, index) in lotErrors.expiration_date" v-bind:key="index" v-bind:value="error"
+                      <label>賞味期限</label>
+                      <datepicker
+                        id="expiration_date"
+                        placeholder="賞味期限"
+                        :value="formData.expiration_date"
+                        :format="DatePickerFormat"
+                        :clear-button="true"
+                        :bootstrap-styling="true"
+                        :typeable="true"
+                        v-on:selected="setExpirationDate"
+                       />
+                      <div class="form-control" :class="{ 'is-invalid': lotErrors.expiration_date }" style="display: none;"></div>
+                      <div v-for="(error, index) in lotErrors.expiration_date" :key="index" :value="error"
                            class="invalid-feedback">
                         {{ error }}
                       </div>
                     </b-form-group>
                     <b-form-group>
-                      <label for="ordered_at">発注日</label>
+                      <label>発注日</label>
                       <datepicker id="ordered_at"
-                                  placeholder="発注日"
-                                  :value="formData.ordered_at"
-                                  :format="DatePickerFormat"
-                                  :clear-button="true"
-                                  :bootstrap-styling="true"
-                                  :typeable="true"
-                                  v-on:selected="setOrderedAtDate"
-                      >
-                      </datepicker>
-                      <div class="form-control" v-bind:class="{ 'is-invalid': lotErrors.ordered_at }" style="display: none;"></div>
-                      <div v-for="(error, index) in lotErrors.ordered_at" v-bind:key="index" v-bind:value="error"
+                        placeholder="発注日"
+                        :value="formData.ordered_at"
+                        :format="DatePickerFormat"
+                        :clear-button="true"
+                        :bootstrap-styling="true"
+                        :typeable="true"
+                        v-on:selected="setOrderedAtDate"
+                       />
+                      <div class="form-control" :class="{ 'is-invalid': lotErrors.ordered_at }" style="display: none;"></div>
+                      <div v-for="(error, index) in lotErrors.ordered_at" :key="index" :value="error"
                            class="invalid-feedback">
                         {{ error }}
                       </div>
@@ -85,14 +94,13 @@
                     <b-form-group>
                       <label for="is_ten_days_notation">発注日時期表記フラグ</label>
                       <b-form-checkbox
-                              id="is_ten_days_notation"
-                              v-model="formData.is_ten_days_notation"
-                              value="1"
-                              unchecked-value="0"
-                              v-bind:class="{ 'is-invalid': lotErrors.is_ten_days_notation }"
-                      >
-                      </b-form-checkbox>
-                      <div v-for="(error, index) in lotErrors.is_ten_days_notation" v-bind:key="index" v-bind:value="error"
+                        id="is_ten_days_notation"
+                        v-model="formData.is_ten_days_notation"
+                        value="1"
+                        unchecked-value="0"
+                       :class="{ 'is-invalid': lotErrors.is_ten_days_notation }"
+                       />
+                      <div v-for="(error, index) in lotErrors.is_ten_days_notation" :key="index" :value="error"
                            class="invalid-feedback">
                         {{ error }}
                       </div>
@@ -119,10 +127,12 @@
                   <b-col sm="12">
                     <label for="lot_number" class="label-with-button font-xl mb-3">
                       材料設定
-                      <b-button variant="primary" class="float-right ml-3" @click="onAddMaterial"><i class="fa fa-plus"></i></b-button>
+                      <b-button variant="primary" class="float-right ml-3" @click="onAddMaterial">
+                        <i class="fa fa-plus"></i>
+                      </b-button>
                     </label>
                     <div v-if="materialErrors.message">
-                      <p class="error-text">{{materialErrors.message }}</p>
+                      <p class="error-text">{{ materialErrors.message }}</p>
                     </div>
                     <div v-else v-for="(errors, index) in materialErrors" :key="index">
                       <div v-for="(error, i) in errors" :key="i">
@@ -133,15 +143,19 @@
                       <b-col sm="8">
                         <b-form-group>
                           <label for="child_lot_id">子ロット</label>
-                          <b-form-select id="child_lot_id" :options="getLotOptions"
-                                         v-model="formDataMaterials.materials[index].child_lot_id"></b-form-select>
+                          <b-form-select
+                            id="child_lot_id"
+                            :options="getLotOptions"
+                            v-model="formDataMaterials.materials[index].child_lot_id" />
                         </b-form-group>
                       </b-col>
                       <b-col sm="4">
                         <b-form-group>
                           <label for="amount">個数</label>
-                          <b-form-input type="number" id="amount"
-                                        v-model="formDataMaterials.materials[index].amount"></b-form-input>
+                          <b-form-input
+                            type="number"
+                            id="amount"
+                            v-model="formDataMaterials.materials[index].amount" />
                         </b-form-group>
                       </b-col>
                     </b-row>
@@ -156,7 +170,6 @@
               <!-- /材料設定 -->
             </slot>
           </div>
-
 
           <div class="modal-footer">
             <b-button variant="default" @click="onClickClose">
@@ -282,6 +295,7 @@
         // OK
         if (response.status) {
           this.resetLots();
+          this.$emit('update');
           this.$emit('close');
         }
       },
@@ -297,6 +311,7 @@
         // OK
         if (response.status) {
           this.resetLots();
+          this.$emit('update');
           this.$emit('close');
         }
       },

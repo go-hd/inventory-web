@@ -9,16 +9,22 @@
           <div class="modal-body">
             <slot name="body">
               <div>
-                <b-alert v-if="alertMessage" show :variant="alertStatus">{{ alertMessage }}
+                <b-alert v-if="alertMessage" show :variant="alertStatus">
+                  {{ alertMessage }}
                 </b-alert>
               </div>
               <b-row>
                 <b-col sm="12">
                   <b-form-group>
                     <label for="jan_code">JANコード</label>
-                    <b-form-input type="text" id="jan_code" placeholder="JANコード" v-model="formData.jan_code"
-                                  v-bind:class="{ 'is-invalid': errors.jan_code }" class="form-control"></b-form-input>
-                    <div v-for="(error, index) in errors.jan_code" v-bind:key="index" v-bind:value="error"
+                    <b-form-input
+                      type="text"
+                      id="jan_code"
+                      placeholder="JANコード"
+                      v-model="formData.jan_code"
+                      :class="{ 'is-invalid': errors.jan_code }"
+                      class="form-control" />
+                    <div v-for="(error, index) in errors.jan_code" :key="index" :value="error"
                          class="invalid-feedback">
                       {{ error }}
                     </div>

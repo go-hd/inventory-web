@@ -11,10 +11,12 @@
           <li
             class="nav-item"
             v-for="product in products[brand.id]"
-            :key="'product-' + product.id">
+            :key="'product-' + product.id"
+          >
             <nuxt-link
               class="nav-link"
-              :to="{ name:'product-id-lots', params: { id: product.id } }">
+              :to="{ name:'product-id-lots', params: { id: product.id } }"
+            >
               <span class="jan-code">JAN : {{ product.jan_code }}</span>
               <div class="name">
                 <i class="nav-icon icon-puzzle"></i>
