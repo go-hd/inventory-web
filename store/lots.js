@@ -69,7 +69,6 @@ export const actions = {
 
     commit('clearLots');
     Object.entries(lots || [])
-      .reverse()
       .forEach(([id, content]) =>
         commit('add', {
           lot: {

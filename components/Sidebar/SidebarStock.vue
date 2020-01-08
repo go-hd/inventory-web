@@ -7,12 +7,16 @@
         :name="location.name"
         icon="icon-tag"
         :key="'location-' + location.id"
+        :open="location.id == activeLocationId"
+        :active="location.id == activeLocationId"
       >
         <template>
           <li
             class="nav-item"
             v-for="brand in brandsHasLots"
-            :key="'brand-' + brand.id">
+            :key="'brand-' + brand.id"
+            :class="{'active': brand.id == activeBrandId}"
+          >
             <nuxt-link
               class="nav-link"
               :to="{name:'stock-locationId-brandId-lots', params: { brandId: brand.id, locationId: location.id }}"
@@ -32,7 +36,10 @@
     <ul class="nav sidebar-palette">
       <li class="nav-title">パレット</li>
       <template v-for="(item, index) in palettes">
-        <SidebarNavItem :key="index">
+        <SidebarNavItem
+                :key="index"
+                :classes="item.id == activePaletteId ? 'active' : ''"
+        >
           <nuxt-link
             class="nav-link"
             :to="{name:'palette-id',params: {id: item.id}}"
@@ -87,6 +94,18 @@
       locations: {
         type: Array,
         default: () => []
+      },
+      activeBrandId: {
+        type: Number,
+        default: () => ''
+      },
+      activeLocationId: {
+        type: Number,
+        default: () => ''
+      },
+      activePaletteId: {
+        type: Number,
+        default: () => ''
       },
     },
     methods: {

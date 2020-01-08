@@ -6,12 +6,16 @@
         v-for="brand in brands"
         :name="brand.name"
         icon="icon-tag"
-        :key="'brand-' + brand.id">
+        :key="'brand-' + brand.id"
+        :open="brand.id == activeBrandId"
+        :active="brand.id == activeBrandId"
+      >
         <template v-if="products.hasOwnProperty(brand.id)">
           <li
             class="nav-item"
             v-for="product in products[brand.id]"
             :key="'product-' + product.id"
+            :class="{'active': product.id == activeProductId}"
           >
             <nuxt-link
               class="nav-link"
@@ -86,6 +90,14 @@ export default {
     products: {
       type: Array | Object,
       default: () => []
+    },
+    activeBrandId: {
+      type: Number,
+      default: () => ''
+    },
+    activeProductId: {
+      type: Number,
+      default: () => ''
     },
   },
   methods: {

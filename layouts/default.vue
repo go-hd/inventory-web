@@ -7,12 +7,18 @@
           <div slot="header"></div>
           <SidebarProduct :brands="brands"
                           :products="products"
-                          v-if="name === 'index' || name === 'product-id-lots'" />
+                          v-if="name === 'index' || name === 'product-id-lots'"
+                          :activeBrandId="activeBrandId"
+                          :activeProductId="activeProductId"
+          />
           <SidebarStock
                   :palettes="palettes"
                   :locations="locations"
                   :brandsHasLots="brandsHasLots"
                   v-if="name === 'stock' || name === 'palette-id' || name === 'stock-locationId-brandId-lots'"
+                  :activeBrandId="activeBrandId"
+                  :activeLocationId="activeLocationId"
+                  :activePaletteId="activePaletteId"
           />
         </nav>
       </div>
@@ -49,6 +55,10 @@ export default {
   data () {
     return {
       nav: nav.items,
+      activeBrandId: 0,
+      activeProductId: 0,
+      activeLocationId: 0,
+      activePaletteId: 0,
     }
   },
   computed: {
@@ -63,5 +73,23 @@ export default {
     ...mapGetters('palettes', ['palettes']),
     ...mapGetters('locations', ['locations']),
   },
+  created() {
+    this.setListener()
+  },
+  methods: {
+    setListener() {
+      this.$nuxt.$on('updateSidebarProduct', this.updateSidebarProduct);
+      this.$nuxt.$on('updateSidebarStock', this.updateSidebarStock);
+    },
+    updateSidebarProduct(brandId, productId) {
+      this.activeBrandId = brandId;
+      this.activeProductId = productId;
+    },
+    updateSidebarStock(locationId, brandId, paletteId) {
+      this.activeBrandId = brandId;
+      this.activeLocationId = locationId;
+      this.activePaletteId = paletteId;
+    }
+  }
 }
 </script>

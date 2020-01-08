@@ -90,6 +90,9 @@
       },
       ...mapGetters('palettes', ['palettes']),
     },
+    mounted() {
+      this.$nuxt.$emit('updateSidebarStock', 0, 0, this.palette.id)
+    },
     methods: {
       showModal(type, id = null) {
         switch (type) {

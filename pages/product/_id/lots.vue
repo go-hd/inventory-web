@@ -106,6 +106,9 @@
       ...mapGetters('lots', ['lots', 'lotsByCompany', 'alertMessage', 'alertStatus']),
       ...mapGetters('brands', ['brands']),
     },
+    mounted() {
+      this.$nuxt.$emit('updateSidebarProduct', this.brand.id, this.product.id)
+    },
     methods: {
       async showModal(type, id = null) {
         switch (type) {

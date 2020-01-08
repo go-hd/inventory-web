@@ -11,7 +11,7 @@
               <span class="main-title">ロット在庫一覧</span>
             </div>
             <!-- /ヘッダー -->
-            <div class="d-flex align-items-stretch">
+            <div class="d-flex align-items-stretch container">
               <template v-for="(product, index) in products">
                 <div class="p-2 w-30" :key="`product-${index}`">
                   <div>{{ product.jan_code }}</div>
@@ -117,9 +117,16 @@
       location() {
         return cloneDeep(this.locations.find(data => data.id == this.$route.params.locationId));
       },
+      brand() {
+        return cloneDeep(this.brandsHasLots.find(data => data.id == this.$route.params.brandId));
+      },
       ...mapGetters('products', ['products']),
       ...mapGetters('locations', ['locations']),
       ...mapGetters('stock_history_types', ['stockHistoryTypes']),
+      ...mapGetters('brands', ['brandsHasLots']),
+    },
+    mounted() {
+      this.$nuxt.$emit('updateSidebarStock', this.location.id, this.brand.id, 0)
     },
     methods: {
       async showModal(type, lot = null) {

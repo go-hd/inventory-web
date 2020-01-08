@@ -1,6 +1,6 @@
 <template>
   <li class="nav-item nav-dropdown" :class="{ open }">
-    <div class="nav-link nav-dropdown-toggle" @click.prevent="open=!open">
+    <div class="nav-link nav-dropdown-toggle" @click.prevent="open=!open" :class="{ active }">
       <i :class="icon"></i> {{ name }}
     </div>
     <ul class="nav-dropdown-items">
@@ -11,12 +11,6 @@
 
 <script>
 export default {
-  data() {
-    return {
-      open: false
-    }
-  },
-
   props: {
     name: {
       type: String,
@@ -25,6 +19,14 @@ export default {
     icon: {
       type: String,
       default: ''
+    },
+    open: {
+      type: Boolean,
+      default: false
+    },
+    active: {
+      type: Boolean,
+      default: false
     }
   }
 }
