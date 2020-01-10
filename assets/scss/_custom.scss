@@ -166,6 +166,7 @@
   }
 
   .card-columns {
+    column-count: 5;
     .card {
       max-width: 15rem;
       cursor: pointer;

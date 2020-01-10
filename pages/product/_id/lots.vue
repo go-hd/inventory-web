@@ -14,20 +14,22 @@
               <b-button variant="primary" class="float-right w-25" @click="showModal('lot')"><i class="fa fa-plus"></i></b-button>
             </div>
             <!-- /ヘッダー -->
-            <div>
-              <div class="card-columns">
-                <template v-for="(lot, index) in lots">
-                  <div class="card text-white bg-secondary mb-3" :key="index" @click="showModal('lot', lot.id)">
-                    <div class="card-body">
-                      <h4 class="card-title">{{ lot.name }}</h4>
-                      <div class="info">
-                        ordered_at: {{ lot.ordered_at }}<br>
-                        lot_number: {{ lot.lot_number }}<br>
-                        expiration_date: {{ lot.expiration_dat }}<br>
+            <div class="d-flex align-items-stretch container">
+              <div class="p-2" :key="`product-${index}`">
+                <div class="card-columns">
+                  <template v-for="(lot, index) in lots">
+                    <div class="card text-white bg-secondary mb-3 p-2" :key="index" @click="showModal('lot', lot.id)">
+                      <div class="card-body">
+                        <h4 class="card-title">{{ lot.name }}</h4>
+                        <div class="info">
+                          ordered_at: {{ lot.ordered_at }}<br>
+                          lot_number: {{ lot.lot_number }}<br>
+                          expiration_date: {{ lot.expiration_dat }}<br>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </template>
+                  </template>
+                </div>
               </div>
             </div>
           </b-card>
