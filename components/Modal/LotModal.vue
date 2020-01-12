@@ -143,10 +143,10 @@
                       <b-col sm="8">
                         <b-form-group>
                           <label for="child_lot_id">子ロット</label>
-                          <b-form-select
-                            id="child_lot_id"
-                            :options="getLotOptions"
-                            v-model="formDataMaterials.materials[index].child_lot_id" />
+                          <v-select id="child_lot_id" :options="getLotOptions"
+                                    label="name"
+                                    :reduce="data => data.value"
+                                    v-model="formDataMaterials.materials[index].child_lot_id"></v-select>
                         </b-form-group>
                       </b-col>
                       <b-col sm="4">
@@ -187,12 +187,15 @@
   import cloneDeep from 'lodash.clonedeep'
   import Datepicker from 'vuejs-datepicker';
   import moment from 'moment';
+  import vSelect from 'vue-select';
+  import 'vue-select/dist/vue-select.css';
 
   export default {
     name: 'lot-modal',
     components: {
       Datepicker,
-      moment
+      moment,
+      vSelect,
     },
     props: {
       id: {
@@ -242,7 +245,7 @@
         let options = [];
         options.push([]);
         this.lots.map(lot => {
-          options.push({value: lot.id, text: lot.name});
+          options.push({value: lot.id, name: lot.name});
         });
         return options;
       },
