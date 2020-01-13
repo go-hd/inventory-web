@@ -16,5 +16,8 @@
       await store.dispatch('locations/fetchLocations', {company_id: store.state.auth.user.company.id});
       await store.dispatch('brands/fetchBrandsHasLots', {company_id: store.state.auth.user.company.id});
     },
+    mounted() {
+      this.$nuxt.$emit('updateSidebarProduct', 0, 0)
+    }
   }
 </script>

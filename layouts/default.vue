@@ -5,20 +5,24 @@
       <div class="sidebar">
         <nav class="sidebar-nav">
           <div slot="header"></div>
-          <SidebarProduct :brands="brands"
-                          :products="products"
-                          v-if="name === 'index' || name === 'product-id-lots'"
-                          :activeBrandId="activeBrandId"
-                          :activeProductId="activeProductId"
+          <SidebarProduct
+            :brands="brands"
+            :products="products"
+            v-if="name === 'index'
+                  || name === 'product-id-lots'"
+            :activeBrandId="activeBrandId"
+            :activeProductId="activeProductId"
           />
           <SidebarStock
-                  :palettes="palettes"
-                  :locations="locations"
-                  :brandsHasLots="brandsHasLots"
-                  v-if="name === 'stock' || name === 'palette-id' || name === 'stock-locationId-brandId-lots'"
-                  :activeBrandId="activeBrandId"
-                  :activeLocationId="activeLocationId"
-                  :activePaletteId="activePaletteId"
+            :palettes="palettes"
+            :locations="locations"
+            :brandsHasLots="brandsHasLots"
+            v-if="name === 'stock'
+                  || name === 'palette-id'
+                  || name === 'stock-locationId-brandId-lots'"
+            :activeBrandId="activeBrandId"
+            :activeLocationId="activeLocationId"
+            :activePaletteId="activePaletteId"
           />
         </nav>
       </div>

@@ -15,7 +15,7 @@
             class="nav-item"
             v-for="brand in brandsHasLots"
             :key="'brand-' + brand.id"
-            :class="{'active': brand.id == activeBrandId}"
+            :class="{'active': location.id == activeLocationId && brand.id == activeBrandId}"
           >
             <nuxt-link
               class="nav-link"
