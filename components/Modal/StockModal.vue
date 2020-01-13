@@ -1,164 +1,163 @@
 <template>
-  <transition name="modal">
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container">
-          <div class="modal-header">
-            <h3>ロット在庫情報更新</h3>
-            <nav v-if="id !== null" class="navbar navbar-expand-lg navbar-light bg-light">
-              <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                  <li class="nav-item" :class="{ 'active': isStockEdit }">
-                    <a class="nav-link" @click="onClickStockEdit">ロット在庫情報</a>
-                  </li>
-                  <li class="nav-item" :class="{ 'active': isRequest }">
-                    <a class="nav-link" @click="onClickRequest">発注依頼</a>
-                  </li>
-                </ul>
+  <ModalWrapper @close="onClickClose()">
+    <!-- ヘッダー -->
+    <template slot="header">
+      <h3>ロット在庫情報更新</h3>
+      <nav v-if="id !== null" class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item" :class="{ 'active': isStockEdit }">
+              <a class="nav-link" @click="onClickStockEdit">ロット在庫情報</a>
+            </li>
+            <li class="nav-item" :class="{ 'active': isRequest }">
+              <a class="nav-link" @click="onClickRequest">発注依頼</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </template>
+    <!-- /ヘッダー -->
+    <!-- ボディ -->
+    <template slot="body">
+      <!-- ロット在庫情報 -->
+      <div v-if="isStockEdit">
+        <div>
+          <b-alert v-if="stockAlertMessage" show :variant="stockAlertStatus">
+            {{ stockAlertMessage }}
+          </b-alert>
+        </div>
+        <b-row>
+          <b-col sm="12">
+            <b-form-group>
+              <label>拠点</label>
+              <div>
+                {{ location.name }}
               </div>
-            </nav>
-          </div>
-          <div class="modal-body">
-            <slot name="body">
-              <!-- ロット在庫情報 -->
-              <div v-if="isStockEdit">
-                <div>
-                  <b-alert v-if="stockAlertMessage" show :variant="stockAlertStatus">
-                    {{ stockAlertMessage }}
-                  </b-alert>
-                </div>
-                <b-row>
-                  <b-col sm="12">
-                    <b-form-group>
-                      <label>拠点</label>
-                      <div>
-                        {{ location.name }}
-                      </div>
-                    </b-form-group>
-                    <b-form-group>
-                      <label>ロット</label>
-                      <div>
-                        {{ lot.name }}
-                      </div>
-                    </b-form-group>
-                    <b-form-group>
-                      <label>在庫数</label>
-                      <div>
-                        {{ lot.stock_quantity }}個
-                      </div>
-                    </b-form-group>
-                    <b-form-group>
-                      <label for="child_lot_id">種別</label>
-                      <b-form-select
-                        id="child_lot_id"
-                        :options="getStockHistoryTypeOptions"
-                        v-model="formData.stock_history_type_id" />
-                      <div v-for="(error, index) in stockErrors.stock_history_type_id" :key="index"
-                           :value="error"
-                           class="invalid-feedback">
-                        {{ error }}
-                      </div>
-                    </b-form-group>
-                    <b-form-group>
-                      <label for="lot-quantity">個数</label>
-                      <b-form-input
-                        type="number"
-                        id="lot-quantity"
-                        placeholder="個数"
-                        v-model="formData.quantity"
-                        :class="{ 'is-invalid': stockErrors.quantity }"
-                        class="form-control" />
-                      <div v-for="(error, index) in stockErrors.quantity" :key="index" :value="error"
-                           class="invalid-feedback">
-                        {{ error }}
-                      </div>
-                    </b-form-group>
-                    <b-form-group>
-                      <label for="note">備考</label>
-                      <b-form-textarea
-                        id="note"
-                        placeholder="備考"
-                        v-model="formData.note"
-                        rows="3"
-                        max-rows="6"
-                        :class="{ 'is-invalid': stockErrors.note }"
-                       />
-                      <div v-for="(error, index) in stockErrors.note" :key="index" :value="error"
-                           class="invalid-feedback">
-                        {{ error }}
-                      </div>
-                    </b-form-group>
-                  </b-col>
-                </b-row>
-                <div class="form-actions float-right">
-                  <b-button type="submit" variant="primary" @click="onClickCreateStock()">
-                    登録する
-                  </b-button>
-                </div>
+            </b-form-group>
+            <b-form-group>
+              <label>ロット</label>
+              <div>
+                {{ lot.name }}
               </div>
-              <!-- 発注依頼 -->
-              <div v-if="isRequest">
-                <div>
-                  <b-alert v-if="requestAlertMessage" show :variant="requestAlertStatus">{{ requestAlertMessage }}
-                  </b-alert>
-                </div>
-                <b-row>
-                  <b-col sm="12">
-                    <b-form-group>
-                      <label for="child_lot_id">依頼拠点</label>
-                      <b-form-select
-                        id="location_id"
-                        :options="getLocationOptions"
-                        v-model="formDataRequest.shipping_location_id"
-                        :class="{ 'is-invalid': requestErrors.shipping_location_id }" />
-                      <div v-for="(error, index) in requestErrors.shipping_location_id" :key="index"
-                           :value="error"
-                           class="invalid-feedback">
-                        {{ error }}
-                      </div>
-                    </b-form-group>
-                    <b-form-group>
-                      <label for="request-quantity">個数</label>
-                      <b-form-input
-                        type="number"
-                        id="request-quantity"
-                        placeholder="個数"
-                        v-model="formDataRequest.quantity"
-                        :class="{ 'is-invalid': requestErrors.quantity }"
-                        class="form-control" />
-                      <div v-for="(error, index) in requestErrors.quantity" :key="index" :value="error"
-                           class="invalid-feedback">
-                        {{ error }}
-                      </div>
-                    </b-form-group>
-                  </b-col>
-                </b-row>
-                <div class="form-actions float-right">
-                  <b-button type="submit" variant="primary" @click="onClickCreateRequest()">
-                    登録する
-                  </b-button>
-                </div>
+            </b-form-group>
+            <b-form-group>
+              <label>在庫数</label>
+              <div>
+                {{ lot.stock_quantity }}個
               </div>
-            </slot>
-          </div>
-
-          <div class="modal-footer">
-            <b-button variant="default" @click="onClickClose">
-              閉じる
-            </b-button>
-          </div>
+            </b-form-group>
+            <b-form-group>
+              <label for="child_lot_id">種別</label>
+              <b-form-select
+                      id="child_lot_id"
+                      :options="getStockHistoryTypeOptions"
+                      v-model="formData.stock_history_type_id" />
+              <div v-for="(error, index) in stockErrors.stock_history_type_id" :key="index"
+                   :value="error"
+                   class="invalid-feedback">
+                {{ error }}
+              </div>
+            </b-form-group>
+            <b-form-group>
+              <label for="lot-quantity">個数</label>
+              <b-form-input
+                      type="number"
+                      id="lot-quantity"
+                      placeholder="個数"
+                      v-model="formData.quantity"
+                      :class="{ 'is-invalid': stockErrors.quantity }"
+                      class="form-control" />
+              <div v-for="(error, index) in stockErrors.quantity" :key="index" :value="error"
+                   class="invalid-feedback">
+                {{ error }}
+              </div>
+            </b-form-group>
+            <b-form-group>
+              <label for="note">備考</label>
+              <b-form-textarea
+                      id="note"
+                      placeholder="備考"
+                      v-model="formData.note"
+                      rows="3"
+                      max-rows="6"
+                      :class="{ 'is-invalid': stockErrors.note }"
+              />
+              <div v-for="(error, index) in stockErrors.note" :key="index" :value="error"
+                   class="invalid-feedback">
+                {{ error }}
+              </div>
+            </b-form-group>
+          </b-col>
+        </b-row>
+        <div class="form-actions float-right">
+          <b-button type="submit" variant="primary" @click="onClickCreateStock()">
+            登録する
+          </b-button>
         </div>
       </div>
-    </div>
-  </transition>
+      <!-- 発注依頼 -->
+      <div v-if="isRequest">
+        <div>
+          <b-alert v-if="requestAlertMessage" show :variant="requestAlertStatus">{{ requestAlertMessage }}
+          </b-alert>
+        </div>
+        <b-row>
+          <b-col sm="12">
+            <b-form-group>
+              <label for="child_lot_id">依頼拠点</label>
+              <b-form-select
+                      id="location_id"
+                      :options="getLocationOptions"
+                      v-model="formDataRequest.shipping_location_id"
+                      :class="{ 'is-invalid': requestErrors.shipping_location_id }" />
+              <div v-for="(error, index) in requestErrors.shipping_location_id" :key="index"
+                   :value="error"
+                   class="invalid-feedback">
+                {{ error }}
+              </div>
+            </b-form-group>
+            <b-form-group>
+              <label for="request-quantity">個数</label>
+              <b-form-input
+                      type="number"
+                      id="request-quantity"
+                      placeholder="個数"
+                      v-model="formDataRequest.quantity"
+                      :class="{ 'is-invalid': requestErrors.quantity }"
+                      class="form-control" />
+              <div v-for="(error, index) in requestErrors.quantity" :key="index" :value="error"
+                   class="invalid-feedback">
+                {{ error }}
+              </div>
+            </b-form-group>
+          </b-col>
+        </b-row>
+        <div class="form-actions float-right">
+          <b-button type="submit" variant="primary" @click="onClickCreateRequest()">
+            登録する
+          </b-button>
+        </div>
+      </div>
+    </template>
+    <!-- ボディ -->
+    <!-- フッター -->
+    <b-button variant="default" @click="onClickClose" slot="footer">
+      閉じる
+    </b-button>
+    <!-- /フッター -->
+  </ModalWrapper>
 </template>
 
 <script>
   import {mapGetters, mapActions} from 'vuex'
   import cloneDeep from 'lodash.clonedeep'
+  import ModalWrapper from './ModalWrapper'
 
   export default {
     name: 'stock-modal',
+    components: {
+      ModalWrapper,
+    },
     props: {
       location: {
         default: [],

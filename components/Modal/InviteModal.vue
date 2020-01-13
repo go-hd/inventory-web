@@ -1,61 +1,57 @@
 <template>
-  <transition name="modal">
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container">
-          <div class="modal-header">
-            <h3>メンバー招待</h3>
-          </div>
-
-          <div class="modal-body">
-            <slot name="body">
-              <div>
-                <b-alert v-if="alertMessage" show :variant="alertStatus">{{ alertMessage }}</b-alert>
-              </div>
-              <b-row>
-                <b-col sm="12">
-                  <!-- フォーム -->
-                  <b-form-group>
-                    <b-input-group>
-                      <b-form-input
-                        type="email"
-                        placeholder="メールアドレス"
-                        v-model="formData.email"
-                        :class="{ 'is-invalid': errors.email }"
-                        class="form-control" />
-                      <!-- Attach Right button -->
-                      <b-input-group-append>
-                        <b-button variant="primary" @click="onClickInviteUser()">招待</b-button>
-                      </b-input-group-append>
-                      <div v-for="(error, index) in errors.email" :key="index" :value="error"
-                           class="invalid-feedback">
-                        {{ error }}
-                      </div>
-                    </b-input-group>
-                  </b-form-group>
-                  <!-- /フォーム -->
-                </b-col>
-              </b-row>
-            </slot>
-          </div>
-
-          <div class="modal-footer">
-            <b-button variant="default" @click="onClickClose">
-              閉じる
-            </b-button>
-          </div>
-        </div>
+  <ModalWrapper @close="onClickClose()">
+    <!-- ヘッダー -->
+    <h3 slot="header">メンバー招待</h3>
+    <!-- /ヘッダー -->
+    <!-- ボディ -->
+    <template slot="body">
+      <div>
+        <b-alert v-if="alertMessage" show :variant="alertStatus">{{ alertMessage }}</b-alert>
       </div>
-    </div>
-  </transition>
+      <b-row>
+        <b-col sm="12">
+          <!-- フォーム -->
+          <b-form-group>
+            <b-input-group>
+              <b-form-input
+                      type="email"
+                      placeholder="メールアドレス"
+                      v-model="formData.email"
+                      :class="{ 'is-invalid': errors.email }"
+                      class="form-control" />
+              <!-- Attach Right button -->
+              <b-input-group-append>
+                <b-button variant="primary" @click="onClickInviteUser()">招待</b-button>
+              </b-input-group-append>
+              <div v-for="(error, index) in errors.email" :key="index" :value="error"
+                   class="invalid-feedback">
+                {{ error }}
+              </div>
+            </b-input-group>
+          </b-form-group>
+          <!-- /フォーム -->
+        </b-col>
+      </b-row>
+    </template>
+    <!-- ボディ -->
+    <!-- フッター -->
+    <b-button variant="default" @click="onClickClose" slot="footer">
+      閉じる
+    </b-button>
+    <!-- /フッター -->
+  </ModalWrapper>
 </template>
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
   import cloneDeep from 'lodash.clonedeep'
+  import ModalWrapper from './ModalWrapper'
 
   export default {
     name: 'invite-modal',
+    components: {
+      ModalWrapper,
+    },
     data () {
       return {
         formData: {

@@ -1,58 +1,52 @@
 <template>
-  <transition name="modal">
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container">
-          <div class="modal-header">
-            <h3>出庫待ち一覧</h3>
-          </div>
-          <div class="modal-body">
-            <slot name="body">
-              <div>
-                <b-alert v-if="alertMessage" show :variant="alertStatus">{{ alertMessage }}
-                </b-alert>
-              </div>
-              <b-row>
-                <b-col sm="12">
-                  <b-table
-                    :hover="hover"
-                    :striped="striped"
-                    :bordered="bordered"
-                    :small="small"
-                    :fixed="fixed"
-                    responsive="sm"
-                    :items="getShippingTasks"
-                    :fields="fields"
-                    :current-page="currentPage"
-                    :per-page="perPage"
-                  >
-                    <template slot="出庫完了" slot-scope="data">
-                      <b-button variant="primary" @click="onClickShipped(data.item.id)">出庫完了</b-button>
-                    </template>
-                  </b-table>
-                </b-col>
-              </b-row>
-            </slot>
-          </div>
-
-          <div class="modal-footer">
-            <b-button variant="default" @click="onClickClose">
-              閉じる
-            </b-button>
-          </div>
-        </div>
+  <ModalWrapper @close="onClickClose()">
+    <!-- ヘッダー -->
+    <h3 slot="header">出庫待ち一覧</h3>
+    <!-- /ヘッダー -->
+    <!-- ボディ -->
+    <template slot="body">
+      <div>
+        <b-alert v-if="alertMessage" show :variant="alertStatus">{{ alertMessage }}
+        </b-alert>
       </div>
-    </div>
-  </transition>
+      <b-row>
+        <b-col sm="12">
+          <b-table
+                  :hover="hover"
+                  :striped="striped"
+                  :bordered="bordered"
+                  :small="small"
+                  :fixed="fixed"
+                  responsive="sm"
+                  :items="getShippingTasks"
+                  :fields="fields"
+                  :current-page="currentPage"
+                  :per-page="perPage"
+          >
+            <template slot="出庫完了" slot-scope="data">
+              <b-button variant="primary" @click="onClickShipped(data.item.id)">出庫完了</b-button>
+            </template>
+          </b-table>
+        </b-col>
+      </b-row>
+    </template>
+    <!-- ボディ -->
+    <!-- フッター -->
+    <b-button variant="default" @click="onClickClose" slot="footer">
+      閉じる
+    </b-button>
+    <!-- /フッター -->
+  </ModalWrapper>
 </template>
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
-  import cloneDeep from 'lodash.clonedeep'
+  import ModalWrapper from './ModalWrapper'
 
   export default {
     name: 'shipping-modal',
     components: {
+      ModalWrapper,
     },
     props: {
       locationId: {

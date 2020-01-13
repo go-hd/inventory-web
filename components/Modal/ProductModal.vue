@@ -1,64 +1,61 @@
 <template>
-  <transition name="modal">
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container">
-          <div class="modal-header">
-            <h3>商品情報更新</h3>
-          </div>
-          <div class="modal-body">
-            <slot name="body">
-              <div>
-                <b-alert v-if="alertMessage" show :variant="alertStatus">
-                  {{ alertMessage }}
-                </b-alert>
-              </div>
-              <b-row>
-                <b-col sm="12">
-                  <b-form-group>
-                    <label for="jan_code">JANコード</label>
-                    <b-form-input
-                      type="text"
-                      id="jan_code"
-                      placeholder="JANコード"
-                      v-model="formData.jan_code"
-                      :class="{ 'is-invalid': errors.jan_code }"
-                      class="form-control" />
-                    <div v-for="(error, index) in errors.jan_code" :key="index" :value="error"
-                         class="invalid-feedback">
-                      {{ error }}
-                    </div>
-                  </b-form-group>
-                </b-col>
-              </b-row>
-              <div class="form-actions float-right">
-                <b-button type="submit" variant="primary" @click="onClickCreat()" v-if="id === null">
-                  登録する
-                </b-button>
-                <b-button type="submit" variant="primary" @click="onClickUpdate()" v-if="id !== null">
-                  更新する
-                </b-button>
-              </div>
-            </slot>
-          </div>
-
-          <div class="modal-footer">
-            <b-button variant="default" @click="onClickClose">
-              閉じる
-            </b-button>
-          </div>
-        </div>
+  <ModalWrapper @close="onClickClose()">
+    <!-- ヘッダー -->
+    <h3 slot="header">商品情報更新</h3>
+    <!-- /ヘッダー -->
+    <!-- ボディ -->
+    <template slot="body">
+      <div>
+        <b-alert v-if="alertMessage" show :variant="alertStatus">
+          {{ alertMessage }}
+        </b-alert>
       </div>
-    </div>
-  </transition>
+      <b-row>
+        <b-col sm="12">
+          <b-form-group>
+            <label for="jan_code">JANコード</label>
+            <b-form-input
+                    type="text"
+                    id="jan_code"
+                    placeholder="JANコード"
+                    v-model="formData.jan_code"
+                    :class="{ 'is-invalid': errors.jan_code }"
+                    class="form-control" />
+            <div v-for="(error, index) in errors.jan_code" :key="index" :value="error"
+                 class="invalid-feedback">
+              {{ error }}
+            </div>
+          </b-form-group>
+        </b-col>
+      </b-row>
+      <div class="form-actions float-right">
+        <b-button type="submit" variant="primary" @click="onClickCreat()" v-if="id === null">
+          登録する
+        </b-button>
+        <b-button type="submit" variant="primary" @click="onClickUpdate()" v-if="id !== null">
+          更新する
+        </b-button>
+      </div>
+    </template>
+    <!-- ボディ -->
+    <!-- フッター -->
+    <b-button variant="default" @click="onClickClose" slot="footer">
+      閉じる
+    </b-button>
+    <!-- /フッター -->
+  </ModalWrapper>
 </template>
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
   import cloneDeep from 'lodash.clonedeep'
+  import ModalWrapper from './ModalWrapper'
 
   export default {
     name: 'product-modal',
+    components: {
+      ModalWrapper,
+    },
     props: {
       brand_id: {
         type: Number,

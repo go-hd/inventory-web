@@ -1,77 +1,72 @@
 <template>
-  <transition name="modal">
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container">
-          <div class="modal-header">
-            <h3>{{ palette.type }} パレット個数更新</h3>
-          </div>
-          <div class="modal-body">
-            <slot name="body">
-              <div>
-                <b-alert v-if="alertMessage" show :variant="alertStatus">
-                  {{ alertMessage }}
-                </b-alert>
-              </div>
-              <b-row>
-                <b-col sm="12">
-                  <b-form-group>
-                    <label for="location_id">保管拠点</label>
-                    <b-form-select
-                      id="location_id"
-                      :options="getLocationOptions"
-                      v-model="formData.location_id"
-                      :class="{ 'is-invalid': errors.location_id }" />
-                    <div v-for="(error, index) in errors.location_id" :key="index" :value="error"
-                         class="invalid-feedback">
-                      {{ error }}
-                    </div>
-                  </b-form-group>
-                </b-col>
-              </b-row>
-              <b-row>
-                <b-col sm="12">
-                  <b-form-group>
-                    <label for="quantity">個数</label>
-                    <b-form-input
-                      type="number"
-                      id="quantity"
-                      placeholder="個数"
-                      v-model="formData.quantity"
-                      :class="{ 'is-invalid': errors.quantity }"
-                      class="form-control" />
-                    <div v-for="(error, index) in errors.quantity" :key="index" :value="error" class="invalid-feedback">
-                      {{ error }}
-                    </div>
-                  </b-form-group>
-                </b-col>
-              </b-row>
-              <div class="form-actions float-right">
-                <b-button type="submit" variant="primary" @click="onClickUpdate()">
-                  更新する
-                </b-button>
-              </div>
-            </slot>
-          </div>
-
-          <div class="modal-footer">
-            <b-button variant="default" @click="onClickClose">
-              閉じる
-            </b-button>
-          </div>
-        </div>
+  <ModalWrapper @close="onClickClose()">
+    <!-- ヘッダー -->
+    <h3 slot="header">{{ palette.type }} パレット個数更新</h3>
+    <!-- /ヘッダー -->
+    <!-- ボディ -->
+    <template slot="body">
+      <div>
+        <b-alert v-if="alertMessage" show :variant="alertStatus">
+          {{ alertMessage }}
+        </b-alert>
       </div>
-    </div>
-  </transition>
+      <b-row>
+        <b-col sm="12">
+          <b-form-group>
+            <label for="location_id">保管拠点</label>
+            <b-form-select
+                    id="location_id"
+                    :options="getLocationOptions"
+                    v-model="formData.location_id"
+                    :class="{ 'is-invalid': errors.location_id }" />
+            <div v-for="(error, index) in errors.location_id" :key="index" :value="error"
+                 class="invalid-feedback">
+              {{ error }}
+            </div>
+          </b-form-group>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col sm="12">
+          <b-form-group>
+            <label for="quantity">個数</label>
+            <b-form-input
+                    type="number"
+                    id="quantity"
+                    placeholder="個数"
+                    v-model="formData.quantity"
+                    :class="{ 'is-invalid': errors.quantity }"
+                    class="form-control" />
+            <div v-for="(error, index) in errors.quantity" :key="index" :value="error" class="invalid-feedback">
+              {{ error }}
+            </div>
+          </b-form-group>
+        </b-col>
+      </b-row>
+      <div class="form-actions float-right">
+        <b-button type="submit" variant="primary" @click="onClickUpdate()">
+          更新する
+        </b-button>
+      </div>
+    </template>
+    <!-- ボディ -->
+    <!-- フッター -->
+    <b-button variant="default" @click="onClickClose" slot="footer">
+      閉じる
+    </b-button>
+    <!-- /フッター -->
+  </ModalWrapper>
 </template>
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
   import cloneDeep from 'lodash.clonedeep'
+  import ModalWrapper from './ModalWrapper'
 
   export default {
     name: 'palette-modal',
     components: {
+      ModalWrapper,
     },
     props: {
       id: {
