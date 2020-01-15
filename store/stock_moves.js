@@ -66,8 +66,8 @@ export const actions = {
     }
     return result;
   },
-  async recieved({ commit }, id) {
-    const result = await this.$axios.$post(`http://localhost:8000/stock_moves/recieved/` + id).catch(err => {
+  async received({ commit }, id) {
+    const result = await this.$axios.$post(`http://localhost:8000/stock_moves/received/` + id).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false

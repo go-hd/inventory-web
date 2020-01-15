@@ -184,7 +184,7 @@
         },
         formDataRequest: {
           shipping_location_id: '',
-          recieving_location_id: this.location.id,
+          receiving_location_id: this.location.id,
           lot_id: this.lot.id,
           quantity: 0,
         },

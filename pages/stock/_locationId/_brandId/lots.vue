@@ -30,9 +30,9 @@
                               出庫待ち<br>確認
                             </div>
                             <div
-                              v-if="lot.recieving_tasks && lot.recieving_tasks.length !== 0"
+                              v-if="lot.receiving_tasks && lot.receiving_tasks.length !== 0"
                               class="label bg-info text-white"
-                              @click="showModal('recieving', lot)"
+                              @click="showModal('receiving', lot)"
                             >
                               入庫確認待ち<br>確認
                             </div>
@@ -62,11 +62,11 @@
           :lot="showModalShippingLot"
           @update="updateStock"
         />
-        <RecievingModal
-          v-if="showModalRecieving"
-          @close="closeModal('recieving')"
+        <ReceivingModal
+          v-if="showModalReceiving"
+          @close="closeModal('receiving')"
           :locationId="$route.params.locationId"
-          :lot="showModalRecievingLot"
+          :lot="showModalReceivingLot"
           @update="updateStock"
         />
       </b-row>
@@ -79,14 +79,14 @@
   import cloneDeep from 'lodash.clonedeep'
   import StockModal from '~/components/Modal/StockModal'
   import ShippingModal from '~/components/Modal/ShippingModal'
-  import RecievingModal from '~/components/Modal/RecievingModal'
+  import ReceivingModal from '~/components/Modal/ReceivingModal'
 
   export default {
     name: 'Lots',
     components: {
       StockModal,
       ShippingModal,
-      RecievingModal,
+      ReceivingModal,
     },
     data () {
       return {
@@ -94,8 +94,8 @@
         showModalLot: null,
         showModalShipping: false,
         showModalShippingLot: null,
-        showModalRecieving: false,
-        showModalRecievingLot: null,
+        showModalReceiving: false,
+        showModalReceivingLot: null,
       }
     },
     /**
@@ -139,9 +139,9 @@
             this.showModalShipping = true;
             this.showModalShippingLot = lot;
             break;
-          case 'recieving':
-            this.showModalRecieving = true;
-            this.showModalRecievingLot = lot;
+          case 'receiving':
+            this.showModalReceiving = true;
+            this.showModalReceivingLot = lot;
             break;
           default:
             break;
@@ -161,9 +161,9 @@
             this.showModalShipping = false;
             this.showModalShippingLot = null;
             break;
-          case 'recieving':
-            this.showModalRecieving = false;
-            this.showModalRecievingLot = null;
+          case 'receiving':
+            this.showModalReceiving = false;
+            this.showModalReceivingLot = null;
             break;
           default:
             break;

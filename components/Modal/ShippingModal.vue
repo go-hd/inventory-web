@@ -98,7 +98,7 @@
         this.lot.shipping_tasks.map(shipping_task => {
           datas.push({
             id: shipping_task.id,
-            出庫先拠点: shipping_task.recieving_location.name,
+            出庫先拠点: shipping_task.receiving_location.name,
             個数: shipping_task.quantity
           });
         });

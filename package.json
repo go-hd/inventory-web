@@ -23,6 +23,7 @@
     "flag-icon-css": "^2.9.0",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.15",
+    "lodash.clonedeep": "^4.5.0",
     "moment": "^2.24.0",
     "node-sass": "^4.11.0",
     "nuxt": "^2.8.1",
