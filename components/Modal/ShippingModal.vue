@@ -12,16 +12,11 @@
       <b-row>
         <b-col sm="12">
           <b-table
-                  :hover="hover"
-                  :striped="striped"
-                  :bordered="bordered"
-                  :small="small"
-                  :fixed="fixed"
-                  responsive="sm"
-                  :items="getShippingTasks"
-                  :fields="fields"
-                  :current-page="currentPage"
-                  :per-page="perPage"
+            responsive="sm"
+            :items="getShippingTasks"
+            :fields="fields"
+            :current-page="currentPage"
+            :per-page="perPage"
           >
             <template slot="出庫完了" slot-scope="data">
               <b-button variant="primary" @click="onClickShipped(data.item.id)">出庫完了</b-button>
@@ -50,7 +45,7 @@
     },
     props: {
       locationId: {
-        type: Number,
+        type: String,
         default: null
       },
       lot: {

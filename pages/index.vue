@@ -1,8 +1,5 @@
 <template>
-  <div class="animated fadeIn">
-    <b-row>
-    </b-row>
-  </div>
+  <div></div>
 </template>
 
 <script>

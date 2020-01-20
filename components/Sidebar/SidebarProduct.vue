@@ -7,8 +7,8 @@
         :name="brand.name"
         icon="icon-tag"
         :key="'brand-' + brand.id"
-        :open="brand.id == activeBrandId"
-        :active="brand.id == activeBrandId"
+        :open="brand.id === activeBrandId"
+        :active="brand.id === activeBrandId"
       >
         <template v-if="products.hasOwnProperty(brand.id)">
           <li

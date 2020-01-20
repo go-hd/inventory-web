@@ -15,7 +15,7 @@
             </div>
             <!-- /ヘッダー -->
             <div class="d-flex align-items-stretch container">
-              <div class="p-2" :key="`product-${index}`">
+              <div class="p-2">
                 <div class="card-columns">
                   <template v-for="(lot, index) in lots">
                     <div class="card text-white bg-secondary mb-3 p-2" :key="index" @click="showModal('lot', lot.id)">

@@ -3,7 +3,7 @@
     <!-- ヘッダー -->
     <template slot="header">
       <h3>ロット在庫情報更新</h3>
-      <nav v-if="id !== null" class="navbar navbar-expand-lg navbar-light bg-light">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item" :class="{ 'active': isStockEdit }">
@@ -47,7 +47,7 @@
               </div>
             </b-form-group>
             <b-form-group>
-              <label for="child_lot_id">種別</label>
+              <label>種別</label>
               <b-form-select
                       id="child_lot_id"
                       :options="getStockHistoryTypeOptions"
@@ -59,7 +59,7 @@
               </div>
             </b-form-group>
             <b-form-group>
-              <label for="lot-quantity">個数</label>
+              <label>個数</label>
               <b-form-input
                       type="number"
                       id="lot-quantity"
@@ -73,7 +73,7 @@
               </div>
             </b-form-group>
             <b-form-group>
-              <label for="note">備考</label>
+              <label>備考</label>
               <b-form-textarea
                       id="note"
                       placeholder="備考"
@@ -104,7 +104,7 @@
         <b-row>
           <b-col sm="12">
             <b-form-group>
-              <label for="child_lot_id">依頼拠点</label>
+              <label>依頼拠点</label>
               <b-form-select
                       id="location_id"
                       :options="getLocationOptions"
@@ -117,7 +117,7 @@
               </div>
             </b-form-group>
             <b-form-group>
-              <label for="request-quantity">個数</label>
+              <label>個数</label>
               <b-form-input
                       type="number"
                       id="request-quantity"
