@@ -24,7 +24,7 @@
                         <div class="info">
                           ordered_at: {{ lot.ordered_at }}<br>
                           lot_number: {{ lot.lot_number }}<br>
-                          expiration_date: {{ lot.expiration_dat }}<br>
+                          expiration_date: {{ lot.expiration_date }}<br>
                         </div>
                       </div>
                     </div>

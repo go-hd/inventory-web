@@ -1,7 +1,21 @@
 <template>
   <ModalWrapper @close="onClickClose()">
     <!-- ヘッダー -->
-    <h3 slot="header">ロット情報更新</h3>
+    <template slot="header">
+      <h3>ロット情報更新</h3>
+      <nav v-if="id !== null" class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item" :class="{ 'active': isLot }">
+              <a class="nav-link" @click="onClickLotEdit">ロット情報</a>
+            </li>
+            <li class="nav-item" :class="{ 'active': isMaterial }">
+              <a class="nav-link" @click="onClickMaterialEdit">材料設定</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </template>
     <!-- /ヘッダー -->
     <!-- ボディ -->
     <template slot="body">
@@ -14,7 +28,7 @@
         <b-row>
           <b-col sm="12">
             <b-form-group>
-              <label for="lot_number">ロットナンバー</label>
+              <label>ロットナンバー</label>
               <b-form-input
                       type="text"
                       id="lot_number"
@@ -28,7 +42,7 @@
               </div>
             </b-form-group>
             <b-form-group>
-              <label for="name">ロット名</label>
+              <label>ロット名</label>
               <b-form-input
                       type="text"
                       id="name"
@@ -77,7 +91,7 @@
               </div>
             </b-form-group>
             <b-form-group>
-              <label for="is_ten_days_notation">発注日時期表記フラグ</label>
+              <label>発注日時期表記フラグ</label>
               <b-form-checkbox
                       id="is_ten_days_notation"
                       v-model="formData.is_ten_days_notation"
@@ -110,7 +124,7 @@
         </div>
         <b-row>
           <b-col sm="12">
-            <label for="lot_number" class="label-with-button font-xl mb-3">
+            <label class="label-with-button font-xl mb-3">
               材料設定
               <b-button variant="primary" class="float-right ml-3" @click="onAddMaterial">
                 <i class="fa fa-plus"></i>
@@ -136,7 +150,7 @@
               </b-col>
               <b-col sm="4">
                 <b-form-group>
-                  <label for="amount">個数</label>
+                  <label>個数</label>
                   <b-form-input
                           type="number"
                           id="amount"
