@@ -1,7 +1,6 @@
-import moment from '~/plugins/moment'
-
 export const state = () => ({
   materials: [],
+  deletedMaterialIds: [],
   alertMessage: null,
   alertStatus: null,
   errors: [],
@@ -9,6 +8,7 @@ export const state = () => ({
 
 export const getters = {
   materials: state => state.materials,
+  deletedMaterialIds: state => state.deletedMaterialIds,
   alertMessage: state => state.alertMessage,
   alertStatus: state => state.alertStatus,
   errors: state => state.errors,
@@ -21,11 +21,12 @@ export const mutations = {
   update(state, { material }) {
     state.materials = state.materials.map(data => (data.id === material.id ? material : data));
   },
-  delete(state, { material }) {
+  delete(state, { id }) {
     for(let i = 0; i < state.materials.length; i++) {
       const b = state.materials[i];
-      if(b.id === material.id) {
+      if(b.id === id) {
         state.materials.splice(i, 1);
+        state.deletedMaterialIds.push(id);
         return;
       }
     }
@@ -80,9 +81,14 @@ export const actions = {
     }
     return result;
   },
-  async updateMaterials({ commit }, { materials }) {
+  async updateMaterials({ commit, state }, { materials }) {
     commit('clear');
-    const result = await this.$axios.$post(`http://localhost:8000/materials/update_multi`, materials).catch(err => {
+    const result = await this.$axios.
+      $post(`http://localhost:8000/materials/update_multi`, {
+        materials: materials.materials,
+        deleted_ids: state.deletedMaterialIds,
+      })
+      .catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -129,4 +135,7 @@ export const actions = {
   reset({ commit }) {
     commit('clear');
   },
+  delete({ commit }, id) {
+    commit('delete', { id: id });
+  }
 };

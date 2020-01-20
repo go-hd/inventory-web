@@ -139,7 +139,15 @@
               </div>
             </div>
             <b-row v-for="(material, index) in formDataMaterials.materials" :key="index">
-              <b-col sm="8">
+              <b-col sm="1">
+                <b-form-group>
+                  <label></label>
+                  <b-button variant="danger" @click="onDeleteMaterial(formDataMaterials.materials[index].id)">
+                    <i class="fa fa-minus"></i>
+                  </b-button>
+                </b-form-group>
+              </b-col>
+              <b-col sm="7">
                 <b-form-group>
                   <label for="child_lot_id">子ロット</label>
                   <v-select id="child_lot_id" :options="getLotOptions"
@@ -350,8 +358,15 @@
           amount: 0,
         })
       },
+      /**
+       * 材料を削除ボタン押下時
+       */
+      onDeleteMaterial(id) {
+        this.delete(id);
+        this.formDataMaterials.materials = cloneDeep(this.materials);
+      },
       ...mapActions('lots', ['createLot', 'updateLot']),
-      ...mapActions('materials', ['updateMaterials']),
+      ...mapActions('materials', ['updateMaterials', 'delete']),
       ...mapActions({
         resetLots: 'lots/reset',
         resetMaterials: 'materials/reset',
