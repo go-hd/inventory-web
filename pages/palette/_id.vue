@@ -5,7 +5,7 @@
         <b-col cols="12">
           <b-card header-tag="header" footer-tag="footer">
             <!-- ヘッダー -->
-            <div slot="header">
+            <slot name="header">
               <span class="sub-title">
                 {{ palette.type }} <i class="icon-pencil edit-icon" @click="showModal('palette', palette.id)"></i>
                 保管分布
@@ -13,7 +13,7 @@
               <p>所有者：{{ palette.location.name }}</p>
               <span class="main-title">パレット一覧</span>
               <b-button variant="primary" class="float-right w-25" @click="showModal('palette-move')"><i class="fa fa-plus"></i></b-button>
-            </div>
+            </slot>
             <!-- /ヘッダー -->
             <div>
               <div class="card-columns">
@@ -53,8 +53,8 @@
 </template>
 
 <script>
-  import PaletteModal from '~/components/Modal/PaletteModal'
-  import PaletteMoveModal from '~/components/Modal/PaletteMoveModal'
+  import PaletteModal from '~/components/Modal/Palette/Info/Index'
+  import PaletteMoveModal from '~/components/Modal/Palette/Move/Index'
   import { mapGetters } from 'vuex'
   import cloneDeep from 'lodash.clonedeep'
 

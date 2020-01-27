@@ -63,7 +63,7 @@
 </template>
 
 <script>
-  import PaletteModal from '../Modal/PaletteModal'
+  import PaletteModal from '../Modal/Palette/Info/Index'
   import SidebarNavDropdown from './SidebarNavDropdown'
   import SidebarNavItem from './SidebarNavItem'
 

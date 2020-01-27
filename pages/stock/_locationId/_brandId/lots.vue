@@ -5,11 +5,11 @@
         <b-col cols="12">
           <b-card header-tag="header" footer-tag="footer">
             <!-- ヘッダー -->
-            <div slot="header">
+            <slot name="header">
               <span class="sub-title">
               </span><br />
               <span class="main-title">ロット在庫一覧</span>
-            </div>
+            </slot>
             <!-- /ヘッダー -->
             <div class="d-flex align-items-stretch container">
               <template v-for="(product, index) in products">
@@ -77,9 +77,9 @@
 <script>
   import { mapGetters } from 'vuex'
   import cloneDeep from 'lodash.clonedeep'
-  import StockModal from '~/components/Modal/StockModal'
-  import ShippingModal from '~/components/Modal/ShippingModal'
-  import ReceivingModal from '~/components/Modal/ReceivingModal'
+  import StockModal from '~/components/Modal/Stock/Index'
+  import ShippingModal from '~/components/Modal/Shipping/Index'
+  import ReceivingModal from '~/components/Modal/Receiving/Index'
 
   export default {
     name: 'Lots',

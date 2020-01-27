@@ -12,7 +12,7 @@
         class="px-3 item"
         :class="{ 'active': name === 'index' || name === 'product-id-lots' }"
       >
-        <nuxt-link class="nav-link" :to="{ name: 'index' }">
+        <nuxt-link class="nav-link" :to="{ name: 'dashboard' }">
           商品管理
         </nuxt-link>
       </b-nav-item>

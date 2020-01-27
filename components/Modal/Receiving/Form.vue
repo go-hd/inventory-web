@@ -1,48 +1,32 @@
 <template>
-  <ModalWrapper @close="onClickClose()">
-    <!-- ヘッダー -->
-    <h3 slot="header">入庫確認待ち一覧</h3>
-    <!-- /ヘッダー -->
-    <!-- ボディ -->
-    <template slot="body">
-      <div>
-        <b-alert v-if="alertMessage" show :variant="alertStatus">{{ alertMessage }}
-        </b-alert>
-      </div>
-      <b-row>
-        <b-col sm="12">
-          <b-table
-            responsive="sm"
-            :items="getReceivingTasks"
-            :fields="fields"
-            :current-page="currentPage"
-            :per-page="perPage"
-          >
-            <template slot="入庫確認完了" slot-scope="data">
-              <b-button variant="primary" @click="onClickReceived(data.item.id)">入庫確認完了</b-button>
-            </template>
-          </b-table>
-        </b-col>
-      </b-row>
-    </template>
-    <!-- ボディ -->
-    <!-- フッター -->
-    <b-button variant="default" @click="onClickClose" slot="footer">
-      閉じる
-    </b-button>
-    <!-- /フッター -->
-  </ModalWrapper>
+  <div>
+    <div>
+      <b-alert v-if="alertMessage" show :variant="alertStatus">{{ alertMessage }}
+      </b-alert>
+    </div>
+    <b-row>
+      <b-col sm="12">
+        <b-table
+                responsive="sm"
+                :items="getReceivingTasks"
+                :fields="fields"
+                :current-page="currentPage"
+                :per-page="perPage"
+        >
+          <template slot="入庫確認完了" slot-scope="data">
+            <b-button variant="primary" @click="onClickReceived(data.item.id)">入庫確認完了</b-button>
+          </template>
+        </b-table>
+      </b-col>
+    </b-row>
+  </div>
 </template>
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
-  import ModalWrapper from './ModalWrapper'
 
   export default {
-    name: 'receiving-modal',
-    components: {
-      ModalWrapper,
-    },
+    name: 'receiving-modal-form',
     props: {
       locationId: {
         type: Number,
@@ -100,13 +84,6 @@
         if (response.status) {
           this.$emit('update');
         }
-      },
-      /**
-       * 閉じるボタン押下時
-       */
-      onClickClose() {
-        this.reset();
-        this.$emit('close');
       },
       ...mapActions('stock_moves', ['received', 'reset']),
     },

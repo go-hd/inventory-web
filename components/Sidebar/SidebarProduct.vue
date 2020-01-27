@@ -61,8 +61,8 @@
 </template>
 
 <script>
-import BrandModal from '../Modal/BrandModal'
-import ProductModal from '../Modal/ProductModal'
+import BrandModal from '../Modal/Brand/Index'
+import ProductModal from '../Modal/Product/Index'
 import SidebarNavDropdown from './SidebarNavDropdown'
 
 export default {

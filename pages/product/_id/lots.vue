@@ -5,14 +5,14 @@
         <b-col cols="12">
           <b-card header-tag="header" footer-tag="footer">
             <!-- ヘッダー -->
-            <div slot="header">
+            <slot name="header">
               <span class="sub-title">
                 brand: {{ brand.name }} <i class="icon-pencil edit-icon" @click="showModal('brand', brand.id)"></i>
                 / jan_code: {{ product.jan_code }} <i class="icon-pencil edit-icon" @click="showModal('product', product.id)"></i>
               </span><br />
               <span class="main-title">ロット一覧</span>
               <b-button variant="primary" class="float-right w-25" @click="showModal('lot')"><i class="fa fa-plus"></i></b-button>
-            </div>
+            </slot>
             <!-- /ヘッダー -->
             <div class="d-flex align-items-stretch container">
               <div class="p-2">
@@ -59,9 +59,9 @@
 <script>
   import { mapGetters } from 'vuex'
   import cloneDeep from 'lodash.clonedeep'
-  import BrandModal from '~/components/Modal/BrandModal'
-  import ProductModal from '~/components/Modal/ProductModal'
-  import LotModal from '~/components/Modal/LotModal'
+  import BrandModal from '~/components/Modal/Brand/Index'
+  import ProductModal from '~/components/Modal/Product/Index'
+  import LotModal from '~/components/Modal/Lot/Index'
 
   export default {
     name: 'Lots',

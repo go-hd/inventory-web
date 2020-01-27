@@ -18,9 +18,9 @@
 </template>
 
 <script>
-  import PersonalSettingModal from '../Modal/PersonalSettingModal'
-  import CompanySettingModal from '../Modal/CompanySettingModal'
-  import InviteModal from '../Modal/InviteModal'
+  import PersonalSettingModal from '../Modal/PersonalSetting/Index'
+  import CompanySettingModal from '../Modal/CompanySetting/Index'
+  import InviteModal from '../Modal/Invite/Index'
 
   export default {
     name: 'header-dropdown',
