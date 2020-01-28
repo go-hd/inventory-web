@@ -106,6 +106,9 @@
         this.resetRequest();
         this.$emit('close');
       },
+      /**
+       * 更新時
+       */
       onUpdate() {
         this.$emit('update');
       },

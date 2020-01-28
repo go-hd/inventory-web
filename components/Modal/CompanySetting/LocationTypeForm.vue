@@ -1,18 +1,21 @@
 <template>
   <div>
     <div>
-      <b-alert v-if="locayionTypeAlertMessage" show :variant="locayionTypeAlertStatus">{{ locayionTypeAlertMessage }}</b-alert>
+      <b-alert v-if="locayionTypeAlertMessage" show :variant="locayionTypeAlertStatus">
+        {{ locayionTypeAlertMessage }}
+      </b-alert>
     </div>
     <b-row>
       <b-col sm="12">
         <b-form-group>
           <label>拠点種別名</label>
           <b-form-input
-                  type="text"
-                  placeholder="拠点種別名"
-                  v-model="formData.locationType.name"
-                  :class="{ 'is-invalid': locationTypeErrors.name }"
-                  class="form-control" />
+            type="text"
+            placeholder="拠点種別名"
+            v-model="formData.locationType.name"
+            :class="{ 'is-invalid': locationTypeErrors.name }"
+            class="form-control">
+          </b-form-input>
           <div v-for="(error, index) in locationTypeErrors.name" :key="index" :value="error" class="invalid-feedback">
             {{ error }}
           </div>
@@ -20,12 +23,12 @@
         <b-form-group>
           <label>備考</label>
           <b-form-textarea
-                  id="note"
-                  v-model="formData.locationType.note"
-                  rows="3"
-                  max-rows="6"
-                  :class="{ 'is-invalid': locationTypeErrors.note }"
-          />
+            id="note"
+            v-model="formData.locationType.note"
+            rows="3"
+            max-rows="6"
+            :class="{ 'is-invalid': locationTypeErrors.note }">
+          </b-form-textarea>
           <div v-for="(error, index) in locationTypeErrors.note" :key="index" :value="error" class="invalid-feedback">
             {{ error }}
           </div>

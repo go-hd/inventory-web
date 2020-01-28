@@ -10,12 +10,13 @@
         <b-form-group>
           <label>ユーザー名</label>
           <b-form-input
-                  type="text"
-                  id="name"
-                  placeholder="ユーザー名"
-                  v-model="formData.name"
-                  :class="{ 'is-invalid': errors.name }"
-                  class="form-control" />
+            type="text"
+            id="name"
+            placeholder="ユーザー名"
+            v-model="formData.name"
+            :class="{ 'is-invalid': errors.name }"
+            class="form-control">
+          </b-form-input>
           <div v-for="(error, index) in errors.name" :key="index" :value="error"
                class="invalid-feedback">
             {{ error }}
@@ -24,12 +25,13 @@
         <b-form-group>
           <label>メールアドレス</label>
           <b-form-input
-                  type="text"
-                  id="company_code"
-                  placeholder="メールアドレス"
-                  v-model="formData.email"
-                  :class="{ 'is-invalid': errors.email }"
-                  class="form-control" />
+            type="text"
+            id="company_code"
+            placeholder="メールアドレス"
+            v-model="formData.email"
+            :class="{ 'is-invalid': errors.email }"
+            class="form-control">
+          </b-form-input>
           <div v-for="(error, index) in errors.email" :key="index" :value="error"
                class="invalid-feedback">
             {{ error }}
@@ -38,12 +40,13 @@
         <b-form-group>
           <label>パスワード</label>
           <b-form-input
-                  type="password"
-                  id="password"
-                  placeholder="パスワード"
-                  v-model="formData.password"
-                  :class="{ 'is-invalid': errors.password }"
-                  class="form-control" />
+            type="password"
+            id="password"
+            placeholder="パスワード"
+            v-model="formData.password"
+            :class="{ 'is-invalid': errors.password }"
+            class="form-control">
+          </b-form-input>
           <div v-for="(error, index) in errors.password" :key="index" :value="error"
                class="invalid-feedback">
             {{ error }}

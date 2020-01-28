@@ -1,7 +1,8 @@
 <template>
   <div>
     <div>
-      <b-alert v-if="alertMessage" show :variant="alertStatus">{{ alertMessage }}
+      <b-alert v-if="alertMessage" show :variant="alertStatus">
+        {{ alertMessage }}
       </b-alert>
     </div>
     <b-row>
@@ -9,12 +10,13 @@
         <b-form-group>
           <label>ブランド名</label>
           <b-form-input
-                  type="text"
-                  id="name"
-                  placeholder="ブランド名"
-                  v-model="formData.name"
-                  :class="{ 'is-invalid': errors.name }"
-                  class="form-control" />
+            type="text"
+            id="name"
+            placeholder="ブランド名"
+            v-model="formData.name"
+            :class="{ 'is-invalid': errors.name }"
+            class="form-control">
+          </b-form-input>
           <div v-for="(error, index) in errors.name" :key="index" :value="error"
                class="invalid-feedback">
             {{ error }}
@@ -23,12 +25,13 @@
         <b-form-group>
           <label>コード</label>
           <b-form-input
-                  type="text"
-                  id="code"
-                  placeholder="コード"
-                  v-model="formData.code"
-                  :class="{ 'is-invalid': errors.code }"
-                  class="form-control" />
+            type="text"
+            id="code"
+            placeholder="コード"
+            v-model="formData.code"
+            :class="{ 'is-invalid': errors.code }"
+            class="form-control">
+          </b-form-input>
           <div v-for="(error, index) in errors.code" :key="index" :value="error"
                class="invalid-feedback">
             {{ error }}
@@ -37,13 +40,13 @@
         <b-form-group>
           <label>備考</label>
           <b-form-textarea
-                  id="note"
-                  placeholder="備考"
-                  v-model="formData.note"
-                  rows="3"
-                  max-rows="6"
-                  :class="{ 'is-invalid': errors.note }"
-          />
+            id="note"
+            placeholder="備考"
+            v-model="formData.note"
+            rows="3"
+            max-rows="6"
+            :class="{ 'is-invalid': errors.note }">
+          </b-form-textarea>
           <div v-for="(error, index) in errors.note" :key="index" :value="error"
                class="invalid-feedback">
             {{ error }}

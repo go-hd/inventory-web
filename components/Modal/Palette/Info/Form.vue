@@ -10,12 +10,13 @@
         <b-form-group>
           <label>種別</label>
           <b-form-input
-                  type="text"
-                  id="type"
-                  placeholder="種別"
-                  v-model="formData.type"
-                  :class="{ 'is-invalid': errors.type }"
-                  class="form-control" />
+            type="text"
+            id="type"
+            placeholder="種別"
+            v-model="formData.type"
+            :class="{ 'is-invalid': errors.type }"
+            class="form-control">
+          </b-form-input>
           <div v-for="(error, index) in errors.type" :key="index" :value="error" class="invalid-feedback">
             {{ error }}
           </div>
@@ -23,10 +24,11 @@
         <b-form-group>
           <label>拠点</label>
           <b-form-select
-                  id="location_id"
-                  :options="getLocationOptions"
-                  v-model="formData.location_id"
-                  :class="{ 'is-invalid': errors.location_id }" />
+            id="location_id"
+            :options="getLocationOptions"
+            v-model="formData.location_id"
+            :class="{ 'is-invalid': errors.location_id }">
+          </b-form-select>
           <div v-for="(error, index) in errors.location_id" :key="index" :value="error"
                class="invalid-feedback">
             {{ error }}

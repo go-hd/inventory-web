@@ -10,10 +10,11 @@
        <b-form-group>
          <label>保管拠点</label>
          <b-form-select
-                 id="location_id"
-                 :options="getLocationOptions"
-                 v-model="formData.location_id"
-                 :class="{ 'is-invalid': errors.location_id }" />
+           id="location_id"
+           :options="getLocationOptions"
+           v-model="formData.location_id"
+           :class="{ 'is-invalid': errors.location_id }">
+         </b-form-select>
          <div v-for="(error, index) in errors.location_id" :key="index" :value="error"
               class="invalid-feedback">
            {{ error }}
@@ -26,12 +27,13 @@
        <b-form-group>
          <label>個数</label>
          <b-form-input
-                 type="number"
-                 id="quantity"
-                 placeholder="個数"
-                 v-model="formData.quantity"
-                 :class="{ 'is-invalid': errors.quantity }"
-                 class="form-control" />
+           type="number"
+           id="quantity"
+           placeholder="個数"
+           v-model="formData.quantity"
+           :class="{ 'is-invalid': errors.quantity }"
+           class="form-control">
+         </b-form-input>
          <div v-for="(error, index) in errors.quantity" :key="index" :value="error" class="invalid-feedback">
            {{ error }}
          </div>

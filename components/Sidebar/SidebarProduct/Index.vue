@@ -2,6 +2,7 @@
   <div>
     <ul class="nav sidebar-product">
       <li class="nav-title">ブランド</li>
+      <!-- ブランド一覧 -->
       <SidebarNavDropdown
         v-for="brand in brands"
         :name="brand.name"
@@ -10,27 +11,16 @@
         :open="brand.id === activeBrandId"
         :active="brand.id === activeBrandId"
       >
+        <!-- ブランドにひもづく商品一覧 -->
         <template v-if="products.hasOwnProperty(brand.id)">
-          <li
-            class="nav-item"
-            v-for="product in products[brand.id]"
-            :key="'product-' + product.id"
-            :class="{'active': product.id == activeProductId}"
+          <Products
+            :products="products[brand.id]"
+            :activeProductId="activeProductId"
           >
-            <nuxt-link
-              class="nav-link"
-              :to="{ name:'product-id-lots', params: { id: product.id } }"
-            >
-              <span class="jan-code">JAN : {{ product.jan_code }}</span>
-              <div class="name">
-                <i class="nav-icon icon-puzzle"></i>
-                <span>
-                  {{ product.current_lot ? product.current_lot.name : 'lotがありません'}}
-                </span>
-              </div>
-            </nuxt-link>
-          </li>
+          </Products>
         </template>
+        <!-- /ブランドにひもづく商品一覧 -->
+        <!-- 商品一覧がない場合 -->
         <template v-else>
           <li class="nav-item">
             <a class="nav-link">
@@ -38,39 +28,51 @@
             </a>
           </li>
         </template>
+        <!-- /商品一覧がない場合 -->
+        <!-- 商品登録ボタン -->
         <li class="nav-item nav-control">
           <a @click.prevent.stop="showModal('product', brand.id)">
             新規登録
           </a>
         </li>
+        <!-- /商品登録ボタン -->
       </SidebarNavDropdown>
+      <!-- /ブランド一覧 -->
+      <!-- ブランド登録ボタン -->
       <li class="nav-control">
         <a @click.prevent="showModal('brand')">
           新規登録
         </a>
       </li>
+      <!-- /ブランド登録ボタン -->
     </ul>
+    <!-- ブランド登録モーダル -->
     <BrandModal
       v-if="showModalBrand"
-      @close="closeModal('brand')"/>
+      @close="closeModal('brand')" />
+    <!-- /ブランド登録モーダル -->
+    <!-- 商品登録モーダル -->
     <ProductModal
       v-if="showModalProduct"
       @close="closeModal('product')"
-      :brand_id="selectedBrandId"/>
+      :brand_id="selectedBrandId" />
+    <!-- /商品登録モーダル -->
   </div>
 </template>
 
 <script>
-import BrandModal from '../Modal/Brand/Index'
-import ProductModal from '../Modal/Product/Index'
-import SidebarNavDropdown from './SidebarNavDropdown'
+import BrandModal from '../../Modal/Brand/Index'
+import ProductModal from '../../Modal/Product/Index'
+import SidebarNavDropdown from '../SidebarNavDropdown'
+import Products from './Products'
 
 export default {
-  name: 'sidebar-product',
+  name: 'sidebar-product-index',
   components: {
     SidebarNavDropdown,
     BrandModal,
     ProductModal,
+    Products,
   },
   data () {
     return {

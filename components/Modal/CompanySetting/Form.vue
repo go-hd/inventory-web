@@ -1,19 +1,22 @@
 <template>
   <div>
     <div>
-      <b-alert v-if="companyAlertMessage" show :variant="companyAlertStatus">{{ companyAlertMessage }}</b-alert>
+      <b-alert v-if="companyAlertMessage" show :variant="companyAlertStatus">
+        {{ companyAlertMessage }}
+      </b-alert>
     </div>
     <b-row>
       <b-col sm="12">
         <b-form-group>
           <label>会社名</label>
           <b-form-input
-                  type="text"
-                  id="name"
-                  placeholder="会社名"
-                  v-model="formData.base.name"
-                  :class="{ 'is-invalid': companyErrors.name }"
-                  class="form-control" />
+            type="text"
+            id="name"
+            placeholder="会社名"
+            v-model="formData.base.name"
+            :class="{ 'is-invalid': companyErrors.name }"
+            class="form-control">
+          </b-form-input>
           <div v-for="(error, index) in companyErrors.name" :key="index" :value="error" class="invalid-feedback">
             {{ error }}
           </div>
@@ -21,12 +24,13 @@
         <b-form-group>
           <label>会社コード</label>
           <b-form-input
-                  type="text"
-                  id="company_code"
-                  placeholder="会社コード"
-                  v-model="formData.base.company_code"
-                  :class="{ 'is-invalid': companyErrors.company_code }"
-                  class="form-control" />
+            type="text"
+            id="company_code"
+            placeholder="会社コード"
+            v-model="formData.base.company_code"
+            :class="{ 'is-invalid': companyErrors.company_code }"
+            class="form-control">
+          </b-form-input>
           <div v-for="(error, index) in companyErrors.company_code" :key="index" :value="error" class="invalid-feedback">
             {{ error }}
           </div>

@@ -1,17 +1,18 @@
 <template>
  <div>
    <div>
-     <b-alert v-if="alertMessage" show :variant="alertStatus">{{ alertMessage }}
+     <b-alert v-if="alertMessage" show :variant="alertStatus">
+       {{ alertMessage }}
      </b-alert>
    </div>
    <b-row>
      <b-col sm="12">
        <b-table
-               responsive="sm"
-               :items="getShippingTasks"
-               :fields="fields"
-               :current-page="currentPage"
-               :per-page="perPage"
+         responsive="sm"
+         :items="getShippingTasks"
+         :fields="fields"
+         :current-page="currentPage"
+         :per-page="perPage"
        >
          <template slot="出庫完了" slot-scope="data">
            <b-button variant="primary" @click="onClickShipped(data.item.id)">出庫完了</b-button>

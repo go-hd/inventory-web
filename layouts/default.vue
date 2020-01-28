@@ -40,8 +40,8 @@
 <script>
 import nav from './menu'
 import { Header as AppHeader, Sidebar, Aside as AppAside, Footer as AppFooter, Breadcrumb } from '~/components/'
-import SidebarProduct from '~/components/Sidebar/SidebarProduct'
-import SidebarStock from '~/components/Sidebar/SidebarStock'
+import SidebarProduct from '~/components/Sidebar/SidebarProduct/Index'
+import SidebarStock from '~/components/Sidebar/SidebarStock/Index'
 import { mapGetters } from 'vuex'
 
 export default {

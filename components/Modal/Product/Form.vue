@@ -10,12 +10,13 @@
         <b-form-group>
           <label>JANコード</label>
           <b-form-input
-                  type="text"
-                  id="jan_code"
-                  placeholder="JANコード"
-                  v-model="formData.jan_code"
-                  :class="{ 'is-invalid': errors.jan_code }"
-                  class="form-control" />
+            type="text"
+            id="jan_code"
+            placeholder="JANコード"
+            v-model="formData.jan_code"
+            :class="{ 'is-invalid': errors.jan_code }"
+            class="form-control">
+          </b-form-input>
           <div v-for="(error, index) in errors.jan_code" :key="index" :value="error"
                class="invalid-feedback">
             {{ error }}

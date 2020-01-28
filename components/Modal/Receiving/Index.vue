@@ -9,6 +9,7 @@
         :locationId="locationId"
         :lot="lot"
         @close="onClickClose"
+        @update="onUpdate"
       >
       </Form>
     </template>
@@ -22,7 +23,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
+  import { mapActions } from 'vuex'
   import ModalWrapper from '../ModalWrapper'
   import Form from './Form'
 
@@ -48,6 +49,12 @@
       onClickClose() {
         this.reset();
         this.$emit('close');
+      },
+      /**
+       * 更新時
+       */
+      onUpdate() {
+        this.$emit('update');
       },
       ...mapActions('stock_moves', ['reset']),
     },

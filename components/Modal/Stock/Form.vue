@@ -28,9 +28,10 @@
         <b-form-group>
           <label>種別</label>
           <b-form-select
-                  id="child_lot_id"
-                  :options="getStockHistoryTypeOptions"
-                  v-model="formData.stock_history_type_id" />
+            id="child_lot_id"
+            :options="getStockHistoryTypeOptions"
+            v-model="formData.stock_history_type_id">
+          </b-form-select>
           <div v-for="(error, index) in stockErrors.stock_history_type_id" :key="index"
                :value="error"
                class="invalid-feedback">
@@ -40,12 +41,13 @@
         <b-form-group>
           <label>個数</label>
           <b-form-input
-                  type="number"
-                  id="lot-quantity"
-                  placeholder="個数"
-                  v-model="formData.quantity"
-                  :class="{ 'is-invalid': stockErrors.quantity }"
-                  class="form-control" />
+            type="number"
+            id="lot-quantity"
+            placeholder="個数"
+            v-model="formData.quantity"
+            :class="{ 'is-invalid': stockErrors.quantity }"
+            class="form-control">
+          </b-form-input>
           <div v-for="(error, index) in stockErrors.quantity" :key="index" :value="error"
                class="invalid-feedback">
             {{ error }}
@@ -54,13 +56,13 @@
         <b-form-group>
           <label>備考</label>
           <b-form-textarea
-                  id="note"
-                  placeholder="備考"
-                  v-model="formData.note"
-                  rows="3"
-                  max-rows="6"
-                  :class="{ 'is-invalid': stockErrors.note }"
-          />
+            id="note"
+            placeholder="備考"
+            v-model="formData.note"
+            rows="3"
+            max-rows="6"
+            :class="{ 'is-invalid': stockErrors.note }">
+          </b-form-textarea>
           <div v-for="(error, index) in stockErrors.note" :key="index" :value="error"
                class="invalid-feedback">
             {{ error }}
