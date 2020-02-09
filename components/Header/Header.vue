@@ -7,11 +7,11 @@
     <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" @click="sidebarToggle">
       <span class="navbar-toggler-icon"></span>
     </button>
+    <!-- ヘッダーメニュー -->
     <b-navbar-nav class="d-md-down-none">
       <b-nav-item
         class="px-3 item"
-        :class="{ 'active': name === 'index' || name === 'product-id-lots' }"
-      >
+        :class="{ 'active': name === 'index' || name === 'product-id-lots' }">
         <nuxt-link class="nav-link" :to="{ name: 'dashboard' }">
           商品管理
         </nuxt-link>
@@ -27,9 +27,19 @@
         </nuxt-link>
       </b-nav-item>
     </b-navbar-nav>
-    <b-navbar-nav class="ml-auto">
+    <!-- /ヘッダーメニュー -->
+    <!-- ログイン情報 -->
+    <div class="ml-auto login-user">
+      <span class="company">{{ user.company.name }}</span>
+      <span class="location">{{ user.location.location_type.name }}</span>
+      <span class="user">{{ user.name }} さん</span>
+    </div>
+    <!-- /ログイン情報 -->
+    <!-- ヘッダードロップダウンメニュー -->
+    <b-navbar-nav class="setting">
       <HeaderDropdown/>
     </b-navbar-nav>
+    <!-- /ヘッダードロップダウンメニュー -->
   </header>
 </template>
 
@@ -38,6 +48,15 @@
 
   export default {
     name: 'c-header',
+    data () {
+      return {
+        user: {
+          name: this.$store.$auth.user.name,
+          company: this.$store.$auth.user.company,
+          location: this.$store.$auth.user.location,
+        }
+      }
+    },
     components: {
       HeaderDropdown
     },

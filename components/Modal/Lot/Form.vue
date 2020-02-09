@@ -125,7 +125,7 @@
         formData: {
           id: this.id,
           product_id: this.$route.params.id,
-          lot_number: '',
+          lot_number: this.getRandomLotNumber,
           name: '',
           expiration_date: '',
           ordered_at: '',
@@ -139,17 +139,13 @@
         return cloneDeep(this.lots.find(data => data.id == this.id));
       },
       /**
-       * セレクトボックス用のロット一覧を取得
-       *
-       * @returns []
+       * ランダムなロットナンバーを取得
+       * (12桁の半角英数字)
        */
-      getLotOptions() {
-        let options = [];
-        options.push([]);
-        this.lots.map(lot => {
-          options.push({value: lot.id, name: lot.name});
-        });
-        return options;
+      getRandomLotNumber() {
+        const string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        const length = 12;
+        return Array.from(Array(length)).map(() => string[Math.floor(Math.random() * string.length)]).join('');
       },
       ...mapGetters({
         lotErrors: 'lots/errors',
@@ -164,6 +160,8 @@
         this.formData.expiration_date = this.lot.expiration_date;
         this.formData.ordered_at = this.lot.ordered_at;
         this.formData.is_ten_days_notation = this.lot.is_ten_days_notation;
+      } else {
+        this.formData.lot_number = this.getRandomLotNumber;
       }
     },
     methods: {

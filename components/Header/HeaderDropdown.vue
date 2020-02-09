@@ -1,20 +1,29 @@
 <template>
-    <div>
-      <b-nav-item-dropdown right no-caret>
-        <template slot="button-content">
-          <i class="icon-settings header-setting-icon"></i>
-        </template>
-        <b-dropdown-header tag="div" class="text-center"><strong>Member</strong></b-dropdown-header>
-        <b-dropdown-item @click="showModal('invite')"><i class="fa fa-user"></i> メンバー招待</b-dropdown-item>
-        <b-dropdown-header tag="div" class="text-center"><strong>Settings</strong></b-dropdown-header>
-        <b-dropdown-item @click="showModal('personal')"><i class="fa fa-cog"></i> 個人設定</b-dropdown-item>
-        <b-dropdown-item @click="showModal('company')"><i class="fa fa-cogs"></i> 会社設定</b-dropdown-item>
-        <b-dropdown-item @click="logout"><i class="fa fa-lock"></i> Logout</b-dropdown-item>
-      </b-nav-item-dropdown>
-      <PersonalSettingModal v-if="showModalPersonal" @close="closeModal('personal')" />
-      <CompanySettingModal v-if="showModalCompany" @close="closeModal('company')" />
-      <InviteModal v-if="showModalInvite" @close="closeModal('invite')" />
-    </div>
+  <div>
+    <!-- /ログイン情報 -->
+    <!-- ヘッダーにある設定コントロール -->
+    <b-nav-item-dropdown right no-caret>
+      <template slot="button-content">
+        <i class="icon-settings header-setting-icon"></i>
+      </template>
+      <b-dropdown-header tag="div" class="text-center"><strong>Member</strong></b-dropdown-header>
+      <b-dropdown-item @click="showModal('invite')"><i class="fa fa-user"></i> メンバー招待</b-dropdown-item>
+      <b-dropdown-header tag="div" class="text-center"><strong>Settings</strong></b-dropdown-header>
+      <b-dropdown-item @click="showModal('personal')"><i class="fa fa-cog"></i> 個人設定</b-dropdown-item>
+      <b-dropdown-item @click="showModal('company')"><i class="fa fa-cogs"></i> 会社設定</b-dropdown-item>
+      <b-dropdown-item @click="logout"><i class="fa fa-lock"></i> Logout</b-dropdown-item>
+    </b-nav-item-dropdown>
+    <!-- ヘッダーにある設定コントロール -->
+    <!-- 個人設定モーダル -->
+    <PersonalSettingModal v-if="showModalPersonal" @close="closeModal('personal')" />
+    <!-- /個人設定モーダル -->
+    <!-- 会社設定モーダル -->
+    <CompanySettingModal v-if="showModalCompany" @close="closeModal('company')" />
+    <!-- /会社設定モーダル -->
+    <!-- 招待モーダル -->
+    <InviteModal v-if="showModalInvite" @close="closeModal('invite')" />
+    <!-- /招待モーダル -->
+  </div>
 </template>
 
 <script>
@@ -29,7 +38,7 @@
       CompanySettingModal,
       InviteModal,
     },
-    data: () => {
+    data () {
       return {
         showModalInvite: false,
         showModalPersonal: false,
