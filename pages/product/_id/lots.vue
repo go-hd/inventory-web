@@ -12,12 +12,17 @@
               </span><br />
               <span class="main-title">ロット一覧</span>
               <b-button variant="primary" class="float-right w-25" @click="showModal('lot')"><i class="fa fa-plus"></i></b-button>
+              <br>
+              <a class="float-right m-4 sort-btn" @click="sortList">
+                <i v-if="sort === 'asc'" class="fa fa-sort-amount-desc fa-lg"></i>
+                <i v-if="sort === 'desc'" class="fa fa-sort-amount-asc fa-lg"></i>
+              </a>
             </slot>
             <!-- /ヘッダー -->
             <div class="d-flex align-items-stretch container">
               <div class="p-2">
                 <div class="card-columns">
-                  <template v-for="(lot, index) in lots">
+                  <template v-for="(lot, index) in lotsBySort">
                     <div class="card text-white bg-secondary mb-3 p-2" :key="index" @click="showModal('lot', lot.id)">
                       <div class="card-body">
                         <h4 class="card-title">{{ lot.name }}</h4>
@@ -50,6 +55,7 @@
           :id="showModalId"
           :lots="lotsByCompany"
           @update="update"
+          :sort="sort"
         />
       </b-row>
     </div>
@@ -76,6 +82,7 @@
         showModalProduct: false,
         showModalLot: false,
         showModalId: null,
+        sort: 'desc',
       }
     },
     /**
@@ -103,6 +110,13 @@
        */
       brand() {
         return cloneDeep(this.brands.find(data => data.id == this.product.brand_id));
+      },
+      /**
+       * ソートしたロット一覧を取得
+       */
+      lotsBySort() {
+        const lotsBySort = cloneDeep(this.lots);
+        return this.sort === 'asc' ? lotsBySort.reverse() : this.lots;
       },
       ...mapGetters('products', ['products']),
       ...mapGetters('lots', ['lots', 'lotsByCompany', 'alertMessage', 'alertStatus']),
@@ -151,6 +165,12 @@
           default:
             break;
         }
+      },
+      /**
+       * ソートステータスを更新する
+       */
+      sortList() {
+        this.sort = this.sort === 'desc' ? 'asc' : 'desc'
       },
     }
   }

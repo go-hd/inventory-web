@@ -119,6 +119,9 @@
       lots: {
         default: [],
       },
+      sort: {
+        default: 'desc',
+      },
     },
     data () {
       return {
@@ -171,9 +174,8 @@
        * @returns {Promise<void>}
        */
       async onClickCreat() {
-        const data = { lot: this.formData };
         // 登録処理
-        const response = await this.createLot(cloneDeep(data));
+        const response = await this.createLot({lot: cloneDeep(this.formData), sort: this.sort});
         // OK
         if (response.status) {
           this.$emit('update');

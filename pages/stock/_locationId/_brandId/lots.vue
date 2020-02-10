@@ -9,6 +9,10 @@
               <span class="sub-title">
               </span><br />
               <span class="main-title">ロット在庫一覧</span>
+              <a class="float-right m-4 sort-btn" @click="sortList">
+                <i v-if="sort === 'asc'" class="fa fa-sort-amount-desc fa-lg"></i>
+                <i v-if="sort === 'desc'" class="fa fa-sort-amount-asc fa-lg"></i>
+              </a>
             </slot>
             <!-- /ヘッダー -->
             <div class="d-flex align-items-stretch container">
@@ -16,7 +20,7 @@
                 <div class="p-2 w-30" :key="`product-${index}`">
                   <div>{{ product.jan_code }}</div>
                   <div class="d-flex flex-column card-columns">
-                    <template v-for="(lot, lot_index) in product.lots">
+                    <template v-for="(lot, lot_index) in getLotsBySort(index)">
                       <div class="card text-white bg-secondary mb-3 p-2" :key="`lot-${lot_index}`">
                         <div class="card-body" @click.self="showModal('stock', lot)">
                           <h4 class="card-title">{{ lot.name }}</h4>
@@ -96,6 +100,7 @@
         showModalShippingLot: null,
         showModalReceiving: false,
         showModalReceivingLot: null,
+        sort: 'desc',
       }
     },
     /**
@@ -168,6 +173,19 @@
           default:
             break;
         }
+      },
+      /**
+       * ソートしたロット一覧を取得
+       */
+      getLotsBySort(index) {
+        const lotsBySort = cloneDeep(this.products[index].lots);
+        return this.sort === 'asc' ? lotsBySort.reverse() : this.products[index].lots;
+      },
+      /**
+       * ソートステータスを更新する
+       */
+      sortList() {
+        this.sort = this.sort === 'desc' ? 'asc' : 'desc'
       },
     }
   }

@@ -17,11 +17,17 @@ export const getters = {
 };
 
 export const mutations = {
-  add(state, { lot }) {
-    state.lots.push(lot);
+  add(state, { lot, position }) {
+    if (position === 'before') {
+      // 前方に追加する
+      state.lots.unshift(lot);
+    } else {
+      // 後方に追加する
+      state.lots.push(lot);
+    }
   },
   addByCompany(state, { lot }) {
-    state.lotsByCompany.push(lot);
+    state.lotsByCompany.unshift(lot);
   },
   update(state, { lot }) {
     state.lots = state.lots.map(data => (data.id === lot.id ? lot : data));
@@ -93,7 +99,7 @@ export const actions = {
         })
       )
   },
-  async createLot({ commit }, { lot }) {
+  async createLot({ commit }, { lot, sort } ) {
     const result = await this.$axios.$post(`http://localhost:8000/lots/`, lot).catch(err => {
       return {
         'errors' : err.response.data,
@@ -101,7 +107,7 @@ export const actions = {
       };
     });
     if (result.status === 'OK') {
-      commit('add', { lot: result.lot });
+      commit('add', { lot: result.lot, position: sort === 'desc' ? 'before' : 'after' });
       commit('showAlert', { alertMessage: 'ロットを作成しました。', alertStatus: 'success' });
     } else if (result['errors']) {
       commit('showAlert', { alertMessage: '入力内容をご確認ください。', alertStatus: 'danger' });
