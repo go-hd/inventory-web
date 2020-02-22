@@ -27,9 +27,10 @@
                       <div class="card-body">
                         <h4 class="card-title">{{ lot.name }}</h4>
                         <div class="info">
-                          ordered_at: {{ lot.ordered_at }}<br>
-                          lot_number: {{ lot.lot_number }}<br>
-                          expiration_date: {{ lot.expiration_date }}<br>
+                          発注日: {{ lot.ordered_at }}<br>
+                          ロットナンバー: {{ lot.lot_number }}<br>
+                          賞味期限: {{ lot.expiration_date }}<br>
+                          発注数: {{ lot.ordered_quantity ? lot.ordered_quantity : 0 }}個<br>
                         </div>
                       </div>
                     </div>

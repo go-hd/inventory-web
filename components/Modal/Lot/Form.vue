@@ -86,6 +86,22 @@
             {{ error }}
           </div>
         </b-form-group>
+        <b-form-group>
+          <label>発注数</label>
+          <b-form-input
+            type="number"
+            id="ordered_quantity"
+            placeholder="発注数"
+            v-model="formData.ordered_quantity"
+            :class="{ 'is-invalid': lotErrors.ordered_quantity }"
+            class="form-control">
+          </b-form-input>
+
+          <div v-for="(error, index) in lotErrors.ordered_quantity" :key="index" :value="error"
+               class="invalid-feedback">
+            {{ error }}
+          </div>
+        </b-form-group>
       </b-col>
     </b-row>
     <div class="form-actions float-right">
@@ -133,6 +149,7 @@
           expiration_date: '',
           ordered_at: '',
           is_ten_days_notation: '',
+          ordered_quantity: 0,
         },
         DatePickerFormat: 'yyyy-MM-dd',
       }
@@ -163,7 +180,9 @@
         this.formData.expiration_date = this.lot.expiration_date;
         this.formData.ordered_at = this.lot.ordered_at;
         this.formData.is_ten_days_notation = this.lot.is_ten_days_notation;
+        this.formData.ordered_quantity = this.lot.ordered_quantity ? this.lot.ordered_quantity : 0;
       } else {
+        // 新規登録の場合はランダムなロットナンバーを生成する
         this.formData.lot_number = this.getRandomLotNumber;
       }
     },
