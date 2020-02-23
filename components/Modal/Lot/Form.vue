@@ -65,7 +65,23 @@
             :bootstrap-styling="true"
             :typeable="true"
             v-on:selected="setOrderedAtDate"
+            v-if="Number(formData.is_ten_days_notation) !== 1"
           />
+          <div v-if="Number(formData.is_ten_days_notation) === 1">
+            <b-form-select
+              v-model="formData.ordered_at_month"
+              :value="formData.ordered_at_month"
+              :plain="true"
+              :options="[1,2,3,4,5,6,7,8,9,10,11,12]">
+            </b-form-select>
+            <br>
+            <b-form-select
+              v-model="formData.ordered_at_ten_days_notation"
+              :value="formData.ordered_at_ten_days_notation"
+              :plain="true"
+              :options="['上旬', '中旬', '下旬']">
+            </b-form-select>
+          </div>
           <div class="form-control" :class="{ 'is-invalid': lotErrors.ordered_at }" style="display: none;"></div>
           <div v-for="(error, index) in lotErrors.ordered_at" :key="index" :value="error"
                class="invalid-feedback">
@@ -73,12 +89,12 @@
           </div>
         </b-form-group>
         <b-form-group>
-          <label>発注日時期表記フラグ</label>
+          <label>旬間で指定</label>
           <b-form-checkbox
             id="is_ten_days_notation"
             v-model="formData.is_ten_days_notation"
-            value="1"
-            unchecked-value="0"
+            value=1
+            unchecked-value=0
             :class="{ 'is-invalid': lotErrors.is_ten_days_notation }">
           </b-form-checkbox>
           <div v-for="(error, index) in lotErrors.is_ten_days_notation" :key="index" :value="error"
@@ -150,6 +166,8 @@
           ordered_at: '',
           is_ten_days_notation: '',
           ordered_quantity: 0,
+          ordered_at_month: 1,
+          ordered_at_ten_days_notation: '上旬',
         },
         DatePickerFormat: 'yyyy-MM-dd',
       }
@@ -181,6 +199,8 @@
         this.formData.ordered_at = this.lot.ordered_at;
         this.formData.is_ten_days_notation = this.lot.is_ten_days_notation;
         this.formData.ordered_quantity = this.lot.ordered_quantity ? this.lot.ordered_quantity : 0;
+        this.formData.ordered_at_month = this.lot.ordered_at_month;
+        this.formData.ordered_at_ten_days_notation = this.lot.ordered_at_ten_days_notation;
       } else {
         // 新規登録の場合はランダムなロットナンバーを生成する
         this.formData.lot_number = this.getRandomLotNumber;
@@ -193,8 +213,10 @@
        * @returns {Promise<void>}
        */
       async onClickCreat() {
+        let formData = cloneDeep(this.formData);
+        formData.ordered_at = this.getOrderedAt();
         // 登録処理
-        const response = await this.createLot({lot: cloneDeep(this.formData), sort: this.sort});
+        const response = await this.createLot({lot: formData, sort: this.sort});
         // OK
         if (response.status) {
           this.$emit('update');
@@ -207,9 +229,10 @@
        * @returns {Promise<void>}
        */
       async onClickUpdate() {
-        const data = { lot: this.formData };
+        let formData = cloneDeep(this.formData);
+        formData.ordered_at = this.getOrderedAt();
         // 更新処理
-        const response = await this.updateLot(cloneDeep(data));
+        const response = await this.updateLot({lot: formData});
         // OK
         if (response.status) {
           this.$emit('update');
@@ -233,6 +256,19 @@
        */
       async setExpirationDate(date) {
         this.formData.expiration_date = moment(date).format('YYYY-MM-DD');
+      },
+      getOrderedAt() {
+        if (Number(this.formData.is_ten_days_notation) === 1) {
+          // 旬間から日付を算出する
+          let day = 1;
+          if (this.formData.ordered_at_ten_days_notation === '中旬') {
+            day = 11;
+          } else if (this.formData.ordered_at_ten_days_notation === '下旬') {
+            day = 21;
+          }
+          return new Date().getFullYear() + "-" + this.formData.ordered_at_month + "-" + day;
+        }
+        return this.formData.ordered_at;
       },
       ...mapActions('lots', ['createLot', 'updateLot']),
     },
