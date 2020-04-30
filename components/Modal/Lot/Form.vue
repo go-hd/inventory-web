@@ -159,6 +159,7 @@
       return {
         formData: {
           id: this.id,
+          user_id: this.$store.$auth.user.id,
           product_id: this.$route.params.id,
           lot_number: this.getRandomLotNumber,
           name: '',

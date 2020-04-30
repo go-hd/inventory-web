@@ -11,7 +11,7 @@
         <span class="jan-code">JAN : {{ product.jan_code }}</span>
         <div class="name">
           <i class="nav-icon icon-puzzle"></i>
-          <span>{{ product.current_lot ? product.current_lot.name : 'lotがありません'}}</span>
+          <div>{{ product.current_lot ? product.current_lot.name : 'lotがありません'}}</div>
         </div>
       </nuxt-link>
     </li>

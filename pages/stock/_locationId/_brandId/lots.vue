@@ -15,15 +15,15 @@
               </a>
             </slot>
             <!-- /ヘッダー -->
-            <div class="d-flex align-items-stretch container">
+            <div class="d-flex align-items-stretch container list">
               <template v-for="(product, index) in products">
-                <div class="p-2 w-30" :key="`product-${index}`">
-                  <div>{{ product.jan_code }}</div>
+                <div class="p-2 card-item" :key="`product-${index}`">
+                  <h4>{{ product.current_lot.name }}</h4>
                   <div class="d-flex flex-column card-columns">
                     <template v-for="(lot, lot_index) in getLotsBySort(index)">
                       <div class="card text-white bg-secondary mb-3 p-2" :key="`lot-${lot_index}`">
                         <div class="card-body" @click.self="showModal('stock', lot)">
-                          <h4 class="card-title">{{ lot.name }}</h4>
+                          <div class="card-title order-date">{{ lot.ordered_at }} 発注分</div>
                           <span class="quantity">{{ lot.stock_quantity }}</span>個
                           <div class="status">
                             <div

@@ -1,13 +1,15 @@
 // Here you can add other styles
 @import "bootstrap-variables";
 
+.main {
+  padding-top: 20px;
+}
 .setting {
   margin: 0 20px;
   .header-setting-icon {
     font-size: 30px;
   }
 }
-
 
 .login-user {
   color: #536c79;
@@ -19,6 +21,11 @@
       font-size: 16px;
     }
   }
+}
+
+.navbar-brand {
+  background-image: url('/img/1227_stocky.logo.svg') !important;
+  background-size: 120px auto !important;
 }
 
 /*
@@ -128,13 +135,33 @@
 .sidebar-product {
   margin-top: 20px;
 
+  li {
+    width: 200px;
+
+    &.nav-item {
+      a {
+        padding-left: 5px;
+      }
+    }
+  }
+
   .jan-code {
     color: lightgray;
     font-size: 11px;
   }
 
   .name {
+    display: flex;
     margin-top: 5px;
+    padding-right: 10px;
+
+    div {
+      font-size: 13px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 150px;
+    }
   }
 }
 
@@ -142,8 +169,15 @@
 .sidebar-lot {
   margin-top: 20px;
 
+  li {
+    width: 200px;
+  }
+
   .name {
+    display: flex;
     margin-top: 5px;
+    font-size: 13px;
+    padding-right: 10px;
   }
 }
 
@@ -213,8 +247,12 @@
     .container {
       overflow-x: auto;
     }
+    h4 {
+      font-size: 1.2rem;
+    }
     .card-columns {
       .card {
+        .order-date,
         .quantity {
           font-size: 16px;
         }
@@ -241,5 +279,11 @@
 
 .w-30 {
   width: 30%;
+}
+
+.list {
+  .card-item {
+    min-width: 265px;
+  }
 }
 

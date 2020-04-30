@@ -36,7 +36,7 @@
             :to="{name:'palette-id',params: {id: item.id}}" >
             <div class="name">
               <i class="nav-icon icon-drawer"></i>
-              <span>{{ item.type }}</span>
+              <div>{{ item.type }}</div>
             </div>
           </nuxt-link>
         </SidebarNavItem>

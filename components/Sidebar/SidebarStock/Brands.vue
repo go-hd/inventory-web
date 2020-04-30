@@ -10,7 +10,7 @@
         :to="{name:'stock-locationId-brandId-lots', params: { brandId: brand.id, locationId: location.id }}">
         <div class="name">
           <i class="nav-icon icon-puzzle"></i>
-          <span>{{ brand.name }}</span>
+          <div>{{ brand.name }}</div>
         </div>
       </nuxt-link>
     </li>

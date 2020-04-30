@@ -27,7 +27,7 @@
         </nav>
       </div>
       <main class="main">
-        <breadcrumb :list="list"/>
+<!--        <breadcrumb :list="list"/>-->
         <div class="container-fluid">
           <nuxt />
         </div>
