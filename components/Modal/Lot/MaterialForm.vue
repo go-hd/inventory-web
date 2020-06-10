@@ -39,7 +39,8 @@
             <!-- 子ロット -->
             <b-form-group>
               <label for="child_lot_id">子ロット</label>
-              <v-select id="child_lot_id" :options="getLotOptions"
+              <v-select id="child_lot_id"
+                :options="getLotOptions"
                 label="name"
                 :reduce="data => data.value"
                 v-model="formDataMaterials.materials[index].child_lot_id">
@@ -115,7 +116,7 @@
         let options = [];
         options.push([]);
         this.lots.map(lot => {
-          options.push({value: lot.id, name: lot.name});
+          options.push({value: lot.id, name: lot.name + lot.id + lot.ordered_at});
         });
         return options;
       },
