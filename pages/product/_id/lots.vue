@@ -148,6 +148,7 @@
       },
       async update() {
         await this.$store.dispatch('lots/fetchLotsByCompany', {company_id: this.$store.state.auth.user.company.id});
+        await this.$store.dispatch('products/fetchProducts', {company_id: this.$store.state.auth.user.company.id});
       },
       closeModal(type) {
         switch (type) {
