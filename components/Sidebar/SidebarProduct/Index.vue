@@ -30,7 +30,7 @@
         </template>
         <!-- /商品一覧がない場合 -->
         <!-- 商品登録ボタン -->
-        <li class="nav-item nav-control">
+        <li class="nav-item nav-control product-register">
           <a @click.prevent.stop="showModal('product', brand.id)">
             新規登録
           </a>
