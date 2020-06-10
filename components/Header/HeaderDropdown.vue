@@ -47,7 +47,7 @@
     },
     methods: {
       async logout() {
-        const response = await this.$store.dispatch('auth/logout');
+        const response = await this.$store.dispatch('authentication/logout');
         if (response.status) {
           this.$router.go({path: this.$router.currentRoute.path, force: true});
         }
