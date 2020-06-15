@@ -116,7 +116,7 @@
         let options = [];
         options.push([]);
         this.lots.map(lot => {
-          options.push({value: lot.id, name: lot.name + lot.id + lot.ordered_at});
+          options.push({value: lot.id, name: lot.name + " - " + lot.id + " - " + lot.ordered_at});
         });
         return options;
       },
