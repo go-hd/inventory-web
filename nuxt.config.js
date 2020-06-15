@@ -112,7 +112,8 @@ module.exports = {
 
         config.module.rules.forEach(rule => changeLoaderOptions(rule.use))
       }
-    }
+    },
+    transpile: ['vuejs-datepicker']
   },
 
   auth: {

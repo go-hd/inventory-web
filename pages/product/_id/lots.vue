@@ -10,7 +10,7 @@
                 brand: {{ brand.name }} <i class="icon-pencil edit-icon" @click="showModal('brand', brand.id)"></i>
                 / jan_code: {{ product.jan_code }} <i class="icon-pencil edit-icon" @click="showModal('product', product.id)"></i>
               </span><br />
-              <span class="main-title">{{ product.current_lot !== null ? product.current_lot.name : null}}</span>
+              <span class="main-title">{{ product.current_lot ? product.current_lot.name : null}}</span>
               <b-button variant="primary" class="float-right w-25" @click="showModal('lot')"><i class="fa fa-plus"></i></b-button>
               <br>
               <a class="float-right m-4 sort-btn" @click="sortList">

@@ -18,7 +18,7 @@
             <div class="d-flex align-items-stretch container list px-0">
               <template v-for="(product, index) in products">
                 <div class="card-item" :key="`product-${index}`">
-                  <h4 class="lot-card-title">{{ product.current_lot.name }}</h4>
+                  <h4 class="lot-card-title">{{ product.current_lot ? product.current_lot.name : null}}</h4>
                   <div class="d-flex flex-column card-columns">
                     <template v-for="(lot, lot_index) in getLotsBySort(index)">
                       <div class="card text-white bg-secondary mb-3 p-2" :key="`lot-${lot_index}`">
