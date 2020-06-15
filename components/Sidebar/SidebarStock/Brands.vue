@@ -4,7 +4,9 @@
       class="nav-item"
       v-for="brand in brandsHasLots"
       :key="'brand-' + brand.id"
-      :class="{'active': location.id == activeLocationId && brand.id == activeBrandId}">
+      :class="{'active': location.id == activeLocationId && brand.id == activeBrandId}"
+      v-if="brand.has_stock_location_ids.includes(location.id)"
+    >
       <nuxt-link
         class="nav-link"
         :to="{name:'stock-locationId-brandId-lots', params: { brandId: brand.id, locationId: location.id }}">
@@ -22,7 +24,7 @@
     name: 'sidebar-stock-brands',
     props: {
       location: {
-        type: Array,
+        type: Object,
         default: () => []
       },
       brandsHasLots: {
