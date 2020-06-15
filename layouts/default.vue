@@ -2,7 +2,7 @@
   <div class="app">
     <AppHeader/>
     <div class="app-body">
-      <div class="sidebar">
+      <div class="sidebar fixed">
         <nav class="sidebar-nav">
           <div slot="header"></div>
           <SidebarProduct
