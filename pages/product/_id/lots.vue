@@ -10,7 +10,7 @@
                 brand: {{ brand.name }} <i class="icon-pencil edit-icon" @click="showModal('brand', brand.id)"></i>
                 / jan_code: {{ product.jan_code }} <i class="icon-pencil edit-icon" @click="showModal('product', product.id)"></i>
               </span><br />
-              <span class="main-title">ロット一覧</span>
+              <span class="main-title">{{ product.current_lot.name }}</span>
               <b-button variant="primary" class="float-right w-25" @click="showModal('lot')"><i class="fa fa-plus"></i></b-button>
               <br>
               <a class="float-right m-4 sort-btn" @click="sortList">
@@ -19,23 +19,35 @@
               </a>
             </slot>
             <!-- /ヘッダー -->
-            <div class="d-flex align-items-stretch container">
-              <div class="p-2">
-                <div class="card-columns">
-                  <template v-for="(lot, index) in lotsBySort">
-                    <div class="card text-white bg-secondary mb-3 p-2" :key="index" @click="showModal('lot', lot.id)">
-                      <div class="card-body">
-                        <h4 class="card-title">{{ lot.name }}</h4>
-                        <div class="info">
-                          発注日: {{ lot.ordered_at }}<br>
-                          ロットナンバー: {{ lot.lot_number }}<br>
-                          賞味期限: {{ lot.expiration_date }}<br>
-                          発注数: {{ lot.ordered_quantity ? lot.ordered_quantity : 0 }}個<br>
-                        </div>
+            <div class="d-flex align-items-stretch container px-0">
+              <div class="card-columns">
+                <template v-for="(lot, index) in lotsBySort">
+                  <div class="card text-white bg-secondary mb-3 p-2" :key="index" @click="showModal('lot', lot.id)">
+                    <div class="card-body p-2">
+                      <h4 class="card-title lot-card-title">{{ lot.id }}</h4>
+                      <div class="info">
+                        <table>
+                          <tr>
+                            <td>発注日:</td>
+                            <td>{{ lot.ordered_at }}</td>
+                          </tr>
+                          <tr>
+                            <td>ロットナンバー:</td>
+                            <td>{{ lot.lot_number }}</td>
+                          </tr>
+                          <tr>
+                            <td>賞味期限:</td>
+                            <td>{{ lot.expiration_date }}</td>
+                          </tr>
+                          <tr>
+                            <td>発注数:</td>
+                            <td>{{ lot.ordered_quantity ? lot.ordered_quantity : 0 }}個</td>
+                          </tr>
+                        </table>
                       </div>
                     </div>
-                  </template>
-                </div>
+                  </div>
+                </template>
               </div>
             </div>
           </b-card>
