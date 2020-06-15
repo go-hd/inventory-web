@@ -23,11 +23,11 @@
           </div>
         </b-form-group>
         <b-form-group>
-          <label>ロット名</label>
+          <label>ロット商品名</label>
           <b-form-input
             type="text"
             id="name"
-            placeholder="ロット名"
+            placeholder="ロット商品名"
             v-model="formData.name"
             :class="{ 'is-invalid': lotErrors.name }"
             class="form-control">
@@ -48,6 +48,7 @@
             :bootstrap-styling="true"
             :typeable="true"
             v-on:selected="setExpirationDate"
+            :language="ja"
           />
           <div class="form-control" :class="{ 'is-invalid': lotErrors.expiration_date }" style="display: none;"></div>
           <div v-for="(error, index) in lotErrors.expiration_date" :key="index" :value="error"
@@ -66,6 +67,7 @@
             :typeable="true"
             v-on:selected="setOrderedAtDate"
             v-if="Number(formData.is_ten_days_notation) !== 1"
+            :language="ja"
           />
           <div v-if="Number(formData.is_ten_days_notation) === 1">
             <b-form-select
@@ -118,6 +120,19 @@
             {{ error }}
           </div>
         </b-form-group>
+        <b-form-group>
+          <label>納品先</label>
+          <b-form-select
+            id="location_id"
+            :options="getLocationOptions"
+            v-model="formData.location_id"
+            :class="{ 'is-invalid': lotErrors.location_id }">
+          </b-form-select>
+          <div v-for="(error, index) in lotErrors.location_id" :key="index" :value="error"
+               class="invalid-feedback">
+            {{ error }}
+          </div>
+        </b-form-group>
       </b-col>
     </b-row>
     <div class="form-actions float-right">
@@ -135,6 +150,7 @@
   import { mapGetters, mapActions } from 'vuex'
   import cloneDeep from 'lodash.clonedeep'
   import Datepicker from 'vuejs-datepicker';
+  import {ja} from 'vuejs-datepicker/dist/locale'
   import moment from 'moment';
 
   export default {
@@ -169,8 +185,10 @@
           ordered_quantity: 0,
           ordered_at_month: 1,
           ordered_at_ten_days_notation: '上旬',
+          location_id: '',
         },
         DatePickerFormat: 'yyyy-MM-dd',
+        ja: ja,
       }
     },
     computed: {
@@ -186,11 +204,25 @@
         const length = 12;
         return Array.from(Array(length)).map(() => string[Math.floor(Math.random() * string.length)]).join('');
       },
+      /**
+       * セレクトボックス用の拠点一覧を取得
+       *
+       * @returns []
+       */
+      getLocationOptions() {
+        let options = [];
+        options.push([]);
+        this.locations.map(location => {
+          options.push({value: location.id, text: location.name});
+        });
+        return options;
+      },
       ...mapGetters({
         lotErrors: 'lots/errors',
         lotAlertMessage: 'lots/alertMessage',
         lotAlertStatus: 'lots/alertStatus',
       }),
+      ...mapGetters('locations', ['locations']),
     },
     mounted() {
       if (this.lot !== undefined) {
@@ -202,6 +234,7 @@
         this.formData.ordered_quantity = this.lot.ordered_quantity ? this.lot.ordered_quantity : 0;
         this.formData.ordered_at_month = this.lot.ordered_at_month;
         this.formData.ordered_at_ten_days_notation = this.lot.ordered_at_ten_days_notation;
+        this.formData.location_id = this.lot.location_id;
       } else {
         // 新規登録の場合はランダムなロットナンバーを生成する
         this.formData.lot_number = this.getRandomLotNumber;
@@ -256,7 +289,11 @@
        * @returns {Promise<void>}
        */
       async setExpirationDate(date) {
-        this.formData.expiration_date = moment(date).format('YYYY-MM-DD');
+        if (date !== null) {
+          this.formData.expiration_date = moment(date).format('YYYY-MM-DD');
+        } else {
+          this.formData.expiration_date = null;
+        }
       },
       getOrderedAt() {
         if (Number(this.formData.is_ten_days_notation) === 1) {

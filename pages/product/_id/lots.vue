@@ -10,7 +10,7 @@
                 brand: {{ brand.name }} <i class="icon-pencil edit-icon" @click="showModal('brand', brand.id)"></i>
                 / jan_code: {{ product.jan_code }} <i class="icon-pencil edit-icon" @click="showModal('product', product.id)"></i>
               </span><br />
-              <span class="main-title">{{ product.current_lot.name }}</span>
+              <span class="main-title">{{ product.current_lot !== null ? product.current_lot.name : null}}</span>
               <b-button variant="primary" class="float-right w-25" @click="showModal('lot')"><i class="fa fa-plus"></i></b-button>
               <br>
               <a class="float-right m-4 sort-btn" @click="sortList">
@@ -27,6 +27,7 @@
                       <h4 class="card-title lot-card-title">{{ lot.id }}</h4>
                       <div class="info">
                         <table>
+                          <tbody>
                           <tr>
                             <td>発注日:</td>
                             <td>{{ lot.ordered_at }}</td>
@@ -43,6 +44,7 @@
                             <td>発注数:</td>
                             <td>{{ lot.ordered_quantity ? lot.ordered_quantity : 0 }}個</td>
                           </tr>
+                          </tbody>
                         </table>
                       </div>
                     </div>
@@ -106,6 +108,7 @@
       await store.dispatch('products/fetchProducts', {company_id: store.state.auth.user.company.id});
       await store.dispatch('lots/fetchLots', {product_id: params.id});
       await store.dispatch('lots/fetchLotsByCompany', {company_id: store.state.auth.user.company.id});
+      await store.dispatch('locations/fetchLocations', {company_id: store.state.auth.user.company.id});
     },
     computed: {
       /**
