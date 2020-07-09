@@ -24,17 +24,13 @@
                 <template v-for="(lot, index) in lotsBySort">
                   <div class="card text-white bg-secondary mb-3 p-2" :key="index" @click="showModal('lot', lot.id)">
                     <div class="card-body p-2">
-                      <h4 class="card-title lot-card-title">{{ lot.id }}</h4>
+                      <h4 class="card-title lot-card-title">{{ lot.lot_number }}</h4>
                       <div class="info">
                         <table>
                           <tbody>
                           <tr>
                             <td>発注日:</td>
                             <td>{{ lot.ordered_at }}</td>
-                          </tr>
-                          <tr>
-                            <td>ロットナンバー:</td>
-                            <td>{{ lot.lot_number }}</td>
                           </tr>
                           <tr>
                             <td>賞味期限:</td>

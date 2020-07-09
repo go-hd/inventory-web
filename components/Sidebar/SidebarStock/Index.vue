@@ -44,20 +44,16 @@
       <!-- /パレット一覧 -->
       <!-- パレット登録ボタン -->
       <li class="nav-control">
-        <a @click="showModal('palette')">
+        <a @click="$nuxt.$emit('showModal', 'palette')">
           新規登録
         </a>
       </li>
       <!-- /パレット登録ボタン -->
     </ul>
-    <!-- パレット登録モーダル -->
-    <PaletteModal v-if="showModalPalette" @close="closeModal('palette')" />
-    <!-- /パレット登録モーダル -->
   </div>
 </template>
 
 <script>
-  import PaletteModal from '../../Modal/Palette/Info/Index'
   import SidebarNavDropdown from '../SidebarNavDropdown'
   import SidebarNavItem from '../SidebarNavItem'
   import Brands from './Brands'
@@ -67,16 +63,7 @@
     components: {
       SidebarNavDropdown,
       SidebarNavItem,
-      PaletteModal,
       Brands,
-    },
-    data () {
-      return {
-        formData: {
-          id: this.$store.$auth.user.id,
-        },
-        showModalPalette: false,
-      }
     },
     props: {
       palettes: {
@@ -104,25 +91,5 @@
         default: () => ''
       },
     },
-    methods: {
-      showModal(type) {
-        switch (type) {
-          case 'palette':
-            this.showModalPalette = true;
-            break;
-          default:
-            break;
-        }
-      },
-      closeModal(type) {
-        switch (type) {
-          case 'palette':
-            this.showModalPalette = false;
-            break;
-          default:
-            break;
-        }
-      },
-    }
   }
 </script>

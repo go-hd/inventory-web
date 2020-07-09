@@ -31,7 +31,7 @@
         <!-- /商品一覧がない場合 -->
         <!-- 商品登録ボタン -->
         <li class="nav-item nav-control product-register">
-          <a @click.prevent.stop="showModal('product', brand.id)">
+          <a @click.prevent.stop="$nuxt.$emit('showModal', 'product', brand.id)">
             新規登録
           </a>
         </li>
@@ -40,29 +40,16 @@
       <!-- /ブランド一覧 -->
       <!-- ブランド登録ボタン -->
       <li class="nav-control">
-        <a @click.prevent="showModal('brand')">
+        <a @click.prevent="$nuxt.$emit('showModal', 'brand')">
           新規登録
         </a>
       </li>
       <!-- /ブランド登録ボタン -->
     </ul>
-    <!-- ブランド登録モーダル -->
-    <BrandModal
-      v-if="showModalBrand"
-      @close="closeModal('brand')" />
-    <!-- /ブランド登録モーダル -->
-    <!-- 商品登録モーダル -->
-    <ProductModal
-      v-if="showModalProduct"
-      @close="closeModal('product')"
-      :brand_id="selectedBrandId" />
-    <!-- /商品登録モーダル -->
   </div>
 </template>
 
 <script>
-import BrandModal from '../../Modal/Brand/Index'
-import ProductModal from '../../Modal/Product/Index'
 import SidebarNavDropdown from '../SidebarNavDropdown'
 import Products from './Products'
 
@@ -70,19 +57,7 @@ export default {
   name: 'sidebar-product-index',
   components: {
     SidebarNavDropdown,
-    BrandModal,
-    ProductModal,
     Products,
-  },
-  data () {
-    return {
-      formData: {
-        id: this.$store.$auth.user.id,
-      },
-      showModalBrand: false,
-      showModalProduct: false,
-      selectedBrandId: false,
-    }
   },
   props: {
     brands: {
@@ -100,33 +75,6 @@ export default {
     activeProductId: {
       type: Number,
       default: () => ''
-    },
-  },
-  methods: {
-    showModal (type, brand_id = null) {
-      switch (type) {
-        case 'brand':
-          this.showModalBrand = true
-          break
-        case 'product':
-          this.selectedBrandId = brand_id
-          this.showModalProduct = true
-          break
-        default:
-          break
-      }
-    },
-    closeModal (type) {
-      switch (type) {
-        case 'brand':
-          this.showModalBrand = false
-          break
-        case 'product':
-          this.showModalProduct = false
-          break
-        default:
-          break
-      }
     },
   }
 }
