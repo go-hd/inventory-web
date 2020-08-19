@@ -1,49 +1,37 @@
-![Nuxt CoreUI Project](nuxtcoreui.jpg)
+## 在庫管理システム API側
 
-# NuxtJS + CoreUI
+### 言語
+- Nuxt.js v2.11.0
 
-Unofficial Nuxt + CoreUI project, free to use boilerplate for every need. For more information about Vue CoreUI you can see at [Official Vue CoreUI](https://github.com/mrholek/CoreUI-Vue).
+***
+### ローカル環境構築
 
-## Usage
-
-If you want to use this boilerplate, make sure you already installed [NodeJS](https://nodejs.org/en/) and [Vue CLI](https://www.npmjs.com/package/vue-cli) on your local machine. And then, you can use below command to download this boilerplate.
-
-``` bash
-$ vue init muhibbudins/nuxt-coreui my-project  
-$ cd my-project
-
-# install dependencies
-$ npm install # Or yarn install
+#### Docker起動
+[初回]
+```
+$ docker-compose up -d --build
+```
+[二度目以降]
+```
+$ docker-compose up -d
+```
+#### Nuxt起動
+```
+$ cp .env.example .env
+# .envのPASSPORT_PASSWORD_GRANT_SECRETにAPI側の"oauth_clientsテーブル"のid=2の"secret"の値を設定
+$ npm install
+$ npm run dev
 ```
 
-> Make sure to use a version of vue-cli >= 2.1 (`vue -V`).
-
-### Development
-
-``` bash
-# serve with hot reloading at localhost:3000
-$ npm run dev # Or yarn dev
+#### ログイン
+```
+url: http://localhost:3000
+email: user1@go.com
+password: password
 ```
 
-Go to [http://localhost:3000](http://localhost:3000)
+他ユーザーでログインする場合はAPI側のシーダー参照 <br>
+inventory-api/database/seeds/ActualDatas/UserData.php
 
-### Production
 
-``` bash
-# build for production and launch the server
-$ npm run build
-$ npm start
-```
 
-## Todo
-
-- [x] Fix link and views
-- [x] Updgrade to latest NuxtJS boilerplate
-- [x] Using Express as server
-- [x] Move installation to Vue CLI
-- [x] Extend SCSS to Style Resources
-- [x] Improve performance and code style
-
-## License
-
-This project under [NuxtJS License](https://github.com/nuxt/nuxt.js/blob/dev/LICENSE) and [CoreUI License](https://github.com/coreui/coreui-free-vue-admin-template/blob/master/LICENSE)
