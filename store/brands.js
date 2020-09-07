@@ -20,8 +20,8 @@ export const mutations = {
   add(state, { brand }) {
     state.brands.push(brand);
   },
-  addBrandHasLots(state, { brand }) {
-    state.brandsHasLots.push(brand);
+  setBrandHasLots(state, brands) {
+    state.brandsHasLots = brands;
   },
   update(state, { brand }) {
     state.brands = state.brands.map(data => (data.id === brand.id ? brand : data));
@@ -81,18 +81,12 @@ export const actions = {
    * @returns {Promise<void>}
    */
   async fetchBrandsHasLots({ commit }, params) {
-    const brandsHasLots = await this.$axios.$get('http://localhost:8000/brands/get_has_lots?company_id=' + params.company_id);
+    const brandsHasLots =
+      await this.$axios.$get(
+        'http://localhost:8000/brands/get_has_lots?group_by_location=1&company_id=' + params.company_id
+      );
     commit('clearBrandsHasLots');
-    Object.entries(brandsHasLots || [])
-        .reverse()
-        .forEach(([id, content]) =>
-            commit('addBrandHasLots', {
-              brand: {
-                id,
-                ...content
-              }
-            })
-        )
+    commit('setBrandHasLots', brandsHasLots)
   },
   async createBrand({ commit }, { brand }) {
     const result = await this.$axios.$post(`http://localhost:8000/brands/`, brand).catch(err => {

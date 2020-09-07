@@ -71,7 +71,7 @@
         default: () => []
       },
       brandsHasLots: {
-        type: Array,
+        type: Object,
         default: () => []
       },
       locations: {

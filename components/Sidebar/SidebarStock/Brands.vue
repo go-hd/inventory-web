@@ -2,10 +2,9 @@
   <div>
     <li
       class="nav-item"
-      v-for="brand in brandsHasLots"
+      v-for="brand in brandsHasLots[location.id]"
       :key="'brand-' + brand.id"
       :class="{'active': location.id == activeLocationId && brand.id == activeBrandId}"
-      v-if="brand.has_stock_location_ids.includes(location.id)"
     >
       <nuxt-link
         class="nav-link"
@@ -28,7 +27,7 @@
         default: () => []
       },
       brandsHasLots: {
-        type: Array,
+        type: Object,
         default: () => []
       },
       activeBrandId: {

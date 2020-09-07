@@ -110,7 +110,7 @@
       await store.dispatch('products/fetchProductsWithStock', {brand_id: params.brandId, location_id: params.locationId});
       await store.dispatch('palettes/fetchPalettes', {company_id: store.state.auth.user.company.id});
       await store.dispatch('locations/fetchLocations', {company_id: store.state.auth.user.company.id});
-      await store.dispatch('brands/fetchBrandsHasLots', {company_id: store.state.auth.user.company.id});
+      await store.dispatch('brands/fetchBrands', {company_id: store.state.auth.user.company.id});
       await store.dispatch('stock_history_types/fetchStockHistoryTypes', {company_id: store.state.auth.user.company.id});
     },
     computed: {
@@ -123,12 +123,12 @@
         return cloneDeep(this.locations.find(data => data.id == this.$route.params.locationId));
       },
       brand() {
-        return cloneDeep(this.brandsHasLots.find(data => data.id == this.$route.params.brandId));
+        return cloneDeep(this.brands.find(data => data.id == this.$route.params.brandId));
       },
       ...mapGetters('products', ['products']),
       ...mapGetters('locations', ['locations']),
       ...mapGetters('stock_history_types', ['stockHistoryTypes']),
-      ...mapGetters('brands', ['brandsHasLots']),
+      ...mapGetters('brands', ['brands']),
     },
     mounted() {
       this.$nuxt.$emit('updateSidebarStock', this.location.id, this.brand.id, 0)
