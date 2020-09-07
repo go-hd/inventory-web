@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <div class="app-body">
-      <main class="main">
+      <main class="main guest">
         <div class="container-fluid">
           <nuxt />
         </div>

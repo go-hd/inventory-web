@@ -303,6 +303,14 @@
   padding: 10px;
 }
 
+.modal-container.no-scroll {
+  overflow-y: hidden;
+}
+
+.vs__dropdown-menu {
+  z-index: 1000;
+}
+
 @media (min-width: 480px) {
   .app-header {
     position: fixed !important;
@@ -315,7 +323,7 @@
     top: 55px;
   }
 
-  .main {
+  .main:not(.guest) {
     position: relative;
     left: 200px;
   }
