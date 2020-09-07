@@ -107,11 +107,13 @@
      * データ取得
      */
     async asyncData({ store, params }) {
-      await store.dispatch('products/fetchProductsWithStock', {brand_id: params.brandId, location_id: params.locationId});
-      await store.dispatch('palettes/fetchPalettes', {company_id: store.state.auth.user.company.id});
-      await store.dispatch('locations/fetchLocations', {company_id: store.state.auth.user.company.id});
-      await store.dispatch('brands/fetchBrands', {company_id: store.state.auth.user.company.id});
-      await store.dispatch('stock_history_types/fetchStockHistoryTypes', {company_id: store.state.auth.user.company.id});
+      await Promise.all([
+        store.dispatch('products/fetchProductsWithStock', {brand_id: params.brandId, location_id: params.locationId}),
+        store.dispatch('palettes/fetchPalettes', {company_id: store.state.auth.user.company.id}),
+        store.dispatch('locations/fetchLocations', {company_id: store.state.auth.user.company.id}),
+        store.dispatch('brands/fetchBrands', {company_id: store.state.auth.user.company.id}),
+        store.dispatch('stock_history_types/fetchStockHistoryTypes', {company_id: store.state.auth.user.company.id}),
+      ]);
     },
     computed: {
       /**

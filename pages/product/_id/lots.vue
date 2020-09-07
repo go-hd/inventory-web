@@ -100,11 +100,13 @@
      * データ取得
      */
     async asyncData({ store, params }) {
-      await store.dispatch('brands/fetchBrands', {company_id: store.state.auth.user.company.id});
-      await store.dispatch('products/fetchProducts', {company_id: store.state.auth.user.company.id});
-      await store.dispatch('lots/fetchLots', {product_id: params.id});
-      await store.dispatch('lots/fetchLotsByCompany', {company_id: store.state.auth.user.company.id});
-      await store.dispatch('locations/fetchLocations', {company_id: store.state.auth.user.company.id});
+      await Promise.all([
+        store.dispatch('brands/fetchBrands', {company_id: store.state.auth.user.company.id}),
+        store.dispatch('products/fetchProducts', {company_id: store.state.auth.user.company.id}),
+        store.dispatch('lots/fetchLots', {product_id: params.id}),
+        store.dispatch('lots/fetchLotsByCompany', {company_id: store.state.auth.user.company.id}),
+        store.dispatch('locations/fetchLocations', {company_id: store.state.auth.user.company.id}),
+      ]);
     },
     computed: {
       /**

@@ -75,9 +75,11 @@
      * データ取得
      */
     async asyncData({ store }) {
-      await store.dispatch('palettes/fetchPalettes', {company_id: store.state.auth.user.company.id});
-      await store.dispatch('locations/fetchLocations', {company_id: store.state.auth.user.company.id});
-      await store.dispatch('brands/fetchBrandsHasLots', {company_id: store.state.auth.user.company.id});
+      await Promise.all([
+        store.dispatch('palettes/fetchPalettes', {company_id: store.state.auth.user.company.id}),
+        store.dispatch('locations/fetchLocations', {company_id: store.state.auth.user.company.id}),
+        store.dispatch('brands/fetchBrandsHasLots', {company_id: store.state.auth.user.company.id})
+      ]);
     },
     computed: {
       /**
