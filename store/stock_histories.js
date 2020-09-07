@@ -32,7 +32,7 @@ export const mutations = {
 
 export const actions = {
   async createStockHistory({ commit }, { stock_history }) {
-    const result = await this.$axios.$post(`http://localhost:8000/stock_histories/`, stock_history).catch(err => {
+    const result = await this.$axios.$post(`stock_histories/`, stock_history).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false

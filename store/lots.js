@@ -68,9 +68,9 @@ export const actions = {
   async fetchLots({ commit }, params) {
     let lots = [];
     if (params.company_id) {
-      lots = await this.$axios.$get('http://localhost:8000/lots?company_id=' + params.company_id);
+      lots = await this.$axios.$get('lots?company_id=' + params.company_id);
     } else if (params.product_id) {
-      lots = await this.$axios.$get('http://localhost:8000/lots?product_id=' + params.product_id);
+      lots = await this.$axios.$get('lots?product_id=' + params.product_id);
     }
 
     commit('clearLots');
@@ -86,7 +86,7 @@ export const actions = {
   },
   async fetchLotsByCompany({ commit }, params) {
     let lots = [];
-    lots = await this.$axios.$get('http://localhost:8000/lots?company_id=' + params.company_id);
+    lots = await this.$axios.$get('lots?company_id=' + params.company_id);
     commit('clearLotsByCompany');
     Object.entries(lots || [])
       .reverse()
@@ -100,7 +100,7 @@ export const actions = {
       )
   },
   async createLot({ commit }, { lot, sort } ) {
-    const result = await this.$axios.$post(`http://localhost:8000/lots/`, lot).catch(err => {
+    const result = await this.$axios.$post(`lots/`, lot).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -118,7 +118,7 @@ export const actions = {
     return result;
   },
   async updateLot({ commit }, { lot }) {
-    const result = await this.$axios.$put(`http://localhost:8000/lots/${lot.id}`, lot).catch(err => {
+    const result = await this.$axios.$put(`lots/${lot.id}`, lot).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -136,7 +136,7 @@ export const actions = {
     return result;
   },
   async deleteLot({ commit }, { lot }) {
-    const result = await this.$axios.$delete(`http://localhost:8000/lots/${lot.id}`);
+    const result = await this.$axios.$delete(`lots/${lot.id}`);
     if (result.status === 'OK') {
       commit('delete', { lot: lot });
       commit('showAlert', { alertMessage: 'ロットを削除しました。', alertStatus: 'success' });

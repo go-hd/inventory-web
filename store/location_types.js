@@ -50,7 +50,7 @@ export const mutations = {
 
 export const actions = {
   async fetchLocationTypes({ commit }) {
-    const locationTypes = await this.$axios.$get('http://localhost:8000/location_types');
+    const locationTypes = await this.$axios.$get('location_types');
     commit('clear');
     Object.entries(locationTypes || [])
       .reverse()
@@ -64,7 +64,7 @@ export const actions = {
       )
   },
   async createLocationType({ commit }, { locationType }) {
-    const result = await this.$axios.$post(`http://localhost:8000/location_types/`, locationType).catch(err => {
+    const result = await this.$axios.$post(`location_types/`, locationType).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -82,7 +82,7 @@ export const actions = {
     return result;
   },
   async updateLocationType({ commit }, { locationType }) {
-    const result = await this.$axios.$put(`http://localhost:8000/location_types/${locationType.id}`, locationType).catch(err => {
+    const result = await this.$axios.$put(`location_types/${locationType.id}`, locationType).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -100,7 +100,7 @@ export const actions = {
     return result;
   },
   async deleteLocationType({ commit }, { locationType }) {
-    const result = await this.$axios.$delete(`http://localhost:8000/location_types/${locationType.id}`);
+    const result = await this.$axios.$delete(`location_types/${locationType.id}`);
     if (result.status === 'OK') {
       commit('delete', { locationType: locationType });
       commit('showAlert', { alertMessage: '拠点種別を削除しました。', alertStatus: 'success' });

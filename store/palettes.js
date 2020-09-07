@@ -49,7 +49,7 @@ export const mutations = {
 
 export const actions = {
   async fetchPalettes({ commit }, params) {
-    const palettes = await this.$axios.$get('http://localhost:8000/palettes?company_id=' + params.company_id);
+    const palettes = await this.$axios.$get('palettes?company_id=' + params.company_id);
     commit('clearPalettes');
     Object.entries(palettes || [])
       .reverse()
@@ -63,7 +63,7 @@ export const actions = {
       )
   },
   async createPalette({ commit }, { palette }) {
-    const result = await this.$axios.$post(`http://localhost:8000/palettes/`, palette).catch(err => {
+    const result = await this.$axios.$post(`palettes/`, palette).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -81,7 +81,7 @@ export const actions = {
     return result;
   },
   async updatePalette({ commit }, { palette }) {
-    const result = await this.$axios.$put(`http://localhost:8000/palettes/${palette.id}`, palette).catch(err => {
+    const result = await this.$axios.$put(`palettes/${palette.id}`, palette).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -99,7 +99,7 @@ export const actions = {
     return result;
   },
   async updateLocationPalette({ commit }, { locationPalette }) {
-    const result = await this.$axios.$post('http://localhost:8000/location_palettes/move', locationPalette).catch(err => {
+    const result = await this.$axios.$post('location_palettes/move', locationPalette).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -117,7 +117,7 @@ export const actions = {
     return result;
   },
   async deletePalette({ commit }, { palette }) {
-    const result = await this.$axios.$delete(`http://localhost:8000/palettes/${palette.id}`);
+    const result = await this.$axios.$delete(`palettes/${palette.id}`);
     if (result.status === 'OK') {
       commit('delete', { palette: palette });
       commit('showAlert', { alertMessage: 'パレットを削除しました。', alertStatus: 'success' });

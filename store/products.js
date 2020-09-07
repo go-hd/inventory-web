@@ -61,9 +61,9 @@ export const actions = {
   async fetchProducts({ commit }, params) {
     let products = [];
     if (params.brand_id) {
-      products = await this.$axios.$get('http://localhost:8000/products?brand_id=' + params.brand_id);
+      products = await this.$axios.$get('products?brand_id=' + params.brand_id);
     } else if (params.company_id) {
-      products = await this.$axios.$get('http://localhost:8000/products?company_id=' + params.company_id);
+      products = await this.$axios.$get('products?company_id=' + params.company_id);
     }
 
     commit('clearProducts');
@@ -81,7 +81,7 @@ export const actions = {
   async fetchProductsWithStock({ commit }, params) {
     let products = [];
     products = await this.$axios.$get(
-      'http://localhost:8000/products?with_stock=1&brand_id=' + params.brand_id
+      'products?with_stock=1&brand_id=' + params.brand_id
       + '&location_id=' + params.location_id);
 
     commit('clearProducts');
@@ -97,7 +97,7 @@ export const actions = {
       )
   },
   async createProduct({ commit }, { product }) {
-    const result = await this.$axios.$post(`http://localhost:8000/products/`, product).catch(err => {
+    const result = await this.$axios.$post(`products/`, product).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -115,7 +115,7 @@ export const actions = {
     return result;
   },
   async updateProduct({ commit }, { product }) {
-    const result = await this.$axios.$put(`http://localhost:8000/products/${product.id}`, product).catch(err => {
+    const result = await this.$axios.$put(`products/${product.id}`, product).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -133,7 +133,7 @@ export const actions = {
     return result;
   },
   async deleteProduct({ commit }, { product }) {
-    const result = await this.$axios.$delete(`http://localhost:8000/products/${product.id}`);
+    const result = await this.$axios.$delete(`products/${product.id}`);
     if (result.status === 'OK') {
       commit('delete', { product: product });
       commit('showAlert', { alertMessage: '商品を削除しました。', alertStatus: 'success' });

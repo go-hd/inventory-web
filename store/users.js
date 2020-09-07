@@ -50,7 +50,7 @@ export const mutations = {
 
 export const actions = {
   async fetchUsers({ commit }, params) {
-    const users = await this.$axios.$get('http://localhost:8000/users?company_id=' + params.company_id);
+    const users = await this.$axios.$get('users?company_id=' + params.company_id);
     commit('clear');
     Object.entries(users || [])
       .reverse()
@@ -64,7 +64,7 @@ export const actions = {
       )
   },
   async validateUser({ commit }, { user }) {
-    const result = await this.$axios.$post(`http://localhost:8000/users/validate`, user).catch(err => {
+    const result = await this.$axios.$post(`users/validate`, user).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -81,7 +81,7 @@ export const actions = {
   },
   async inviteUser({ commit }, { user }) {
     commit('clearErrors');
-    const result = await this.$axios.$post(`http://localhost:8000/users/invite`, user).catch(err => {
+    const result = await this.$axios.$post(`users/invite`, user).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -99,7 +99,7 @@ export const actions = {
   },
   async registerUser({ commit }, { data }) {
     commit('clearErrors');
-    const result = await this.$axios.$post(`http://localhost:8000/register/invited`, data).catch(err => {
+    const result = await this.$axios.$post(`register/invited`, data).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -116,7 +116,7 @@ export const actions = {
     return result;
   },
   async createUser({ commit }, { user }) {
-    const result = await this.$axios.$post(`http://localhost:8000/users/`, user).catch(err => {
+    const result = await this.$axios.$post(`users/`, user).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -134,7 +134,7 @@ export const actions = {
     return result;
   },
   async updateUser({ commit }, { user }) {
-    const result = await this.$axios.$put(`http://localhost:8000/users/${user.id}`, user).catch(err => {
+    const result = await this.$axios.$put(`users/${user.id}`, user).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -152,7 +152,7 @@ export const actions = {
     return result;
   },
   async deleteUser({ commit }, { user }) {
-    const result = await this.$axios.$delete(`http://localhost:8000/users/${user.id}`);
+    const result = await this.$axios.$delete(`users/${user.id}`);
     if (result.status === 'OK') {
       commit('delete', { user: user });
       commit('showAlert', { alertMessage: 'ユーザーを削除しました。', alertStatus: 'success' });

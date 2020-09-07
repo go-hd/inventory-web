@@ -48,7 +48,7 @@ export const mutations = {
 
 export const actions = {
   async fetchLocations({ commit }, params) {
-    const locations = await this.$axios.$get('http://localhost:8000/locations?company_id=' + params.company_id);
+    const locations = await this.$axios.$get('locations?company_id=' + params.company_id);
     commit('clear');
     Object.entries(locations || [])
       .reverse()
@@ -62,7 +62,7 @@ export const actions = {
       )
   },
   async validateLocation({ commit }, { location }) {
-    const result = await this.$axios.$post(`http://localhost:8000/locations/validate`, location).catch(err => {
+    const result = await this.$axios.$post(`locations/validate`, location).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -78,7 +78,7 @@ export const actions = {
     return result;
   },
   async createLocation({ commit }, { location }) {
-    const result = await this.$axios.$post(`http://localhost:8000/locations/`, location).catch(err => {
+    const result = await this.$axios.$post(`locations/`, location).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -96,7 +96,7 @@ export const actions = {
     return result;
   },
   async updateLocation({ commit }, { location }) {
-    const result = await this.$axios.$put(`http://localhost:8000/locations/${location.id}`, location).catch(err => {
+    const result = await this.$axios.$put(`locations/${location.id}`, location).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -114,7 +114,7 @@ export const actions = {
     return result;
   },
   async deleteLocation({ commit }, { location }) {
-    const result = await this.$axios.$delete(`http://localhost:8000/locations/${location.id}`);
+    const result = await this.$axios.$delete(`locations/${location.id}`);
     if (result.status === 'OK') {
       commit('delete', { location: location });
       commit('showAlert', { alertMessage: '拠点を削除しました。', alertStatus: 'success' });

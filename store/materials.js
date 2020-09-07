@@ -50,7 +50,7 @@ export const mutations = {
 
 export const actions = {
   async fetchMaterials({ commit }, params) {
-    const materials = await this.$axios.$get('http://localhost:8000/materials?parent_lot_id=' + params.parent_lot_id);
+    const materials = await this.$axios.$get('materials?parent_lot_id=' + params.parent_lot_id);
     commit('clearMaterials');
     Object.entries(materials || [])
       .reverse()
@@ -64,7 +64,7 @@ export const actions = {
       )
   },
   async createMaterial({ commit }, { material }) {
-    const result = await this.$axios.$post(`http://localhost:8000/materials/`, material).catch(err => {
+    const result = await this.$axios.$post(`materials/`, material).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -84,7 +84,7 @@ export const actions = {
   async updateMaterials({ commit, state }, { materials }) {
     commit('clear');
     const result = await this.$axios.
-      $post(`http://localhost:8000/materials/update_multi`, {
+      $post(`materials/update_multi`, {
         materials: materials.materials,
         deleted_ids: state.deletedMaterialIds,
       })
@@ -106,7 +106,7 @@ export const actions = {
     return result;
   },
   async updateMaterial({ commit }, { material }) {
-    const result = await this.$axios.$put(`http://localhost:8000/materials/${material.id}`, material).catch(err => {
+    const result = await this.$axios.$put(`materials/${material.id}`, material).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -124,7 +124,7 @@ export const actions = {
     return result;
   },
   async deleteMaterial({ commit }, { material }) {
-    const result = await this.$axios.$delete(`http://localhost:8000/materials/${material.id}`);
+    const result = await this.$axios.$delete(`materials/${material.id}`);
     if (result.status === 'OK') {
       commit('delete', { material: material });
       commit('showAlert', { alertMessage: '材料を削除しました。', alertStatus: 'success' });

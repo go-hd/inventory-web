@@ -53,7 +53,7 @@ export const actions = {
   async fetchCompanies({ commit }, params = null) {
     // objectのネスト対応
     const paramsSerializer = (params) => qs.stringify(params);
-    const companies = await this.$axios.$get('http://localhost:8000/companies', { params, paramsSerializer });
+    const companies = await this.$axios.$get('companies', { params, paramsSerializer });
     commit('clear');
     Object.entries(companies || [])
       .reverse()
@@ -67,7 +67,7 @@ export const actions = {
       )
   },
   async validateCompany({ commit }, { company }) {
-    const result = await this.$axios.$post(`http://localhost:8000/companies/validate`, company).catch(err => {
+    const result = await this.$axios.$post(`companies/validate`, company).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -83,7 +83,7 @@ export const actions = {
     return result;
   },
   async createCompany({ commit }, { company }) {
-    const result = await this.$axios.$post(`http://localhost:8000/companies/`, company).catch(err => {
+    const result = await this.$axios.$post(`companies/`, company).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -101,7 +101,7 @@ export const actions = {
     return result;
   },
   async updateCompany({ commit }, { company }) {
-    const result = await this.$axios.$put(`http://localhost:8000/companies/${company.id}`, company).catch(err => {
+    const result = await this.$axios.$put(`companies/${company.id}`, company).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -119,7 +119,7 @@ export const actions = {
     return result;
   },
   async deleteCompany({ commit }, { company }) {
-    const result = await this.$axios.$delete(`http://localhost:8000/companies/${company.id}`);
+    const result = await this.$axios.$delete(`companies/${company.id}`);
     if (result.status === 'OK') {
       commit('delete', { company: company });
       commit('showAlert', { alertMessage: '会社を削除しました。', alertStatus: 'success' });

@@ -19,7 +19,7 @@ export const mutations = {
 
 export const actions = {
   async fetchStockHistoryTypes({ commit }) {
-    const stockHistoryTypes = await this.$axios.$get('http://localhost:8000/stock_history_types');
+    const stockHistoryTypes = await this.$axios.$get('stock_history_types');
     commit('clear');
     Object.entries(stockHistoryTypes || [])
       .reverse()

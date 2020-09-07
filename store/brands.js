@@ -60,7 +60,7 @@ export const mutations = {
 
 export const actions = {
   async fetchBrands({ commit }, params) {
-    const brands = await this.$axios.$get('http://localhost:8000/brands?company_id=' + params.company_id);
+    const brands = await this.$axios.$get('brands?company_id=' + params.company_id);
     commit('clearBrands');
     Object.entries(brands || [])
       .reverse()
@@ -83,13 +83,13 @@ export const actions = {
   async fetchBrandsHasLots({ commit }, params) {
     const brandsHasLots =
       await this.$axios.$get(
-        'http://localhost:8000/brands/get_has_lots?group_by_location=1&company_id=' + params.company_id
+        'brands/get_has_lots?group_by_location=1&company_id=' + params.company_id
       );
     commit('clearBrandsHasLots');
     commit('setBrandHasLots', brandsHasLots)
   },
   async createBrand({ commit }, { brand }) {
-    const result = await this.$axios.$post(`http://localhost:8000/brands/`, brand).catch(err => {
+    const result = await this.$axios.$post(`brands/`, brand).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -107,7 +107,7 @@ export const actions = {
     return result;
   },
   async updateBrand({ commit }, { brand }) {
-    const result = await this.$axios.$put(`http://localhost:8000/brands/${brand.id}`, brand).catch(err => {
+    const result = await this.$axios.$put(`brands/${brand.id}`, brand).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -125,7 +125,7 @@ export const actions = {
     return result;
   },
   async deleteBrand({ commit }, { brand }) {
-    const result = await this.$axios.$delete(`http://localhost:8000/brands/${brand.id}`);
+    const result = await this.$axios.$delete(`brands/${brand.id}`);
     if (result.status === 'OK') {
       commit('delete', { brand: brand });
       commit('showAlert', { alertMessage: 'ブランドを削除しました。', alertStatus: 'success' });

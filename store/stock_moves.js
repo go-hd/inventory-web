@@ -32,7 +32,7 @@ export const mutations = {
 
 export const actions = {
   async createStockMove({ commit }, { stock_move }) {
-    const result = await this.$axios.$post(`http://localhost:8000/stock_moves/`, stock_move).catch(err => {
+    const result = await this.$axios.$post(`stock_moves/`, stock_move).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -50,7 +50,7 @@ export const actions = {
     return result;
   },
   async shipped({ commit }, id) {
-    const result = await this.$axios.$post(`http://localhost:8000/stock_moves/shipped/` + id).catch(err => {
+    const result = await this.$axios.$post(`stock_moves/shipped/` + id).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
@@ -67,7 +67,7 @@ export const actions = {
     return result;
   },
   async received({ commit }, id) {
-    const result = await this.$axios.$post(`http://localhost:8000/stock_moves/received/` + id).catch(err => {
+    const result = await this.$axios.$post(`stock_moves/received/` + id).catch(err => {
       return {
         'errors' : err.response.data,
         'status' : false
