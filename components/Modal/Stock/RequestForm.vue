@@ -69,6 +69,8 @@
           receiving_location_id: this.location.id,
           lot_id: this.lot.id,
           quantity: 0,
+          brand_id: this.$route.params.brandId,
+          product_id: this.lot.product_id,
         },
       }
     },
