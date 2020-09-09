@@ -39,6 +39,9 @@ export const mutations = {
   clearMaterials(state) {
     state.materials = [];
   },
+  clearDeletedMaterialIds(state) {
+    state.deletedMaterialIds = [];
+  },
   showAlert(state, { alertMessage, alertStatus }) {
     state.alertMessage = alertMessage;
     state.alertStatus = alertStatus;
@@ -73,6 +76,7 @@ export const actions = {
     if (result.status === 'OK') {
       commit('add', { material: material });
       commit('showAlert', { alertMessage: '材料を作成しました。', alertStatus: 'success' });
+      commit('clearDeletedMaterialIds');
     } else if (result['errors']) {
       commit('showAlert', { alertMessage: '入力内容をご確認ください。', alertStatus: 'danger' });
       commit('showErrors', { errors: result['errors'] });
@@ -97,6 +101,7 @@ export const actions = {
 
     if (result.status === 'OK') {
       commit('showAlert', { alertMessage: '材料を作成しました。', alertStatus: 'success' });
+      commit('clearDeletedMaterialIds');
     } else if (result['errors']) {
       commit('showAlert', { alertMessage: '入力内容をご確認ください。', alertStatus: 'danger' });
       commit('showErrors', { errors: result['errors'] });

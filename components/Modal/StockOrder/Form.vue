@@ -78,6 +78,15 @@
            {{ error }}
          </div>
        </b-form-group>
+       <b-form-group>
+         <label>材料から生産する</label>
+         <b-form-checkbox
+             id="is_ten_days_notation"
+             v-model="formDataRequest.is_from_material"
+             value=1
+             unchecked-value=0>
+         </b-form-checkbox>
+       </b-form-group>
      </b-col>
    </b-row>
    <div class="form-actions float-right">
@@ -103,6 +112,7 @@
           shipping_location_id: '',
           receiving_location_id: this.$store.$auth.user.location.id,
           quantity: 0,
+          is_from_material: false,
         },
       }
     },
@@ -197,6 +207,7 @@
           shipping_location_id: '',
           receiving_location_id: this.$store.$auth.user.location.id,
           quantity: 0,
+          is_from_material: false,
         }
       },
       ...mapActions('stock_moves', ['createStockMove']),

@@ -39,14 +39,10 @@
     },
     data () {
       return {
-        formData: {
-          id: this.id,
-          type: '',
-          location_id: '',
-        },
         fields: [
           {key: '出庫先拠点'},
           {key: '個数'},
+          {key: '材料から作成'},
           {key: '出庫完了'}
         ],
         currentPage: 1,
@@ -79,6 +75,7 @@
           datas.push({
             id: shipping_task.id,
             出庫先拠点: shipping_task.receiving_location.name,
+            材料から作成: shipping_task.is_from_material ? '◯' : '',
             個数: shipping_task.quantity
           });
         });
